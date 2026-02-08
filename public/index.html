@@ -3,174 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamento Seguro | Checkout</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Teste Pix Automático</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f4f4f4; }
+        .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 400px; margin: auto; }
+        h2 { color: #333; }
+        button { background-color: #009EE3; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 5px; cursor: pointer; margin-top: 20px; width: 100%; }
+        button:hover { background-color: #007bb0; }
+        #qr-container { margin-top: 20px; display: none; }
+        #status { margin-top: 15px; font-weight: bold; color: #555; }
+        img { max-width: 100%; border: 1px solid #ddd; border-radius: 5px; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #009EE3; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans">
+<body>
 
-    <div id="card-checkout" class="bg-white p-8 rounded-3xl shadow-2xl max-w-sm w-full border border-gray-200 transition-all duration-500">
+    <div class="card">
+        <h2>Teste de Velocidade Pix ⚡</h2>
+        <p>Faça um Pix de <b>R$ 0,01</b> e receba o estorno em segundos.</p>
         
-        <div class="text-center mb-6">
-            <div class="bg-blue-600 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg shadow-blue-300">
-                <i class="fas fa-shield-alt text-white text-2xl"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-gray-800">Finalizar Compra</h2>
-            <p class="text-sm text-gray-500">Ambiente Seguro Mercado Pago</p>
+        <button onclick="gerarPix()" id="btn-pagar">Gerar QR Code (R$ 0,01)</button>
+        
+        <div class="loader" id="loader"></div>
+        
+        <div id="qr-container">
+            <p>Escaneie para pagar:</p>
+            <img id="qr-image" src="" alt="QR Code Pix" />
+            <br><br>
+            <textarea id="copia-cola" rows="4" style="width: 100%; font-size: 12px;" readonly></textarea>
+            <p id="status">Aguardando pagamento...</p>
         </div>
-
-        <div id="step-form" class="space-y-4">
-            <div class="relative">
-                <i class="fas fa-user absolute left-4 top-4 text-gray-400"></i>
-                <input type="text" id="name" class="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="Seu Nome Completo">
-            </div>
-            <div class="relative">
-                <i class="fas fa-id-card absolute left-4 top-4 text-gray-400"></i>
-                <input type="text" id="cpf" class="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="CPF (apenas números)">
-            </div>
-            
-            <div class="pt-2">
-                <div class="flex justify-between text-sm mb-2 text-gray-600 font-semibold">
-                    <span>Total a pagar:</span>
-                    <span class="text-blue-600 text-lg">R$ 1,00</span>
-                </div>
-                <button onclick="gerarPix()" id="btn-pagar" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 transform active:scale-95 transition-all duration-200 flex justify-center items-center gap-2">
-                    <span>GERAR PIX AGORA</span>
-                    <i class="fas fa-bolt"></i>
-                </button>
-            </div>
-        </div>
-
-        <div id="step-pix" class="hidden text-center animate-pulse">
-            <div class="bg-blue-50 p-4 rounded-2xl mb-4 border-2 border-dashed border-blue-300 relative">
-                <span class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wide">Pague via PIX</span>
-                
-                <div class="my-4 flex justify-center">
-                    <i class="fas fa-qrcode text-6xl text-gray-800 opacity-80"></i>
-                </div>
-
-                <textarea id="pix-code" class="w-full text-[10px] bg-white border border-gray-200 rounded-lg p-2 text-gray-600 font-mono text-center mb-2 resize-none h-20 outline-none" readonly></textarea>
-                
-                <button onclick="copiarCodigo()" class="w-full bg-gray-900 text-white py-2 rounded-lg text-xs font-bold hover:bg-black transition-colors flex items-center justify-center gap-2">
-                    <i class="far fa-copy"></i> COPIAR CÓDIGO
-                </button>
-            </div>
-            
-            <div class="flex flex-col items-center justify-center text-blue-600 gap-1">
-                <div class="flex items-center gap-2">
-                    <div class="animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full"></div>
-                    <span class="text-xs font-bold uppercase animate-pulse">Aguardando pagamento...</span>
-                </div>
-                <p class="text-[10px] text-gray-400">Não feche esta tela.</p>
-            </div>
-        </div>
-
-        <div id="step-success" class="hidden text-center py-4 space-y-4">
-            <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto shadow-inner mb-4 animate-bounce">
-                <i class="fas fa-check text-5xl text-green-500"></i>
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800">Pagamento Aprovado!</h3>
-            <p class="text-sm text-gray-500 px-2">Seu estorno já foi enviado automaticamente para sua conta bancária.</p>
-            <button onclick="location.reload()" class="mt-4 text-blue-500 text-xs font-bold underline hover:text-blue-700">Fazer novo teste</button>
-        </div>
-
     </div>
 
     <script>
-        // Função que manda os dados pro seu servidor
+        // SEU LINK DA RENDER ESTÁ AQUI 👇
+        const API_URL = "https://checkout-pix-profissional.onrender.com"; 
+
         async function gerarPix() {
-            const name = document.getElementById('name').value;
-            const cpf = document.getElementById('cpf').value;
-
-            if(!name || !cpf || cpf.length < 11) {
-                return Swal.fire('Ops!', 'Por favor, preencha seu Nome e CPF corretamente.', 'warning');
-            }
-
-            // Efeito de carregando no botão
             const btn = document.getElementById('btn-pagar');
-            const textoOriginal = btn.innerHTML;
-            btn.innerHTML = `<div class="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>`;
+            const loader = document.getElementById('loader');
+            const container = document.getElementById('qr-container');
+            const statusText = document.getElementById('status');
+
             btn.disabled = true;
+            btn.innerText = "Gerando...";
+            loader.style.display = "block";
+            container.style.display = "none";
 
             try {
-                // Chama o SEU robô na porta 3000
-                const response = await fetch('/api/pagar', {
+                // 1. CHAMA O SEU SERVIDOR NA RENDER
+                const response = await fetch(`${API_URL}/pix`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount: 1, name, cpf }) // Valor fixo de R$ 1,00 para teste
+                    body: JSON.stringify({
+                        amount: 0.01, // Valor do teste
+                        name: "Teste Cliente",
+                        cpf: "12345678900" // CPF genérico para teste
+                    })
                 });
 
                 const data = await response.json();
 
-                if (data.qr_code) {
-                    // Esconde o formulário e mostra o PIX
-                    document.getElementById('step-form').classList.add('hidden');
-                    document.getElementById('step-pix').classList.remove('hidden');
+                if (data.point_of_interaction) {
+                    // 2. EXIBE O QR CODE
+                    const qrCodeBase64 = data.point_of_interaction.transaction_data.qr_code_base64;
+                    const copiaCola = data.point_of_interaction.transaction_data.qr_code;
+                    const idPagamento = data.id;
+
+                    document.getElementById('qr-image').src = `data:image/png;base64,${qrCodeBase64}`;
+                    document.getElementById('copia-cola').value = copiaCola;
                     
-                    // Coloca o código na caixinha
-                    document.getElementById('pix-code').value = data.qr_code;
-                    
-                    // Começa a vigiar se pagou
-                    iniciarMonitoramento(data.id);
+                    loader.style.display = "none";
+                    container.style.display = "block";
+                    btn.innerText = "Gerar Novo Pix";
+                    btn.disabled = false;
+
+                    // 3. COMEÇA A VERIFICAR SE PAGOU (POLLING)
+                    verificarStatus(idPagamento);
                 } else {
-                    throw new Error('Sem QR Code');
+                    alert('Erro ao gerar Pix: ' + JSON.stringify(data));
+                    btn.disabled = false;
+                    loader.style.display = "none";
                 }
 
-            } catch (err) {
-                Swal.fire('Erro', 'Não foi possível gerar o PIX. Verifique se o servidor está ligado.', 'error');
-                btn.innerHTML = textoOriginal;
+            } catch (error) {
+                console.error(error);
+                alert('Erro de conexão! Veja se o servidor na Render está LIVE.');
                 btn.disabled = false;
+                btn.innerText = "Tentar Novamente";
+                loader.style.display = "none";
             }
         }
 
-        // Função que pergunta pro servidor a cada 3 segundos: "E aí, pagou?"
-        function iniciarMonitoramento(id) {
+        async function verificarStatus(id) {
+            const statusText = document.getElementById('status');
+            
+            // Verifica a cada 3 segundos
             const intervalo = setInterval(async () => {
                 try {
-                    const res = await fetch(`/api/status/${id}`);
-                    const data = await res.json();
+                    const res = await fetch(`${API_URL}/pix/${id}`);
+                    const json = await res.json();
 
-                    if (data.status === 'approved') {
-                        clearInterval(intervalo); // Para de perguntar
-                        mostrarSucesso();
+                    if (json.status === 'approved') {
+                        statusText.innerHTML = "✅ <b>PAGAMENTO APROVADO!</b><br>O estorno deve chegar em breve.";
+                        statusText.style.color = "green";
+                        clearInterval(intervalo); // Para de verificar
                     }
                 } catch (e) {
-                    console.log("Esperando servidor...");
+                    console.log("Verificando...");
                 }
             }, 3000);
-        }
-
-        // Função visual de sucesso
-        function mostrarSucesso() {
-            document.getElementById('step-pix').classList.add('hidden');
-            document.getElementById('step-success').classList.remove('hidden');
-            document.getElementById('card-checkout').classList.add('border-green-400', 'border-2');
-            
-            // Toca um som de sucesso (opcional)
-            Swal.fire({
-                title: 'Sucesso!',
-                text: 'Dinheiro devolvido!',
-                icon: 'success',
-                timer: 3000,
-                showConfirmButton: false
-            });
-        }
-
-        // Função para copiar o código
-        function copiarCodigo() {
-            const textarea = document.getElementById('pix-code');
-            textarea.select();
-            document.execCommand('copy');
-            
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: 'Código PIX copiado!',
-                showConfirmButton: false,
-                timer: 2000
-            });
         }
     </script>
 </body>
