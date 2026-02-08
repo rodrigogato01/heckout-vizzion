@@ -1,63 +1,45 @@
-import { MercadoPagoConfig, Payment, PaymentRefund } from 'mercadopago';
+import { Request, Response } from 'express';
+import { PixService } from '../services/PixService';
 
-// Configuração do Mercado Pago
-const client = new MercadoPagoConfig({
-    accessToken: process.env.MP_ACCESS_TOKEN || '', 
-    options: { timeout: 5000 }
-});
+const pixService = new PixService();
 
-const payment = new Payment(client);
-const refundClient = new PaymentRefund(client);
-
-export class PixService {
-    
-    // 1. Criar PIX
-    async createCharge(amount: number, name: string, cpf: string) {
-        const cleanCpf = cpf.replace(/\D/g, '');
+export class PixController {
+    // Criar
+    async create(req: Request, res: Response) {
+        const { amount, name, cpf } = req.body;
         try {
-            const request = await payment.create({
-                body: {
-                    transaction_amount: amount,
-                    description: `Venda - ${name}`,
-                    payment_method_id: 'pix',
-                    payer: {
-                        email: 'cliente@email.com',
-                        first_name: name,
-                        identification: { type: 'CPF', number: cleanCpf }
-                    }
-                }
-            });
-            return request;
+            const result = await pixService.createCharge(Number(amount), name, cpf);
+            res.json(result);
         } catch (error) {
-            console.error("Erro MP:", error);
-            throw new Error("Falha ao criar PIX");
+            res.status(500).json({ error: 'Erro ao criar' });
         }
     }
 
-    // 2. Verificar Status (AGORA ACEITA TEXTO E NÚMERO)
-    async checkStatus(id: string | number) {
-        try {
-            // Convertemos para string aqui dentro para o Mercado Pago não reclamar
-            const response = await payment.get({ id: String(id) });
-            return response.status; 
-        } catch (error) {
-            return 'error';
+    // Webhook
+    async webhook(req: Request, res: Response) {
+        const { data } = req.body;
+        if (data && data.id) {
+            const id = String(data.id);
+            console.log(`🔔 Webhook ID: ${id}`);
+            try {
+                const status = await pixService.checkStatus(id);
+                if (status === 'approved') {
+                    console.log("💰 Pago! Devolvendo...");
+                    await pixService.refund(id);
+                }
+            } catch (e) { console.log(e); }
         }
+        res.status(200).send();
     }
 
-    // 3. Fazer Reembolso (AGORA ACEITA TEXTO E NÚMERO)
-    async refund(id: string | number) {
+    // A FUNÇÃO QUE A RENDER ESTÁ RECLAMANDO QUE FALTA:
+    async checkStatus(req: Request, res: Response) {
+        const { id } = req.params;
         try {
-            console.log(`Processando estorno para ID: ${id}`);
-            await refundClient.create({
-                body: {
-                    payment_id: String(id) // Garante que é texto
-                }
-            } as any);
-            return true;
+            const status = await pixService.checkStatus(id);
+            res.json({ status });
         } catch (error) {
-            console.error("Erro no estorno:", error);
-            return false;
+            res.status(500).json({ error: 'Erro ao consultar' });
         }
     }
 }
