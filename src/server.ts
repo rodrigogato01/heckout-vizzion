@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import path from 'path'; // <--- Importante para achar o arquivo
+import path from 'path'; // Importante
 import { router } from './routes';
 
 const app = express();
@@ -8,14 +8,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 1. Diz ao servidor onde estão os arquivos do site (na pasta raiz)
-app.use(express.static(path.join(__dirname, '../')));
+// A CORREÇÃO MÁGICA 👇
+// process.cwd() pega a raiz do projeto. Juntamos com 'index.html'
+const publicPath = path.join(process.cwd(), 'index.html');
 
 app.use(router);
 
-// 2. Se alguém entrar na página principal, mostra o index.html
+// Rota para entregar o site
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../index.html'));
+    res.sendFile(publicPath);
 });
 
 const PORT = process.env.PORT || 3000;
