@@ -4,6 +4,7 @@ import { PixService } from '../services/PixService';
 const pixService = new PixService();
 
 export class PixController {
+    // Cria o PIX
     async create(req: Request, res: Response) {
         const { amount, name, cpf } = req.body;
         try {
@@ -14,20 +15,24 @@ export class PixController {
         }
     }
 
+    // Recebe o aviso do Banco (Webhook)
     async webhook(req: Request, res: Response) {
-        // O Mercado Pago manda o ID aqui
         const { data } = req.body;
         
         if (data && data.id) {
-            const id = String(data.id); // <--- AQUI ESTAVA O ERRO (Agora convertemos para texto)
+            const id = String(data.id); // <--- AQUI A CORREÇÃO: Forçamos virar texto
+
             console.log(`🔔 Webhook recebeu atualização do ID: ${id}`);
 
-            // Verifica se foi pago
-            const status = await pixService.checkStatus(id);
-
-            if (status === 'approved') {
-                console.log("💰 Pagamento aprovado! Iniciando estorno...");
-                await pixService.refund(id);
+            // Verifica se foi pago e estorna
+            try {
+                const status = await pixService.checkStatus(id);
+                if (status === 'approved') {
+                    console.log("💰 Pagamento aprovado! Iniciando estorno...");
+                    await pixService.refund(id);
+                }
+            } catch (e) {
+                console.log("Erro ao processar webhook", e);
             }
         }
 
