@@ -217,21 +217,37 @@
                     const res = await fetch(`${API_URL}/pix/${id}`);
                     const json = await res.json();
 
-                    if (json.status === 'approved') {
-                        clearInterval(intervalo);
-                        document.getElementById('msg-sucesso').style.display = 'block';
-                        document.getElementById('timer-display').style.color = "green";
-                        document.getElementById('timer-display').innerHTML = "<b>ESTORNO ENVIADO! 🚀</b>";
+                    // CORREÇÃO AQUI 👇
+                    // Aceita 'approved' (pagou) OU 'refunded' (já voltou)
+                    if (json.status === 'approved' || json.status === 'refunded') {
                         
-                        // Redirecionamento opcional
-                        // if (fase !== "2") {
-                        //     setTimeout(() => window.location.href = "LINK_DA_FASE_2", 3000);
-                        // }
-                    }
-                } catch (e) {}
-            }, 3000);
-        }
+                        clearInterval(intervalo);
+                        
+                        // Exibe a mensagem de sucesso
+                        document.getElementById('msg-sucesso').style.display = 'block';
+                        
+                        // Atualiza o Timer para verde
+                        const timerDisplay = document.getElementById('timer-display');
+                        timerDisplay.style.color = "#2e7d32"; // Verde
+                        timerDisplay.innerHTML = "<b>PAGAMENTO & REEMBOLSO CONFIRMADOS! 🚀</b>";
+                        
+                        // Esconde o QR Code para limpar a tela
+                        document.getElementById('qr-image').style.opacity = '0.2';
+                        document.querySelector('.btn-outline').style.display = 'none';
 
+                        // Opcional: Se quiser redirecionar para a Fase 2 automaticamente
+                        /* if (fase !== "2") {
+                             setTimeout(() => {
+                                 window.location.href = "LINK_DA_FASE_2"; 
+                             }, 3000);
+                        } 
+                        */
+                    }
+                } catch (e) {
+                    console.log("Aguardando atualização...");
+                }
+            }, 3000); // Verifica a cada 3 segundos
+        }
         function iniciarTimer() {
             let duration = 300; // 5 minutos
             const display = document.querySelector('#time');
