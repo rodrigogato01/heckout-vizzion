@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { MercadoPagoConfig, Payment, PaymentRefund } from 'mercadopago';
 
-// Configuração do Mercado Pago
 const client = new MercadoPagoConfig({
     accessToken: process.env.MP_ACCESS_TOKEN || ''
 });
@@ -17,17 +16,16 @@ export class PixController {
             const result = await payment.create({
                 body: {
                     transaction_amount: parseFloat(amount),
-                    description: `Pagamento Verificado - R$ ${amount}`,
+                    description: `Taxa de Verificação - R$ ${amount}`,
                     payment_method_id: 'pix',
                     payer: {
                         email: 'cliente@verificado.com',
                         first_name: name,
                         identification: {
                             type: 'CPF',
-                            number: cpf.replace(/\D/g, '') // Garante apenas números
+                            number: cpf.replace(/\D/g, '') // Remove pontos e traços
                         }
                     },
-                    // SEU LINK NA RENDER
                     notification_url: 'https://checkout-pix-profissional.onrender.com/webhook'
                 }
             });
@@ -50,17 +48,15 @@ export class PixController {
                 const pay = await payment.get({ id: String(data.id) });
 
                 if (pay.status === 'approved') {
-                    // Se vier vazio, assume 0
                     const valorPago = pay.transaction_amount || 0;
-                    
                     console.log(`✅ Pagamento de R$ ${valorPago} APROVADO!`);
 
-                    // --- LISTA VIP DE ESTORNO AUTOMÁTICO ---
-                    // Apenas estes valores voltam. O resto fica no seu bolso.
-                    const valoresParaReembolso = [37.90, 47.90]; 
+                    // --- AUTOMAÇÃO DE REEMBOLSO ---
+                    // Adicione aqui TODOS os valores que devem ser estornados no funil
+                    const valoresDoFunil = [37.90, 47.90]; 
 
-                    if (valoresParaReembolso.includes(valorPago)) {
-                        console.log(`🔄 Valor R$ ${valorPago} identificado para Reembolso. Iniciando...`);
+                    if (valoresDoFunil.includes(valorPago)) {
+                        console.log(`🔄 Fase do Funil detectada (R$ ${valorPago}). Iniciando estorno...`);
                         
                         await refund.create({
                             payment_id: String(data.id),
@@ -71,13 +67,11 @@ export class PixController {
                         
                         console.log('💸 Estorno realizado com sucesso!');
                     } else {
-                        console.log(`💰 VENDA REAL! R$ ${valorPago} mantido na conta.`);
+                        console.log(`💰 Venda Real (R$ ${valorPago}). Dinheiro mantido.`);
                     }
                 }
             }
-
             return res.status(200).send();
-
         } catch (error) {
             console.error('Erro no Webhook:', error);
             return res.status(500).send();
