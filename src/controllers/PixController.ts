@@ -1,14 +1,13 @@
 import { Request, Response } from 'express';
 import { MercadoPagoConfig, Payment, PaymentRefund } from 'mercadopago';
 
-// Configuração do Cliente Mercado Pago
+// Configuração do Mercado Pago
 const client = new MercadoPagoConfig({
     accessToken: process.env.MP_ACCESS_TOKEN || ''
 });
 
 export class PixController {
     
-    // 1. CRIA O PIX (Igual para todas as fases)
     async create(req: Request, res: Response) {
         const payment = new Payment(client);
         
@@ -18,17 +17,17 @@ export class PixController {
             const result = await payment.create({
                 body: {
                     transaction_amount: parseFloat(amount),
-                    description: `Pagamento Fase Funil - R$ ${amount}`,
+                    description: `Pagamento Verificado - R$ ${amount}`,
                     payment_method_id: 'pix',
                     payer: {
-                        email: 'cliente@teste.com',
+                        email: 'cliente@verificado.com',
                         first_name: name,
                         identification: {
                             type: 'CPF',
-                            number: cpf
+                            number: cpf.replace(/\D/g, '') // Garante apenas números
                         }
                     },
-                    // SEU LINK NA RENDER (Não esqueça de verificar se está correto)
+                    // SEU LINK NA RENDER
                     notification_url: 'https://checkout-pix-profissional.onrender.com/webhook'
                 }
             });
@@ -41,44 +40,38 @@ export class PixController {
         }
     }
 
-    // 2. RECEBE O AVISO E DECIDE SE REEMBOLSA
     async webhook(req: Request, res: Response) {
         const payment = new Payment(client);
         const refund = new PaymentRefund(client);
         const { action, data } = req.body;
 
         try {
-            if (action === 'payment.created') {
-                console.log('🔔 Pix Criado:', data.id);
-            }
-
             if (action === 'payment.updated') {
-                // Busca os detalhes do pagamento
                 const pay = await payment.get({ id: String(data.id) });
 
                 if (pay.status === 'approved') {
-                    // Se vier vazio, ele assume que é 0. O TypeScript fica feliz!
-const valorPago = pay.transaction_amount || 0;
+                    // Se vier vazio, assume 0
+                    const valorPago = pay.transaction_amount || 0;
+                    
                     console.log(`✅ Pagamento de R$ ${valorPago} APROVADO!`);
 
-                    // --- CONFIGURAÇÃO DA ESTRATÉGIA ---
-                    // Coloque aqui APENAS os valores que devem voltar para o cliente.
-                    const valoresParaReembolso = [0.01, 27.00, 57.90]; 
+                    // --- LISTA VIP DE ESTORNO AUTOMÁTICO ---
+                    // Apenas estes valores voltam. O resto fica no seu bolso.
+                    const valoresParaReembolso = [37.90, 47.90]; 
 
                     if (valoresParaReembolso.includes(valorPago)) {
-                        console.log(`🔄 Valor R$ ${valorPago} está na lista VIP de estorno. Devolvendo...`);
+                        console.log(`🔄 Valor R$ ${valorPago} identificado para Reembolso. Iniciando...`);
                         
                         await refund.create({
                             payment_id: String(data.id),
                             body: {
-                                amount: valorPago // Devolve tudo
+                                amount: valorPago
                             }
                         });
                         
                         console.log('💸 Estorno realizado com sucesso!');
                     } else {
-                        // Se não estiver na lista, é venda real!
-                        console.log(`💰 CAIXA! Venda de R$ ${valorPago} confirmada e mantida na conta.`);
+                        console.log(`💰 VENDA REAL! R$ ${valorPago} mantido na conta.`);
                     }
                 }
             }
@@ -91,7 +84,6 @@ const valorPago = pay.transaction_amount || 0;
         }
     }
 
-    // 3. CONSULTA STATUS (Para o site saber se aprovou)
     async checkStatus(req: Request, res: Response) {
         const payment = new Payment(client);
         try {
