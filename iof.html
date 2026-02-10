@@ -8,7 +8,7 @@
     
     <style>
         :root {
-            --receita-blue: #0038a9; /* Azul Oficial */
+            --receita-blue: #0038a9; /* Azul Oficial Exato */
             --green: #28a745;
             --bg-gray: #f8f9fa;
             --border: #e9ecef;
@@ -27,53 +27,54 @@
             flex-direction: column;
         }
 
-        /* --- HEADER AZUL --- */
+        /* --- HEADER OFICIAL (Sem imagens, feito com código) --- */
         .app-header {
             background-color: var(--receita-blue);
-            padding: 20px;
+            height: 64px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 56, 169, 0.25);
+            justify-content: center; /* Centralizado como no banner */
+            box-shadow: 0 4px 10px rgba(0, 56, 169, 0.25);
             position: sticky;
             top: 0;
             z-index: 100;
         }
         
-        /* LOGOTIPO DESENHADO (SVG) */
         .logo-container {
             display: flex;
             align-items: center;
             gap: 12px;
-            color: white;
+            height: 100%;
         }
-        
+
+        /* O Símbolo da Receita (Vetorizado Manualmente) */
         .rf-symbol {
-            width: 40px;
-            height: 30px;
-            fill: white; /* Garante que o icone seja branco */
+            width: 42px;
+            height: auto;
+            fill: white;
         }
 
+        /* O Texto "Receita Federal" (Tipografia Ajustada) */
         .rf-text {
-            font-family: 'Inter', sans-serif;
-            font-weight: 800; /* Negrito forte igual ao logo */
-            font-size: 22px;
             color: white;
-            letter-spacing: -0.5px;
+            font-size: 20px;
+            font-weight: 800; /* Extra Bold */
+            letter-spacing: -0.8px; /* Ajuste para ficar igual ao logo */
             line-height: 1;
+            font-family: 'Inter', sans-serif;
         }
 
-        /* --- CORPO --- */
+        /* --- CORPO DA PÁGINA --- */
         .content {
             flex: 1;
-            padding: 30px 20px;
+            padding: 25px 20px;
             display: flex;
             flex-direction: column;
         }
 
-        .title-hero { margin-bottom: 30px; text-align: center; }
-        .title-hero h1 { margin: 0 0 8px; font-size: 22px; color: var(--text-dark); letter-spacing: -0.5px; font-weight: 800; }
-        .title-hero p { margin: 0; font-size: 15px; color: #6c757d; }
+        .title-hero { margin-bottom: 25px; text-align: center; }
+        .title-hero h1 { margin: 0 0 8px; font-size: 20px; color: var(--text-dark); letter-spacing: -0.5px; font-weight: 800; }
+        .title-hero p { margin: 0; font-size: 14px; color: #6c757d; }
 
         /* CARD DE RESUMO */
         .summary-card {
@@ -83,7 +84,7 @@
             margin-bottom: 25px;
             border: 1px solid var(--border);
         }
-        .row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 15px; color: #495057; }
+        .row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: #495057; }
         .row:last-child { margin-bottom: 0; }
         .row strong { color: var(--text-dark); }
         
@@ -95,8 +96,8 @@
             justify-content: space-between;
             align-items: center;
         }
-        .total-label { font-size: 15px; font-weight: 700; color: var(--text-dark); }
-        .total-value { font-size: 22px; font-weight: 800; color: var(--green); }
+        .total-label { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+        .total-value { font-size: 20px; font-weight: 800; color: var(--green); }
 
         /* MENSAGEM DE REEMBOLSO */
         .refund-notice {
@@ -115,7 +116,7 @@
 
         /* INPUTS */
         .form-group { margin-bottom: 15px; }
-        .label { font-size: 13px; font-weight: 600; color: #495057; margin-bottom: 6px; display: block; text-transform: uppercase; }
+        .label { font-size: 12px; font-weight: 600; color: #495057; margin-bottom: 6px; display: block; text-transform: uppercase; }
         .input {
             width: 100%;
             padding: 16px;
@@ -158,8 +159,8 @@
 
     <div class="app-header">
         <div class="logo-container">
-            <svg class="rf-symbol" viewBox="0 0 44 34" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21.9 8L16.2 13.7H21.9V17.6H14.8V22.2H12.8V13.8H15.8V11.7H20L15.2 6.9L21.9 0.200012V8ZM37.9 3.60001H34.7V5.70001H37.7V7.40001H30.5V12H28.5V3.60001H31.5V1.50001H35.8L44.2 9.90001H21.9V11.7H40.2L32.1 3.60001H37.9ZM30.6 22.2H33.8L33.9 21.3L36 19.1L38.1 21.3L38.2 22.2H41.3V15.8L39.1 13.6L36 10.5L32.9 13.6L30.7 15.8V22.2ZM32.7 17.1L36 13.9L39.2 17.1L36 20.3L32.7 17.1ZM13.6 23.4H17.9V24.9H11.6V16.6H17.7V18.1H13.6V20H17.3V21.5H13.6V23.4ZM40.9 23.4L39.1 20.2H37.1V23.4H35.1V15H39.3C41.3 15 42.5 16.1 42.5 17.9C42.5 19.1 41.9 20 41 20.5L43 23.7H40.9ZM39.1 18.6H39.2C40.1 18.6 40.5 18.1 40.5 17.2C40.5 16.3 40 15.8 39.1 15.8H37V18.6H39.1ZM9.9 13.9L4.20001 19.6H0V11.2H5.90001L13.1 4.00001L9.9 0.800011L4.20001 6.50001H1.00001V8.20001H5.00001L9.9 3.40001L15.6 9.10001L9.9 13.9Z"/>
+            <svg class="rf-symbol" viewBox="0 0 45 35" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.2 13.2h-3.1v2.1h3v1.7h-7.2v4.6h-2V13.8h3v-2.1h4.2L13.3 6.9l6.9-6.7v8.2h0.1v4.8H20.2z M37.9 3.6h-3.2v2.1h3v1.7h-7.2v4.6h-2V3.6h3V1.5h4.3l8.4 8.4H21.9v2.1h18.3L32.1 3.6h5.8z M30.6 22.2h3.2l0.1-0.9l2.1-2.2l2.1 2.2l0.1 0.9h3.1v-6.4l-2.2-2.2l-3.1 3.1l-3.1-3.1l-2.2 2.2V22.2z M32.7 17.1l3.2-3.2l3.2 3.2l-3.2 3.2L32.7 17.1z M13.6 23.4h4.3v1.5h-6.3v-8.3h6.1v1.5h-4.1v1.9h3.7v1.5h-3.7V23.4z M40.9 23.4l-1.8-3.2h-2v3.2h-2V15h4.2c2 0 3.2 1.1 3.2 2.9c0 1.2-0.6 2.1-1.6 2.6l2.2 3.2H40.9z M39.1 18.6h0.1c0.9 0 1.3-0.5 1.3-1.4c0-0.9-0.5-1.4-1.3-1.4H37v2.8H39.1z M9.9 13.9L4.2 19.6H0v-8.4h5.9l7.2-7.2L9.9 0.8l-5.7 5.7H1v1.8h4l5.3-5.2l5.7 5.7l-6.1 4.8L9.9 13.9z"/>
             </svg>
             <span class="rf-text">Receita Federal</span>
         </div>
