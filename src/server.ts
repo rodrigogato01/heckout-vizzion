@@ -9,30 +9,25 @@ const pixController = new PixController();
 app.use(cors());
 app.use(express.json());
 
+// --- AQUI ESTÁ A CORREÇÃO: LIBERAR ARQUIVOS ESTÁTICOS (IMAGENS) ---
+// Isso permite que o banner.jpg seja acessado pelo navegador
+app.use(express.static(path.resolve(__dirname, '..')));
+
 // --- ROTAS DA API ---
 app.post('/pix', pixController.create);
 app.get('/pix/:id', pixController.checkStatus);
 app.post('/webhook', pixController.webhook);
 
-// --- ROTA 1: SITE PRINCIPAL ---
+// --- ROTA PRINCIPAL ---
 const publicPath = path.resolve(__dirname, '..', 'index.html');
 app.get('/', (req, res) => {
     res.sendFile(publicPath);
 });
 
-// --- ROTA 2: CHECKOUT IOF ---
+// --- ROTA CHECKOUT IOF ---
 const iofPath = path.resolve(__dirname, '..', 'iof.html');
 app.get('/iof.html', (req, res) => {
     res.sendFile(iofPath);
-});
-
-// --- ROTA 3: IMAGEM DO BANNER (NOVO) ---
-// Isso permite que o site carregue a imagem 'banner.jpg'
-const bannerPath = path.resolve(__dirname, '..', 'banner.jpg');
-app.get('/banner.jpg', (req, res) => {
-    res.sendFile(bannerPath, (err) => {
-        if (err) res.status(404).send("Imagem não encontrada. Verifique se o arquivo 'banner.jpg' está na pasta.");
-    });
 });
 
 const PORT = process.env.PORT || 3000;
