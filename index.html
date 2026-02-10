@@ -30,7 +30,7 @@
         .app-container {
             width: 100%;
             max-width: 480px;
-            background: #f7f7f7; /* Fundo cinza claro igual ao print */
+            background: #f7f7f7; /* Fundo cinza claro da imagem */
             min-height: 100vh;
             position: relative;
             overflow: hidden;
@@ -38,7 +38,7 @@
             flex-direction: column;
         }
 
-        /* --- ETAPA 1: DASHBOARD --- */
+        /* --- ETAPA 1: DASHBOARD DETALHADO --- */
         .header-stage1 { padding: 25px 20px 15px; text-align: center; font-weight: 700; font-size: 19px; color: #000; }
         
         .balance-card {
@@ -53,7 +53,7 @@
         }
         .coin-img { position: absolute; right: 20px; top: 25px; width: 55px; opacity: 0.9; }
 
-        /* CARD BRANCO "SACAR DINHEIRO" */
+        /* SEÇÃO SACAR DINHEIRO (CORRIGIDA E DETALHADA) */
         .withdraw-white-card {
             background: white; margin: 0 15px 15px; border-radius: 12px; padding: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
@@ -61,32 +61,34 @@
         .withdraw-white-card h4 { margin: 0 0 15px; font-size: 16px; color: #333; }
         
         .pix-tag { 
-            display: flex; align-items: center; gap: 6px; font-size: 13px; color: #888; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 6px; font-size: 13px; color: #888; margin-bottom: 20px;
         }
         .pix-logo-icon { height: 14px; filter: grayscale(100%); opacity: 0.6; }
 
-        .grid-vals { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .grid-vals { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .val-btn { background: #f2f3f5; padding: 12px; border-radius: 6px; text-align: center; font-weight: 700; color: #444; font-size: 14px; }
 
+        /* BOTÃO GATILHO (VALOR TOTAL) */
         .btn-main-withdraw {
             background: #f2f3f5; width: 100%; padding: 18px; border-radius: 8px; text-align: center;
-            font-size: 24px; font-weight: 800; color: #222; margin-bottom: 15px; cursor: pointer;
+            font-size: 24px; font-weight: 800; color: #222; margin-bottom: 10px; cursor: pointer;
             border: 2px solid transparent; transition: 0.2s;
         }
         .btn-main-withdraw:active { border-color: var(--orange); background: #fff5f1; }
 
-        .btn-inactive { background: #f9f9f9; color: #ccc; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: 700; font-size: 15px; }
+        /* BOTÃO INATIVO */
+        .btn-inactive { background: #f9f9f9; color: #ccc; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: 700; font-size: 15px; cursor: not-allowed; }
 
         .legal-text { font-size: 11px; color: #999; text-align: center; line-height: 1.4; padding: 0 10px; margin-top: 20px; }
 
         /* BANNER ACESSO EXCLUSIVO */
         .exclusive-banner {
-            background: white; margin: 0 15px 30px; border-radius: 12px; padding: 20px;
+            background: white; margin: 0 15px 25px; border-radius: 12px; padding: 20px;
             display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         .exclusive-banner .text-cont h4 { margin: 0 0 5px; font-size: 15px; color: #000; }
         .exclusive-banner .text-cont p { margin: 0; font-size: 11px; color: #666; line-height: 1.4; }
-        .shopee-bag { width: 50px; flex-shrink: 0; }
+        .shopee-bag { width: 60px; flex-shrink: 0; }
 
         /* --- ESTILOS ETAPAS 2 E 3 --- */
         .overlay-blur { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 90; opacity: 0; pointer-events: none; transition: 0.4s; }
@@ -158,6 +160,7 @@
 
             <div class="withdraw-white-card">
                 <h4>Sacar dinheiro</h4>
+                
                 <div class="pix-tag">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo%E2%80%94pix_powered_by_bcb.svg" class="pix-logo-icon">
                     Transferência via / Pix
@@ -186,7 +189,7 @@
                 <img src="https://logodownload.org/wp-content/uploads/2021/03/shopee-logo-0.png" class="shopee-bag">
             </div>
             
-            <div style="height: 20px;"></div>
+            <div style="height: 30px;"></div>
         </div>
 
         <div class="overlay-blur" id="overlay"></div>
