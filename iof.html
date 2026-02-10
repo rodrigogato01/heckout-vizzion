@@ -11,18 +11,37 @@
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
 
-        /* HEADER COM LOGO DA RECEITA FEDERAL */
+        /* HEADER COM LOGO SVG EMBUTIDO */
         .app-header {
             width: 100%;
             height: 80px;
             background-color: #003399;
-            background-image: url('receita-federal-passa-a-monitorar-gastos-com-cartao-de-credito-design-sem-nome-295.png');
-            background-size: 280px auto;
-            background-repeat: no-repeat;
-            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: sticky;
             top: 0;
             z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* LOGO SVG DA RECEITA FEDERAL */
+        .logo-svg {
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.5px;
         }
 
         .content { flex: 1; padding: 25px 20px; display: flex; flex-direction: column; }
@@ -49,7 +68,21 @@
     </style>
 </head>
 <body>
-    <div class="app-header"></div>
+    <!-- HEADER COM LOGO SVG E TEXTO -->
+    <div class="app-header">
+        <div class="logo-container">
+            <!-- LOGO SVG DA RECEITA FEDERAL -->
+            <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Forma geométrica estilizada baseada no logo da Receita Federal -->
+                <path d="M20 30 L50 10 L80 30 L70 60 L50 80 L30 60 Z" fill="white" opacity="0.9"/>
+                <path d="M35 40 L50 25 L65 40 L58 55 L50 65 L42 55 Z" fill="#003399"/>
+                <circle cx="50" cy="48" r="8" fill="white"/>
+                <path d="M25 35 L40 20 L55 35 L45 50 L35 50 Z" fill="white" opacity="0.7"/>
+                <path d="M45 50 L55 35 L75 45 L65 65 L50 75 Z" fill="white" opacity="0.8"/>
+            </svg>
+            <span class="logo-text">Receita Federal</span>
+        </div>
+    </div>
 
     <div class="content">
         <div class="title-hero">
