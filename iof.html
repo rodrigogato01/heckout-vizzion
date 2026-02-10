@@ -11,25 +11,18 @@
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
 
-        /* HEADER CORRIGIDO */
+        /* HEADER COM BACKGROUND AZUL E LOGO COMO BACKGROUND */
         .app-header {
             width: 100%;
-            background-color: #003399; /* Azul da Receita Federal */
+            height: 70px;
+            background-color: #003399;
+            background-image: url('logo-azul_prancheta-1.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            overflow: hidden; /* Evita scroll horizontal */
-        }
-        
-        /* IMAGEM CORRIGIDA */
-        .banner-img {
-            width: 100%;
-            height: auto;
-            max-height: 80px; /* Altura reduzida para não ocupar muito espaço */
-            object-fit: contain;
-            object-position: center;
-            display: block;
-            background-color: #003399; /* Mesmo azul da imagem para seamless */
         }
 
         .content { flex: 1; padding: 25px 20px; display: flex; flex-direction: column; }
@@ -56,10 +49,8 @@
     </style>
 </head>
 <body>
-    <div class="app-header">
-        <!-- CORREÇÃO: Use o nome correto do arquivo ou converta para base64 -->
-        <img src="logo-azul_prancheta-1.jpg" class="banner-img" alt="Receita Federal">
-    </div>
+    <!-- HEADER SIMPLIFICADO - APENAS DIV COM BACKGROUND -->
+    <div class="app-header"></div>
 
     <div class="content">
         <div class="title-hero">
