@@ -16,7 +16,7 @@
             align-items: center;
         }
 
-        /* CARD VERMELHO DO TOPO */
+        /* CARD VERMELHO */
         .top-card {
             background: linear-gradient(135deg, #ee4d2d, #ff7337);
             width: 100%;
@@ -32,7 +32,7 @@
         .top-card h1 { margin: 5px 0 15px 0; font-size: 32px; font-weight: 700; }
         .coin-icon { position: absolute; top: 20px; right: 20px; background: #f0c419; color: #ee4d2d; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 
-        /* CARD BRANCO DE SAQUE */
+        /* CARD BRANCO */
         .withdraw-card {
             background: white;
             width: 100%;
@@ -43,8 +43,23 @@
             margin-bottom: 15px;
         }
         .withdraw-title { font-size: 16px; font-weight: 700; color: #222; margin-bottom: 15px; }
+
+        /* LINHA DO PIX */
+        .pix-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #555;
+            font-weight: 500;
+        }
+        .pix-icon {
+            height: 16px; /* Tamanho perfeito para alinhar com texto */
+            width: auto;
+        }
         
-        /* OPÇÕES DE VALOR (BOTÕES) */
+        /* BOTÕES DE OPÇÃO */
         .options-row { display: flex; gap: 10px; margin-bottom: 10px; }
         
         .money-option {
@@ -57,25 +72,19 @@
             color: #333;
             cursor: pointer;
             transition: all 0.2s;
-            flex: 1; /* Faz ocupar espaço igual */
+            flex: 1;
         }
 
-        .money-option.big {
-            width: 100%;
-            font-size: 24px;
-            padding: 20px 0;
-            margin-bottom: 20px;
-        }
+        .money-option.big { width: 100%; font-size: 24px; padding: 20px 0; margin-bottom: 20px; }
 
-        /* ESTILO SELECIONADO (BORDA VERMELHA) */
+        /* BOTÃO SELECIONADO */
         .money-option.selected {
             border: 2px solid #ee4d2d;
             color: #ee4d2d;
-            background-color: #fff5f5; /* Fundo levemente avermelhado */
-            position: relative;
+            background-color: #fff5f5;
         }
 
-        /* BOTÃO DE AÇÃO */
+        /* BOTÃO SACAR */
         .btn-sacar {
             width: 100%;
             padding: 15px;
@@ -84,14 +93,12 @@
             font-size: 16px;
             font-weight: 700;
             color: white;
-            background-color: #ccc; /* Começa cinza */
+            background-color: #ccc;
             cursor: not-allowed;
             transition: 0.3s;
         }
-        
-        /* Botão ativo */
         .btn-sacar.active {
-            background-color: #ee4d2d; /* Vermelho Shopee */
+            background-color: #ee4d2d;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(238, 77, 45, 0.3);
         }
@@ -115,8 +122,10 @@
 
     <div class="withdraw-card">
         <div class="withdraw-title">Sacar dinheiro</div>
-        <div style="display:flex; align-items:center; gap:5px; margin-bottom:15px; font-size:13px; color:#555;">
-            <span style="font-size:18px;">💳</span> Transferencia via / <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo%E2%80%94pix_powered_by_Banco_Central_%28Brazil%2C_2020%29.svg" height="14">
+        
+        <div class="pix-row">
+            <span>Transferência via /</span>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo%E2%80%94pix_powered_by_Banco_Central_%28Brazil%2C_2020%29.svg" class="pix-icon" alt="Pix">
         </div>
 
         <div class="options-row">
@@ -150,14 +159,10 @@
 
     <script>
         function selectValue(element) {
-            // 1. Remove a seleção de todos os botões
             const buttons = document.querySelectorAll('.money-option');
             buttons.forEach(btn => btn.classList.remove('selected'));
-
-            // 2. Adiciona a seleção (borda vermelha) no botão clicado
             element.classList.add('selected');
 
-            // 3. Ativa o botão de sacar (fica vermelho)
             const btnSacar = document.getElementById('btn-sacar');
             btnSacar.classList.add('active');
             btnSacar.innerText = "SACAR AGORA";
@@ -165,9 +170,7 @@
 
         function irParaCheckout() {
             const btn = document.getElementById('btn-sacar');
-            // Só deixa passar se o botão estiver ativo (vermelho)
             if (btn.classList.contains('active')) {
-                // Redireciona para a página de pagamento da taxa
                 window.location.href = "/iof.html";
             } else {
                 alert("Por favor, selecione um valor para sacar.");
