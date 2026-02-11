@@ -5,29 +5,32 @@ import axios from 'axios';
 
 const app = express();
 app.use(express.json());
+app.use(cors({ origin: '*' })); // Libera acesso geral
 
-// LIBERA TUDO (CORS)
-app.use(cors({ origin: '*' }));
-
-// Rota de Teste (Para saber se o servidor está vivo)
+// Rota para testar se o servidor está vivo
 app.get('/', (req, res) => {
-    res.send('Servidor Online e Rodando! Rota Vizzion ativa.');
+    res.send('Servidor Online! Rota Vizzion pronta.');
 });
 
-// Serviço MP
 const pixService = new PixService();
 
-// --- ROTA VIZZION PAY (Onde estava dando erro 404) ---
+// --- ROTA VIZZION PAY (COM DEBUG DETALHADO) ---
 app.post('/vizzion-pix', async (req, res) => {
-    console.log("🔔 Chamada recebida em /vizzion-pix");
     const { name, email, cpf } = req.body;
     
+    // SUA CHAVE
     const SECRET = 'e08f7qe1x8zjbnx4dkra9p8v7uj1wfacwidsnnf4lhpfq3v8oz628smahn8g6kus';
     
+    // TENTATIVA 1: URL Padrão (Se falhar, vamos ver o erro)
+    const URL = 'https://api.vizzionpay.com/v1/pix'; 
+
+    console.log("------------------------------------------------");
+    console.log(`🔎 Tentando criar Pix na Vizzion para: ${name}`);
+    console.log(`📡 URL Alvo: ${URL}`);
+
     try {
-        // Payload oficial Vizzion
         const payload = {
-            amount: 14790, // R$ 147,90
+            amount: 14790, // Centavos
             payment_method: "pix",
             payer: {
                 name: String(name),
@@ -36,29 +39,33 @@ app.post('/vizzion-pix', async (req, res) => {
             }
         };
 
-        const response = await axios.post('https://api.vizzionpay.com/v1/pix', payload, {
+        const response = await axios.post(URL, payload, {
             headers: {
                 'Authorization': `Bearer ${SECRET}`,
                 'Content-Type': 'application/json'
             }
         });
 
-        console.log("✅ Pix Vizzion Gerado:", response.data.id);
-        
-        // Devolve JSON
-        res.json({
-            qr_copia: response.data.pix_copy_paste || response.data.copia_e_cola || response.data.qr_code,
-            qr_imagem: response.data.qr_code_base64 || response.data.qrcode_image
-        });
+        console.log("✅ SUCESSO VIZZION:", response.data);
+        res.json(response.data);
 
     } catch (error: any) {
-        console.error("❌ Erro Vizzion:", error.message);
-        // Retorna erro JSON (não HTML) para o front entender
-        res.status(500).json({ error: "Erro ao gerar Pix", detalhe: error.message });
+        // AQUI ESTÁ O SEGREDO: Pegar o erro exato da Vizzion
+        const erroReal = error.response ? error.response.data : error.message;
+        const statusErro = error.response ? error.response.status : 500;
+
+        console.error("❌ ERRO VIZZION DETALHADO:", JSON.stringify(erroReal, null, 2));
+        
+        // Devolve o erro para o seu site mostrar no alerta
+        res.status(statusErro).json({ 
+            erro: "Falha na comunicação com Vizzion", 
+            detalhes: erroReal,
+            status: statusErro
+        });
     }
 });
 
-// --- ROTA MERCADO PAGO ---
+// --- ROTA MERCADO PAGO (Mantida) ---
 app.post('/pix', async (req, res) => {
     try {
         const { amount, name, cpf } = req.body;

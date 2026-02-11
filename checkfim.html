@@ -1,95 +1,7 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout Seguro | Finalizar Acesso</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #EE4D2D; --bg: #f4f7f6; --text: #333; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: var(--text); }
-        .header { background: #fff; padding: 15px; text-align: center; border-bottom: 1px solid #ddd; font-weight: 700; color: var(--primary); display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; }
-        .card { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        h2 { font-size: 1.2rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-        label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: 600; }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
-        .btn-pay { width: 100%; background: var(--primary); color: #fff; border: none; padding: 18px; border-radius: 8px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn-pay:hover { background: #d73211; transform: translateY(-2px); }
-        .btn-disabled { background: #ccc; cursor: not-allowed; }
-        
-        /* Modal Pix */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: #fff; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; text-align: center; }
-        .qr-code { width: 200px; height: 200px; margin: 20px auto; border: 1px solid #eee; display: block; object-fit: contain; }
-        .copy-box { background: #f8f8f8; padding: 10px; border-radius: 5px; border: 1px dashed #bbb; font-size: 0.8rem; word-break: break-all; margin: 15px 0; max-height: 60px; overflow: hidden; }
-
-        @media (max-width: 768px) { .container { grid-template-columns: 1fr; } .card-summary { order: -1; } }
-    </style>
-</head>
-<body>
-
-<div class="header">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-    CHECKOUT SEGURO - VIZZION PAY
-</div>
-
-<div class="container">
-    <div class="card">
-        <h2><span style="background:#000; color:#fff; width:25px; height:25px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.7rem;">1</span> Dados de Acesso</h2>
-        <div id="form-container">
-            <label>Nome Completo</label>
-            <input type="text" id="nome" placeholder="Como no documento">
-            
-            <label>E-mail (Para receber o curso)</label>
-            <input type="email" id="email" placeholder="seu@email.com">
-
-            <label>CPF</label>
-            <input type="tel" id="cpf" placeholder="000.000.000-00" maxlength="14">
-
-            <div style="background:#fff5f2; padding:15px; border-radius:8px; border:1px solid var(--primary); margin: 10px 0 20px;">
-                <p style="color:var(--primary); font-size:0.85rem; font-weight:600;">⚡ Liberação imediata após o pagamento via PIX.</p>
-            </div>
-
-            <button class="btn-pay" id="btnMain" onclick="gerarPixVizzion()">FINALIZAR E RECEBER ACESSO</button>
-        </div>
-    </div>
-
-    <div class="card card-summary" style="height: fit-content;">
-        <h2 style="margin-bottom:10px;">Resumo</h2>
-        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-            <span>Acesso ao Curso</span>
-            <strong>R$ 147,90</strong>
-        </div>
-        <hr style="border:0; border-top:1px solid #eee; margin-bottom:15px;">
-        <div style="display:flex; justify-content:space-between; font-size:1.3rem;">
-            <span>Total:</span>
-            <span style="color:var(--primary); font-weight:700;">R$ 147,90</span>
-        </div>
-    </div>
-</div>
-
-<div class="modal" id="pixModal">
-    <div class="modal-content">
-        <h3>Pagamento Gerado!</h3>
-        <p style="font-size:0.9rem; color:#666;">Escaneie o QR Code abaixo para pagar</p>
-        
-        <img id="qrImg" class="qr-code">
-        
-        <p style="font-size:0.8rem; font-weight:bold; margin-bottom:5px;">Pix Copia e Cola:</p>
-        <textarea id="pixCode" class="copy-box" readonly style="width:100%; resize:none;"></textarea>
-        
-        <button class="btn-pay" style="background:#28a745;" onclick="copyPix()">COPIAR CÓDIGO PIX</button>
-        <button class="btn-pay" style="background:#ccc; margin-top:10px;" onclick="location.reload()">FECHAR</button>
-    </div>
-</div>
-
 <script>
-    // URL do SEU servidor na Render (Se estiver rodando local, use http://localhost:10000)
     const API_URL = "https://checkout-pix-profissional.onrender.com"; 
 
-    // Máscara de CPF
+    // Máscara CPF
     document.getElementById('cpf').addEventListener('input', e => {
         let v = e.target.value.replace(/\D/g,"");
         v = v.replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");
@@ -103,43 +15,48 @@
         const btn = document.getElementById('btnMain');
 
         if(nome.length < 3 || !email.includes('@') || cpf.length < 11) {
-            return alert("Preencha todos os dados corretamente.");
+            return alert("Preencha todos os dados.");
         }
 
         btn.disabled = true;
-        btn.innerText = "GERANDO PIX...";
-        btn.classList.add('btn-disabled');
+        btn.innerText = "PROCESSANDO...";
+        btn.style.opacity = "0.7";
 
         try {
-            // Chama a rota /vizzion-pix no seu servidor
             const response = await fetch(`${API_URL}/vizzion-pix`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    amount: 147.90, // Valor fixo do curso
-                    name: nome, 
-                    email: email, 
-                    cpf: cpf 
-                })
+                body: JSON.stringify({ name: nome, email: email, cpf: cpf })
             });
 
             const data = await response.json();
 
-            if (data.qrcode_image && data.pix_copy_paste) {
-                // Sucesso! Mostra o modal
-                document.getElementById('qrImg').src = data.qrcode_image; // Vizzion geralmente manda URL ou Base64
-                document.getElementById('pixCode').value = data.pix_copy_paste;
-                document.getElementById('pixModal').style.display = 'flex';
+            // SE OCORREU ERRO NA VIZZION
+            if (!response.ok) {
+                alert("ERRO DA VIZZION:\n" + JSON.stringify(data.detalhes || data.erro));
+                console.error("Erro detalhado:", data);
+                resetBtn();
+                return;
+            }
+
+            // SUCESSO
+            if (data.qr_code_base64 || data.pix_copy_paste || data.qr_imagem || data.qr_copia) {
+                let img = data.qr_code_base64 || data.qr_imagem || data.qrcode;
+                let code = data.pix_copy_paste || data.qr_copia;
+
+                if (img && !img.startsWith('http')) img = `data:image/png;base64,${img}`;
                 
-                // Opcional: Monitorar status
-                // monitorarStatus(data.transaction_id); 
+                document.getElementById('qrImg').src = img;
+                document.getElementById('pixCode').value = code;
+                document.getElementById('pixModal').style.display = 'flex';
             } else {
-                alert("Erro ao gerar Pix: " + (data.error || "Tente novamente."));
+                alert("Erro: API não retornou o QR Code.");
+                console.log(data);
                 resetBtn();
             }
+
         } catch (error) {
-            console.error(error);
-            alert("Erro de conexão com o servidor.");
+            alert("Erro de conexão com o servidor. Verifique se o servidor está online.");
             resetBtn();
         }
     }
@@ -148,15 +65,13 @@
         const btn = document.getElementById('btnMain');
         btn.disabled = false;
         btn.innerText = "FINALIZAR E RECEBER ACESSO";
-        btn.classList.remove('btn-disabled');
+        btn.style.opacity = "1";
     }
 
     function copyPix() {
         const txt = document.getElementById('pixCode');
         txt.select();
         document.execCommand('copy');
-        alert("Código copiado!");
+        alert("Copiado!");
     }
 </script>
-</body>
-</html>
