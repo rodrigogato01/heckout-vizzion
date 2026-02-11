@@ -1,7 +1,8 @@
 import { MercadoPagoConfig, Payment, PaymentRefund } from 'mercadopago';
 
+// Em src/services/PixService.ts
 const client = new MercadoPagoConfig({
-    accessToken: process.env.MP_ACCESS_TOKEN || '', 
+    accessToken: 'APP_USR-2572776399339396-020516-e4fefa77579bb50393285e683713d789-232650059', 
     options: { timeout: 5000 }
 });
 
