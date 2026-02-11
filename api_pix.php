@@ -1,31 +1,36 @@
 <?php
 header('Content-Type: application/json');
 
-// 1. SUA CHAVE VIZZION
-$apiKey = "e08f7qe1x8zjbnx4dkra9p8v7uj1wfacwidsnnf4lhpfq3v8oz628smahn8g6kus";
-$url = "https://api.vizzionpagamentos.com.br/v1/transaction/pix"; // Verifique se o endpoint mudou no manual
+// AQUI ESTÁ O SEGREDO: Ele vai buscar a chave que você salvou no site do Render
+$apiKey = getenv('VIZZION_CLIENT_SECRET'); 
+$url = "https://api.vizzionpagamentos.com.br/v1/transaction/pix";
 
-// 2. PEGA DADOS DO FORMULÁRIO
-$input = json_decode(file_get_contents('php://input'), true);
-
-if (!$input) {
-    echo json_encode(['error' => 'No data']);
+// Se por acaso a chave não vier do Render, dá erro
+if (!$apiKey) {
+    echo json_encode(['error' => 'Chave de API não configurada no Render']);
     exit;
 }
 
-// 3. PREPARA O PACOTE PARA A VIZZION
+$input = json_decode(file_get_contents('php://input'), true);
+
+// Verifica se os dados chegaram
+if (!$input) {
+    echo json_encode(['error' => 'Nenhum dado recebido']);
+    exit;
+}
+
 $payload = [
     "amount" => 147.90,
-    "description" => "Acesso ao Curso Exclusivo",
+    "description" => "Acesso Curso - Final",
     "customer" => [
         "name" => $input['nome'],
         "email" => $input['email'],
         "document" => $input['cpf']
     ],
-    "postback_url" => "https://seusite.com/webhook.php" // Mude para o seu domínio real
+    // ATENÇÃO: Confirme se este link aponta para o seu projeto no Render
+    "postback_url" => "https://checkoutfinal.onrender.com/webhook.php" 
 ];
 
-// 4. CHAMADA API VIA CURL
 $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POST, true);
