@@ -1,14 +1,21 @@
 import express from 'express';
 import cors from 'cors';
 import { PixService } from './services/PixService';
-import axios from 'axios'; // Para a Vizzion Pay
+import axios from 'axios'; 
 
 const app = express();
 
 app.use(express.json());
-app.use(cors());
 
-// Instancia o seu serviço (que usa a nova lib do Mercado Pago)
+// === CONFIGURAÇÃO ROBUSTA DE CORS ===
+// Isso permite que seu checkout (em outro link) acesse este servidor sem bloqueio
+app.use(cors({
+    origin: '*', 
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Instancia o serviço do Mercado Pago
 const pixService = new PixService();
 
 // =================================================
@@ -18,14 +25,15 @@ app.post('/pix', async (req, res) => {
     const { amount, name, cpf } = req.body;
 
     try {
-        // CORREÇÃO: Chama 'createCharge' em vez de 'createPix'
+        console.log(`🔹 MP Pix solicitado: ${name} - R$${amount}`);
+        // Chama 'createCharge' (Compatível com sua versão nova do PixService)
         const response = await pixService.createCharge(Number(amount), String(name), String(cpf));
         
-        // O Mercado Pago v2 retorna a resposta dentro de .id, .point_of_interaction, etc.
+        // Retorna a resposta do Mercado Pago
         res.status(201).json(response);
 
     } catch (error: any) {
-        console.error("Erro Rota /pix (MP):", error);
+        console.error("❌ Erro Rota /pix (MP):", error);
         res.status(500).json({ error: "Erro ao criar Pix do IOF" });
     }
 });
@@ -33,10 +41,10 @@ app.post('/pix', async (req, res) => {
 app.get('/pix/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        // CORREÇÃO: Chama 'checkStatus' em vez de 'getPixStatus'
+        // Chama 'checkStatus'
         const status = await pixService.checkStatus(id);
         
-        // Retorna no formato que o front espera
+        // Retorna no formato JSON simples
         res.status(200).json({ status: status }); 
     } catch (error: any) {
         res.status(500).json({ error: "Erro ao consultar status" });
@@ -54,14 +62,14 @@ app.post('/vizzion-pix', async (req, res) => {
     const API_URL = 'https://api.vizzionpay.com/v1/pix'; 
 
     try {
-        console.log(`🚀 Vizzion Pix para: ${name}`);
+        console.log(`🚀 Vizzion Pix solicitado: ${name} - R$${amount}`);
 
         const payload = {
-            amount: Math.round(Number(amount) * 100), // Centavos
+            amount: Math.round(Number(amount) * 100), // Converte para centavos (Evita erro decimal)
             payer: {
                 name: String(name),
                 email: String(email),
-                document: String(cpf).replace(/\D/g, '')
+                document: String(cpf).replace(/\D/g, '') // Remove pontuação
             },
             payment_method: "pix"
         };
@@ -74,8 +82,9 @@ app.post('/vizzion-pix', async (req, res) => {
         });
 
         const data = response.data;
+        console.log("✅ Vizzion Pix Criado ID:", data.id);
         
-        // Retorna dados para o front (ajustando conforme o retorno da Vizzion)
+        // Retorna dados para o front (Tratando variações de retorno da API)
         res.status(200).json({
             transaction_id: data.id,
             qrcode_image: data.qr_code_base64 || data.qrcode || data.point_of_interaction?.transaction_data?.qr_code_base64,
@@ -84,7 +93,10 @@ app.post('/vizzion-pix', async (req, res) => {
 
     } catch (error: any) {
         console.error("❌ Erro Vizzion:", error.response?.data || error.message);
-        res.status(500).json({ error: "Falha na Vizzion Pay" });
+        res.status(500).json({ 
+            error: "Falha na Vizzion Pay",
+            details: error.response?.data 
+        });
     }
 });
 
