@@ -5,14 +5,23 @@ import fs from 'fs';
 import path from 'path';
 
 export class PixController {
+    // Credenciais EXATAS que você me passou
     private credentials = {
-        client_id: 'SEU_CLIENT_ID_AQUI',
-        client_secret: 'SEU_CLIENT_SECRET_AQUI',
+        client_id: 'Client_Id_4f08f7745e963684c33300837f59e4b3f852e645',
+        client_secret: 'Client_Secret_1acd5546d4462972f9d5aae1c8dfee0c0bcddd8d',
+        // O nome do arquivo tem que ser IGUAL ao que está na raiz do projeto
         certificate: 'producao-875882-Shopee Bônus.p12' 
     };
 
     private getHttpsAgent() {
+        // Procura o arquivo na raiz do projeto
         const certPath = path.resolve(process.cwd(), this.credentials.certificate);
+        
+        if (!fs.existsSync(certPath)) {
+            console.error(`ERRO CRÍTICO: Certificado não encontrado em: ${certPath}`);
+            throw new Error(`Certificado não encontrado. Verifique se o arquivo .p12 está na raiz.`);
+        }
+        
         const cert = fs.readFileSync(certPath);
         return new https.Agent({ pfx: cert, passphrase: '' });
     }
@@ -29,6 +38,7 @@ export class PixController {
         return response.data.access_token;
     }
 
+    // 1. CRIAR PIX
     create = async (req: Request, res: Response) => {
         try {
             const { name, cpf, valor } = req.body;
@@ -38,8 +48,8 @@ export class PixController {
                 calendario: { expiracao: 3600 },
                 devedor: { cpf: cpf.replace(/\D/g, ''), nome: name },
                 valor: { original: parseFloat(valor).toFixed(2) },
-                chave: 'SUA_CHAVE_PIX_AQUI',
-                solicitacaoPagador: 'Pagamento Seguro'
+                chave: 'e0cfba23-ddcb-441f-809d-893ccf6d0f7a', // Sua chave Pix
+                solicitacaoPagador: 'Taxa de Servico'
             }, {
                 headers: { Authorization: `Bearer ${token}` },
                 httpsAgent: this.getHttpsAgent()
@@ -54,18 +64,18 @@ export class PixController {
                 success: true,
                 payload: qrcode.data.qrcode,
                 encodedImage: qrcode.data.imagemQrcode,
-                txid: cob.data.txid 
+                txid: cob.data.txid
             });
         } catch (error: any) {
-            console.error("ERRO AO CRIAR PIX:", error.response?.data || error.message);
+            console.error("Erro Efí:", error.response?.data || error.message);
             return res.status(500).json({ success: false });
         }
     }
 
-    // Método que estava faltando para resolver o erro no routes.ts e server.ts
+    // 2. CHECK STATUS (Obrigatório para corrigir o erro TS2339)
     checkStatus = async (req: Request, res: Response) => {
         try {
-            const { id } = req.params; // id seria o txid da cobrança
+            const { id } = req.params;
             const token = await this.getAccessToken();
             
             const response = await axios.get(`https://pix.api.efipay.com.br/v2/cob/${id}`, {
@@ -75,15 +85,13 @@ export class PixController {
 
             return res.json({ status: response.data.status });
         } catch (error: any) {
-            console.error("ERRO AO CONSULTAR STATUS:", error.response?.data || error.message);
             return res.status(500).json({ error: "Erro ao consultar status" });
         }
     }
 
-    // Método que estava faltando para resolver o erro no server.ts
+    // 3. WEBHOOK (Obrigatório para corrigir o erro TS2339)
     webhook = async (req: Request, res: Response) => {
-        // A Efí exige que o endpoint de webhook retorne HTTP 200
-        console.log("[EFÍ WEBHOOK] Notificação recebida:", req.body);
-        return res.status(200).send();
+        console.log("Webhook recebido");
+        return res.status(200).send("OK");
     }
 }
