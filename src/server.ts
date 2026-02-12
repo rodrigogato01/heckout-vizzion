@@ -2,32 +2,41 @@ import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
 import path from 'path';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const app = express();
 
-// CORS
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-// ROTA DE TESTE (ADICIONADA!)
+// LOG para debug
+console.log("🚀 Servidor iniciando...");
+console.log("📍 Diretório:", __dirname);
+console.log("🔑 Token existe?", !!process.env.MERCADO_PAGO_TOKEN);
+
+// Rota de teste
 app.get('/status', (req, res) => {
-    res.json({ status: 'online', version: '3.1', timestamp: new Date().toISOString() });
+    res.json({ 
+        status: 'online', 
+        token_configurado: !!process.env.MERCADO_PAGO_TOKEN 
+    });
 });
 
-// ROTA PIX
+// Rota PIX
 app.post('/pix', async (req, res) => {
-    console.log("POST /pix recebido:", req.body);
+    console.log("📥 POST /pix recebido:", req.body);
     
     try {
         const { amount, name, cpf } = req.body;
+        
+        // Pega token do .env
         const ACCESS_TOKEN = process.env.MERCADO_PAGO_TOKEN;
-
+        
         if (!ACCESS_TOKEN) {
-            return res.status(500).json({ error: "Token não configurado" });
+            console.error("❌ TOKEN NÃO ENCONTRADO!");
+            return res.status(500).json({ error: "Token não configurado no servidor" });
         }
+
+        console.log("🚀 Criando Pix no Mercado Pago...");
 
         const payload = {
             transaction_amount: Number(amount) || 37.90,
@@ -49,27 +58,37 @@ app.post('/pix', async (req, res) => {
                 'Authorization': `Bearer ${ACCESS_TOKEN}`,
                 'Content-Type': 'application/json',
                 'X-Idempotency-Key': `pix-${Date.now()}`
-            }
+            },
+            timeout: 30000
         });
 
-        console.log("Pix criado:", response.data.id);
-        res.status(201).json(response.data);
+        console.log("✅ Pix criado! ID:", response.data.id);
+        
+        res.status(201).json({
+            id: response.data.id,
+            point_of_interaction: response.data.point_of_interaction
+        });
 
     } catch (error: any) {
-        console.error("Erro:", error.response?.data || error.message);
-        res.status(500).json({ error: "Erro ao gerar Pix", details: error.response?.data });
+        console.error("❌ ERRO:", error.message);
+        console.error("Detalhes:", error.response?.data);
+        
+        res.status(500).json({ 
+            error: "Erro ao criar Pix", 
+            message: error.message,
+            details: error.response?.data 
+        });
     }
 });
 
-// Servir arquivos estáticos
+// Arquivos estáticos
 app.use(express.static(path.resolve(__dirname, '../')));
 
-// Rota coringa
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../index.html'));
 });
 
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor rodando na porta ${PORT}`);
+    console.log(`✅ Servidor rodando na porta ${PORT}`);
 });
