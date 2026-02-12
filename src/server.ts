@@ -5,50 +5,45 @@ import path from 'path';
 
 const app = express();
 
-app.use(cors({ origin: '*' }));
+// 1. Configurações para evitar bloqueios
 app.use(express.json());
+app.use(cors({ origin: '*' }));
 
-// LOG para debug
-console.log("🚀 Servidor iniciando...");
-console.log("📍 Diretório:", __dirname);
-console.log("🔑 Token existe?", !!process.env.MERCADO_PAGO_TOKEN);
-
-// Rota de teste
-app.get('/status', (req, res) => {
-    res.json({ 
-        status: 'online', 
-        token_configurado: !!process.env.MERCADO_PAGO_TOKEN 
-    });
+// 2. ROTA DE STATUS (Para o Railway saber que está vivo)
+app.get('/health', (req, res) => {
+    res.status(200).send('Railway Online 🚀');
 });
 
-// Rota PIX
+// ========================================================
+// 3. ROTA PIX (MERCADO PAGO) - TOKEN ATUALIZADO
+// ========================================================
 app.post('/pix', async (req, res) => {
-    console.log("📥 POST /pix recebido:", req.body);
+    console.log("🔔 [RAILWAY] Processando Pix...");
     
     try {
-        const { amount, name, cpf } = req.body;
-        
-        // Pega token do .env
-        const ACCESS_TOKEN = process.env.MERCADO_PAGO_TOKEN;
-        
-        if (!ACCESS_TOKEN) {
-            console.error("❌ TOKEN NÃO ENCONTRADO!");
-            return res.status(500).json({ error: "Token não configurado no servidor" });
-        }
+        const { amount, name, cpf, email } = req.body;
 
-        console.log("🚀 Criando Pix no Mercado Pago...");
+        // SEU TOKEN DE PRODUÇÃO (O ÚLTIMO QUE VOCÊ MANDOU)
+        const ACCESS_TOKEN = 'APP_USR-7433336192149093-020423-97cd4e2614f56c0f43836231bfb0e432-202295570';
+
+        // Tratamento de dados para evitar recusa do MP
+        const cpfLimpo = String(cpf).replace(/\D/g, '');
+        const partesNome = String(name).trim().split(' ');
+        const primeiroNome = partesNome[0] || "Cliente";
+        const sobrenome = partesNome.length > 1 ? partesNome.slice(1).join(' ') : "Shopee";
+        const emailPagador = (email && email.includes('@')) ? email : "pagamento@shopee.com";
 
         const payload = {
             transaction_amount: Number(amount) || 37.90,
-            description: "Taxa Liberacao",
+            description: "Taxa de Liberacao",
             payment_method_id: "pix",
             payer: {
-                email: "cliente@email.com",
-                first_name: String(name).split(' ')[0] || "Cliente",
-                last_name: String(name).split(' ').slice(1).join(' ') || "Sobrenome",
+                email: emailPagador,
+                first_name: primeiroNome,
+                last_name: sobrenome,
                 identification: {
                     type: "CPF",
-                    number: String(cpf).replace(/\D/g, '')
+                    number: cpfLimpo
                 }
             }
         };
@@ -57,38 +52,32 @@ app.post('/pix', async (req, res) => {
             headers: {
                 'Authorization': `Bearer ${ACCESS_TOKEN}`,
                 'Content-Type': 'application/json',
-                'X-Idempotency-Key': `pix-${Date.now()}`
-            },
-            timeout: 30000
+                'X-Idempotency-Key': `railway-${Date.now()}`
+            }
         });
 
-        console.log("✅ Pix criado! ID:", response.data.id);
-        
-        res.status(201).json({
-            id: response.data.id,
-            point_of_interaction: response.data.point_of_interaction
-        });
+        console.log("✅ Pix Criado! ID:", response.data.id);
+        res.status(201).json(response.data);
 
     } catch (error: any) {
-        console.error("❌ ERRO:", error.message);
-        console.error("Detalhes:", error.response?.data);
-        
-        res.status(500).json({ 
-            error: "Erro ao criar Pix", 
-            message: error.message,
-            details: error.response?.data 
-        });
+        console.error("❌ Erro MP:", error.response?.data || error.message);
+        // Retorna o erro exato para o frontend
+        res.status(500).json({ error: "Erro no Pagamento", detalhes: error.response?.data });
     }
 });
 
-// Arquivos estáticos
-app.use(express.static(path.resolve(__dirname, '../')));
+// ========================================================
+// 4. SERVIR O SITE (FRONTEND)
+// ========================================================
+// O Railway roda o server dentro da pasta /dist, então o html está uma pasta acima (../)
+app.use(express.static(path.join(__dirname, '../')));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../index.html'));
+    res.sendFile(path.join(__dirname, '../index.html'));
 });
 
-const PORT = process.env.PORT || 10000;
+// 5. Inicialização (Railway usa process.env.PORT automaticamente)
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`✅ Servidor rodando na porta ${PORT}`);
+    console.log(`🚀 Server rodando na porta ${PORT}`);
 });

